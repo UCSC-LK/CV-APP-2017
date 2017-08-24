@@ -1,8 +1,7 @@
-var Student = require('../model/student-model');
+var Student = require('../model/student');
 
 module.exports.getStudents = function (req, res) {
     Student.find({}, function (err, result) {
-        console.log(result);
         res.json(result);
     });
 
