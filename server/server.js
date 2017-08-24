@@ -8,7 +8,9 @@ var express = require('express'),
     mongoose = require('mongoose'),
     port = 3000;
 
-mongoose.connect('mongodb://localhost:27017/ucsc-cvapp-2017');
+mongoose.connect('mongodb://localhost:27017/ucsc-cvapp-2017', {
+    useMongoClient: true
+});
 
 // // view engine setup
 // app.set('views', path.join(__dirname, '../client'));
