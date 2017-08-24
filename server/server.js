@@ -3,12 +3,15 @@ var express = require('express'),
     bodyParser = require('body-parser'),
     api = require('./app/api2'),
     student = require('./app/api/student-api'),
+    company = require('./app/api/company-api'),
     app = express(),
     mongoose = require('mongoose'),
     port = 3001,
     passport = require('passport');
 
-mongoose.connect('mongodb://localhost:27017/ucsc-cvapp-2017');
+mongoose.connect('mongodb://localhost:27017/ucsc-cvapp-2017', {
+    useMongoClient: true
+});
 
 
 // // view engine setup
@@ -47,6 +50,7 @@ require('./app/api/auth.js')(app, passport);
 
 // app.use('/api2', api);
 app.use('/student', student);
+app.use('/company', company);
 
 app.listen(port, function() {
     console.log('Server started on port : ' + port);
