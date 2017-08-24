@@ -5,9 +5,12 @@ var express = require('express'),
     student = require('./app/api/student-api'),
     app = express(),
     mongoose = require('mongoose'),
-    port = 3000;
+    port = 3001,
+    passport = require('passport'),
+    db = require('./app/model');
 
 mongoose.connect('mongodb://localhost:27017/ucsc-cvapp-2017');
+//
 
 // // view engine setup
 // app.set('views', path.join(__dirname, '../client'));
@@ -18,13 +21,29 @@ mongoose.connect('mongodb://localhost:27017/ucsc-cvapp-2017');
 // app.use(express.static(path.join(__dirname, '../client')));
 app.use(express.static(path.join(__dirname, '../client')));
 
-//Body Parser MW
-app.use(bodyParser.json());
+require('./app/config/passport')(passport); // pass passport for configuration
+
+//Cookie and session
+var cookieParser = require('cookie-parser');
+var session = require('express-session');
+app.use(session({
+  secret: 'this is the secret'
+}));
+app.use(cookieParser());
+app.use(passport.initialize());
+app.use(passport.session());
+
+//Body-parser
+app.use(bodyParser.json()); //for parsing application/json
 app.use(bodyParser.urlencoded({
     extended: true
 }));
 
-app.use('/api2', api);
+// routes ======================================================================
+// load our routes and pass in our app and fully configured passport
+// require('./app/api/auth.js')(app, passport);
+
+// app.use('/api2', api);
 app.use('/student', student);
 
 app.listen(port, function() {

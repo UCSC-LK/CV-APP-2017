@@ -1,4 +1,4 @@
-var db = require("../models");
+// var db = require("./../model");
 
 module.exports = function(app, passport) {
     // process the login form
