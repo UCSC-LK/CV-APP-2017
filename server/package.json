@@ -1,7 +1,7 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "description": "",
+  "description": "server for ucsc CV app",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -9,14 +9,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "body-parser": "^1.15.2",
-    "ejs": "^2.5.2",
-    "express": "^4.14.0",
+    "body-parser": "^1.17.2",
+    "ejs": "^2.5.7",
+    "express": "^4.15.4",
     "gulp-cssnano": "^2.1.2",
     "gulp-if": "^2.0.2",
     "jsend": "^1.0.2",
-    "lodash": "^4.16.6",
-    "mongojs": "^2.4.0"
+    "lodash": "^4.17.4",
+    "mongojs": "^2.4.1"
   },
   "devDependencies": {
     "browser-sync": "^2.17.5",
