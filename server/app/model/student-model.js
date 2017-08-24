@@ -1,3 +1,5 @@
-/**
- * Created by vibodha on 8/24/17.
- */
+var mongoose = require('mongoose');
+
+module.exports = mongoose.model('Student', {
+    name: String
+});

@@ -4,7 +4,10 @@ var express = require('express'),
     api = require('./app/api2'),
     student = require('./app/api/student-api'),
     app = express(),
+    mongoose = require('mongoose'),
     port = 3000;
+
+mongoose.connect('mongodb://localhost:27017/ucsc-cvapp-2017');
 
 // // view engine setup
 // app.set('views', path.join(__dirname, '../client'));
@@ -20,11 +23,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
-
-
-// app.use('/', function (req, res) {
-//     res.render('index.html');
-// });
 
 app.use('/api2', api);
 app.use('/student', student);
