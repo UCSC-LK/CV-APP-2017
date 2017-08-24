@@ -1,4 +1,6 @@
 // var db = require("./../model");
+// db = require('./app/model/user'),
+var User             = require('../model/user');
 
 module.exports = function(app, passport) {
     // process the login form
@@ -19,14 +21,14 @@ module.exports = function(app, passport) {
 
     // signup
     app.post("/signup", function(req, res) {
-      db.User.findOne({
+      User.findOne({
         username: req.body.username
       }, function(err, user) {
         if (user) {
           res.json(null);
           return;
         } else {
-          var newUser = new db.User();
+          var newUser = new User();
           newUser.username = req.body.username.toLowerCase();
           newUser.password = newUser.generateHash(req.body.password);
           newUser.save(function(err, user) {

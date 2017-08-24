@@ -6,11 +6,10 @@ var express = require('express'),
     app = express(),
     mongoose = require('mongoose'),
     port = 3001,
-    passport = require('passport'),
-    db = require('./app/model');
+    passport = require('passport');
 
 mongoose.connect('mongodb://localhost:27017/ucsc-cvapp-2017');
-//
+
 
 // // view engine setup
 // app.set('views', path.join(__dirname, '../client'));
@@ -27,7 +26,10 @@ require('./app/config/passport')(passport); // pass passport for configuration
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 app.use(session({
-  secret: 'this is the secret'
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true,
+  // cookie: { secure: true }
 }));
 app.use(cookieParser());
 app.use(passport.initialize());
@@ -41,7 +43,7 @@ app.use(bodyParser.urlencoded({
 
 // routes ======================================================================
 // load our routes and pass in our app and fully configured passport
-// require('./app/api/auth.js')(app, passport);
+require('./app/api/auth.js')(app, passport);
 
 // app.use('/api2', api);
 app.use('/student', student);
