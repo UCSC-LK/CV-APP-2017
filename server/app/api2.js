@@ -33,6 +33,12 @@ router.get('/', function(req, res, next) {
     res.send('Api');
 });
 
+router.get('/test', function (req, res, next) {
+    res.send('test');
+});
+
+
+
 // Register OT
 router.post('/ot', function(req, res, next) {
     var camp = req.body;
