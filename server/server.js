@@ -4,6 +4,7 @@ var express = require('express'),
     api = require('./app/api2'),
     student = require('./app/api/student-api'),
     company = require('./app/api/company-api'),
+    studentCompany = require('./app/api/student-company-api'),
     app = express(),
     mongoose = require('mongoose'),
     port = 3000;
@@ -29,7 +30,7 @@ app.use(bodyParser.urlencoded({
 
 app.use('/api2', api);
 app.use('/student', student);
-app.use('/company', company);
+app.use('/student_company', studentCompany);
 
 app.listen(port, function() {
     console.log('Server started on port : ' + port);
