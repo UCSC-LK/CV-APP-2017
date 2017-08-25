@@ -9,11 +9,12 @@ var express = require('express'),
     port = 3001,
     passport = require('passport');
 
+
 mongoose.connect('mongodb://localhost:27017/ucsc-cvapp-2017', {
     useMongoClient: true
 });
 
-
+///////////////////////
 // // view engine setup
 // app.set('views', path.join(__dirname, '../client'));
 // app.set('view engine', 'ejs');

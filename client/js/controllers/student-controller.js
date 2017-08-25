@@ -24,4 +24,3 @@ app.controller('studentController', ['$scope', '$resource', function ($scope, $r
         });
     }
 }]);
-
