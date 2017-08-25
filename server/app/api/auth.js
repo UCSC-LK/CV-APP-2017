@@ -1,8 +1,6 @@
-// var db = require("./../model");
-// db = require('./app/model/user'),
-var User             = require('../model/user');
-var jwt = require('jsonwebtoken');
-var config = require('../config/conf');
+var User    = require('../model/user');
+var jwt     = require('jsonwebtoken');
+var config  = require('../config/conf');
 // getToken = function (headers) {
 //   if (headers && headers.authorization) {
 //     var parted = headers.authorization.split(' ');
@@ -30,7 +28,8 @@ module.exports = function(app, passport) {
           }, function(err, user) {
           if (err) throw err;
           if (!user) {
-            res.status(401).send({success: false, msg: 'Authentication failed. User not found.'});
+            // res.status(401).send({success: false, msg: 'Authentication failed. User not found.'});
+            res.json({success: false, msg: 'Authentication failed. User not found.'});
           } else {
             // check if password matches
             user.comparePassword(req.body.password, function (err, isMatch) {
@@ -40,7 +39,8 @@ module.exports = function(app, passport) {
                 // return the information including token as JSON
                 res.json({success: true, token: 'JWT ' + token ,id:user.id});
               } else {
-                res.status(401).send({success: false, msg: 'Authentication failed. Wrong password.'});
+                // res.status(401).send({success: false, msg: 'Authentication failed. Wrong password.'});
+                res.json({success: false, msg: 'Authentication failed. Wrong password.'});
               }
             });
           }
@@ -54,17 +54,18 @@ module.exports = function(app, passport) {
     })
 
     // loggedin - Todo
-    // app.get("/loggedin", function(req, res) {
-    //   res.send(req.isAuthenticated() ? req.user : '0');
-    // });
-
     app.get("/loggedin", function(req, res) {
-      if (req.isAuthenticated()){
-        res.json({success: true, user:req.user});
-      }else{
-        res.status(401).send({success: false, msg: 'user not loged.'});
-      }
+      res.send(req.isAuthenticated() ? req.user : '0');
     });
+    // remove send
+    // app.get("/loggedin", function(req, res) {
+    //   if (req.isAuthenticated()){
+    //     res.send({success: true, user:req.user});
+    //   }else{
+    //     // res.status(401).send({success: false, msg: 'user not loged.'});
+    //     res.send({success: false, msg: 'user not loged.'});
+    //   }
+    // });
 
     // // signup
     // app.post("/signup", function(req, res) {
@@ -121,7 +122,9 @@ module.exports = function(app, passport) {
           }, function(err, user) {
           if (err) throw err;
           if (!user) {
-            res.status(401).send({success: false, msg: 'Authentication failed. User not found.'});
+            // res.status(401).send({success: false, msg: 'Authentication failed. User not found.'});
+            res.json({success: false, msg: 'Authentication failed. User not found.'});
+
           } else {
           // check if password matches
           user.comparePassword(req.body.password, function (err, isMatch) {
@@ -134,7 +137,8 @@ module.exports = function(app, passport) {
                 res.json({success: true, msg: 'Successfuly password updated'});
               });
             } else {
-              res.status(401).send({success: false, msg: 'Authentication failed. Wrong password.'});
+              // res.status(401).send({success: false, msg: 'Authentication failed. Wrong password.'});
+              res.json({success: false, msg: 'Authentication failed. Wrong password.'});
             }
         });
       }

@@ -15,9 +15,12 @@ app.controller("SignUpCtrl", function($scope, $http, $rootScope, $location) {
     if (user.password == user.password2) {
       $http.post('/signup', user)
         .success(function(user) {
-          $rootScope.currentUser = user;
-          $location.url("/profile");
-        });
+          // $rootScope.currentUser = user;
+          // $location.url("/profile");
+          console.log(user);
+        }).error(function(err){
+            console.log(err);
+        })
     }
   }
 });
@@ -28,6 +31,7 @@ app.controller("LoginCtrl", function($location, $scope, $http, $rootScope) {
       .success(function(response) {
         $rootScope.currentUser = response;
         $location.url("/profile");
+        console.log(response);
       }).error(function(err){
           $scope.msg = err;
           console.log(err);

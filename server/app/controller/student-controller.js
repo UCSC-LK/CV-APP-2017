@@ -4,7 +4,6 @@ module.exports.getStudents = function (req, res) {
     Student.find({}, function (err, result) {
         res.json(result);
     });
-
 };
 
 module.exports.addStudent = function (req, res) {
