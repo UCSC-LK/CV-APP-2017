@@ -16,6 +16,7 @@ app.controller('studentController', ['$scope', '$resource', function ($scope, $r
             student.email = $scope.studentEmail;
             student.stream = $scope.studentStream;
             student.$save(function (result) {
+                console.log(result);
                 $scope.students.push(result);
                 $scope.studentName = "";
                 $scope.studentPhone = "";

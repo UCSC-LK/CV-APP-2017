@@ -23,29 +23,30 @@ module.exports = function(app, passport) {
 
 	// process the login form  -  //OK
 	app.post('/login', function(req, res) {
-	  User.findOne({
-		  username: req.body.username
-		  }, function(err, user) {
-		  if (err) throw err;
-		  if (!user) {
-			// res.status(401).send({success: false, msg: 'Authentication failed. User not found.'});
-			res.json({success: false, msg: 'Authentication failed. User not found.'});
-		  } else {
-			// check if password matches
-			user.comparePassword(req.body.password, function (err, isMatch) {
-			  if (isMatch && !err) {
-				// if user is found and password is right create a token
-				var token = jwt.sign(user, config.secret);
-				// return the information including token as JSON
-				res.json({success: true, token: 'JWT ' + token ,id:user.id, path: './pages/student/blank.html'});
-			  } else {
-				// res.status(401).send({success: false, msg: 'Authentication failed. Wrong password.'});
-				res.json({success: false, msg: 'Authentication failed. Wrong password.'});
-			  }
+		console.log("auth.login");
+		User.findOne({
+			username: req.body.username
+			}, function(err, user) {
+				if (err) throw err;
+				if (!user) {
+				// res.status(401).send({success: false, msg: 'Authentication failed. User not found.'});
+					res.json({success: false, msg: 'Authentication failed.'});
+				} else {
+					// check if password matches
+					user.comparePassword(req.body.password, function (err, isMatch) {
+						if (isMatch && !err) {
+							// if user is found and password is right create a token
+							var token = jwt.sign(user, config.secret);
+							// return the information including token as JSON
+							res.json({success: true, token: 'JWT ' + token ,id:user.id, path: './views/student-data-form.html'});
+						} else {
+							// res.status(401).send({success: false, msg: 'Authentication failed. Wrong password.'});
+							res.json({success: false, msg: 'Authentication failed.'});
+						}
+					});
+				}
 			});
-		  }
 		});
-	  });
 
 	// handle logout - Todo
 	app.post("/logout", function(req, res) {
