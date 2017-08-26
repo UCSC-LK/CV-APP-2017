@@ -38,7 +38,7 @@ module.exports = function(app, passport) {
 							// if user is found and password is right create a token
 							var token = jwt.sign(user, config.secret);
 							// return the information including token as JSON
-							res.json({success: true, token: 'JWT ' + token ,id:user.id, path: './views/student-data-form.html'});
+							res.json({success: true, token: 'JWT ' + token ,id:user.id, path: './student.html'});
 						} else {
 							// res.status(401).send({success: false, msg: 'Authentication failed. Wrong password.'});
 							res.json({success: false, msg: 'Authentication failed.'});

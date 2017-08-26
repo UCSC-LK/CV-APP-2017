@@ -24,6 +24,8 @@ app.controller('studentController', ['$scope', '$resource', function ($scope, $r
                 $scope.studentEmail = "";
                 $scope.studentStream = "";
             });
+        } else {
+            console.log("In valid data");
         }
     }
 }]);
