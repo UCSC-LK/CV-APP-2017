@@ -22,8 +22,8 @@ mongoose.connect('mongodb://localhost:27017/ucsc-cvapp-2017', {
 // app.engine('html',require('ejs').renderFile);
 
 //Set Static Folder
-// app.use(express.static(path.join(__dirname, '../client')));
-app.use(express.static(path.join(__dirname, '../client2')));
+app.use(express.static(path.join(__dirname, '../client')));
+// app.use(express.static(path.join(__dirname, '../client2')));
 
 require('./app/config/passport')(passport); // pass passport for configuration
 

@@ -1,0 +1,712 @@
+<div class="block-header">
+    <h2>Manages stock </h2>
+</div>
+
+<div class="row clearfix">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="card">
+            <div class="body">
+              <div class="form-group">
+                <button type="button" id="addNewStock" class="btn btn-success waves-effect ">Add Stock</button>
+                <button type="button" id="transferStock" class="btn btn-info waves-effect ">Transfer Stock</button>
+              </div>
+
+              <div style="display: none;margin: 0;padding: 0" id="add-new-stock-div">
+                  <div class="well well-sm">
+                      <div>Add new Stock</div>
+                      <form id="stockAdd">
+                          <div class="form-group">
+                              <label for="productName">Select Product</label>
+                              <select  class="form-control "  data-live-search="true"  id="productName" name="productName">
+                              </select>
+                          </div>
+
+                          <div class="form-group">
+                              <label for="quantity">Quantity</label>
+                              <input  type="text" class="form-control" autocomplete="off" id="quantity" name="quantity" placeholder="Quantity" >
+                          </div>
+
+                          <div class="form-group">
+                              <label for="comment">Comment</label>
+                              <input  type="text" class="form-control" autocomplete="off" id="comment" name="comment" placeholder="Comment" >
+                          </div>
+
+                          <div class="form-group text-right">
+                              <button type="button" class="btn btn-warning waves-effect" id="addStockButtonClose">Close</button>
+                              <button type="button" class="btn btn-success waves-effect" id="LoadSaveButton">Save</button>
+                          </div>
+
+                      </form>
+                  </div> <!-- end of the well -->
+              </div>
+
+              <div style="display: none;margin: 0;padding: 0" id="transfer-stock-div">
+                  <div class="well well-sm">
+                      <div>Transfer Stock</div>
+                      <form id="transferStockForm">
+                          <div class="form-group">
+                              <label for="tproductName">Select Product</label>
+                              <select  class="form-control "  data-live-search="true"  id="tproductName" name="tproductName">
+                              </select>
+                          </div>
+
+                          <!-- Make select list by js-->
+                          <div class="form-group">
+                              <label for="Branch">Select Branch</label>
+                              <select class="form-control" data-live-search="true" id="Branch" name="Branch">
+                              </select>
+                          </div>
+
+                          <div class="form-group">
+                              <label for="quantity">Quantity</label>
+                              <input  type="text" class="form-control" autocomplete="off" id="tquantity" name="tquantity" placeholder="Quantity" >
+                          </div>
+
+                          <div class="form-group">
+                              <label for="comment">Comment</label>
+                              <input  type="text" class="form-control" autocomplete="off" id="tcomment" name="tcomment" placeholder="Comment" >
+                          </div>
+
+                          <div class="form-group text-right">
+                              <button type="button" class="btn btn-warning waves-effect" id="TransferButtonClose">Close</button>
+                              <button type="button" class="btn btn-success waves-effect" id="TransferButton">Transfer</button>
+                          </div>
+
+                      </form>
+                  </div> <!-- end of the well -->
+              </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CPU Usage -->
+<div class="row clearfix">
+ <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+     <div class="card">
+         <div class="body">
+           <ul class="nav nav-tabs tab-col-purple" role="tablist" id = "branchStock"></ul>
+             <!-- Nav tabs loading baranch via jquery -->
+
+
+           <!-- Tab panes -->
+           <div class="tab-content">
+               <div role="tabpanel" class="tab-pane active" id="commondiv">
+                   <table id="example" class="display" cellspacing="0" width="100%">
+                       <thead>
+                       <tr>
+                           <th>ID</th>
+                           <th>Name</th>
+                           <th>Selling_Price</th>
+                           <th>Commissione</th>
+                           <th>Current Stock</th>
+                           <th>Action</th>
+                       </tr>
+                       </thead>
+                   </table>
+               </div>
+           </div><!-- end Tab panes -->
+
+         </div>
+     </div>
+ </div>
+</div>
+<!-- #END# CPU Usage -->
+
+<div class="row "> <!--do not remove this -->
+
+
+    <div class="col-lg-12">
+
+
+
+        <div class="col-md-10 col-md-offset-1">
+
+
+
+
+            <script>
+                $('#addNewStock').click(function(){
+                    $('#transfer-stock-div').slideUp( "fast" );
+                    $('#add-new-stock-div').slideDown( "slow" );
+                });
+
+                $('#transferStock').click(function(){
+                    $('#add-new-stock-div').slideUp( "fast" );
+                    $('#transfer-stock-div').slideDown( "slow" );
+                });
+
+
+                $('#TransferButtonClose').click(function(){
+                    $('#transfer-stock-div').slideUp( "slow" );
+                });
+
+                $('#addStockButtonClose').click(function(){
+                    $('#add-new-stock-div').slideUp( "slow" );
+                })
+            </script>
+
+
+            <div>
+                <div class="col-md-12" style="display: block;width:100%">
+                    <ul class="nav nav-tabs" role="tablist" id = "branchStock"></ul>
+                </div>
+
+                <!-- Nav tabs loading baranch via jquery -->
+
+
+
+
+                <!-- Tab panes -->
+                <!-- <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="commondiv">
+                        <table id="example" class="display" cellspacing="0" width="100%">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Selling_Price</th>
+                                <th>Commissione</th>
+                                <th>Current Stock</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div> -->
+
+            </div>
+
+
+            <!--Product Update Mode -->
+            <div class="modal fade" id="updateproductModel2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="modeTitle">Update Product Details</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form id="updateForm2">
+
+
+                                <div class="form-group">
+                                    <label for="SellingPrice" > Selling Price </label>
+                                    <div class="form-line">
+                                      <input type="text" class="form-control" id="SellingPrice" name="SellingPrice">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="Commision">Commision</label>
+                                    <div class="form-line">
+                                      <input type="text" class="form-control" id="Commision" name="Commision">
+                                    </div>
+                                </div>
+
+                                <!-- Send product id as hidden -->
+                                <div class="form-group">
+                                    <input type="hidden" class="form-control" id="ProdutID" name="ProdutID">
+                                </div>
+
+                                <!-- Send branch id as hidden -->
+                                <div class="form-group">
+                                    <input type="hidden" class="form-control" id="branchID" name="branchID">
+                                </div>
+
+                            </form>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-warning waves-effect" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-success waves-effect ajaxSubmitModel">Update</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- end of Product Update Mode -->
+
+
+            <!--Product Remove Model -->
+            <div class="modal fade" id="removeProductModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="modeTitle">Remove Product From Stock</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form id="removeProduct">
+
+                                <div class="form-group">
+                                    <label for="rquantity" >Quantity</label>
+                                    <div class="form-line">
+                                      <input type="text" class="form-control" id="rquantity" name="rquantity">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="comment">Comment</label>
+                                    <div class="form-line">
+                                      <input type="text" class="form-control" id="rcomment" name="rcomment">
+                                    </div>
+                                </div>
+
+                                <!-- Send product id as hidden -->
+                                <div class="form-group">
+                                    <input type="hidden" class="form-control" id="rProdutID" name="rProdutID">
+                                </div>
+
+                                <!-- Send branch id as hidden -->
+                                <div class="form-group">
+                                    <input type="hidden" class="form-control" id="rbranchID" name="rbranchID">
+                                </div>
+
+                            </form>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-warning waves-effect" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-danger  waves-effectremoveProductModelButton">Remove</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- end of Product Remove Mode -->
+
+
+        </div>
+
+
+
+    </div>
+
+</div><!--do not remove -->
+
+<script>
+
+
+    $("#updateForm2").validate({
+        rules: {
+            SellingPrice: {
+                required: true,
+                number :true,
+                positiveNumberr :true
+
+            },
+
+            Commision: {
+                required: true,
+                number :true,
+                positiveNumberr :true
+
+            }
+        }
+
+    });
+
+
+    $("#stockAdd").validate({
+        rules: {
+            productName: {
+                required: true
+
+            },
+
+            quantity: {
+                required: true,
+                number :true,
+                positiveNumberr :true
+            },
+            comment: {
+                required: true
+
+            }
+        }
+
+    });
+
+    $("#transferStockForm").validate({
+        rules: {
+            tproductName: {
+                required: true
+
+            },
+            Branch: {
+                required: true
+            },
+            tquantity: {
+                required: true,
+                number :true,
+                positiveNumberr :true
+            },
+            tcomment: {
+                required: true
+
+            }
+        }
+
+    });
+
+
+    $("#removeProduct").validate({
+        rules: {
+            rquantity: {
+                required: true,
+                number :true,
+                positiveNumberr :true
+
+            },
+            rcomment: {
+                required: true
+            }
+        }
+
+    });
+
+
+
+
+    //var User_ID = 'temp';
+
+    $(document).ready(function() {
+        var branchId = ''; // branch id
+
+        var updateButtonmy =  '<a class="btn btn-warning waves-effect btn-sm ajaxUpdate"  style = "margin-right:10px;"> <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>';
+        var removeButton =  '<a class="btn btn-danger waves-effect btn-sm removeProductModelButton"   style = "margin-right:10px;"> <span class="glyphicon glyphicon-minus" aria-hidden="true"></span></a>';
+        var updateButton = "ajaxUpdate";
+        var removeProductModelButton = "removeProductModelButton";
+
+        var submitModel = "ajaxSubmitModel";
+        var updaeform = $('#updateForm2');
+        var removeProduct2 = $('#removeProduct');
+        var updateModel = $('#updateproductModel2');
+        var removeProductModel = $('#removeProductModel');
+        var productName1 = $('#productName');
+        var tproductName1 = $('#tproductName');
+        var Branch1 = $('#Branch');
+
+        var loadBranch = "ajaxBranch"; // tab select function class name on click
+
+
+        // load and transfer
+        var stockAddForm = $('#stockAdd');
+        var stockTransfer = $('#transferStockForm');
+
+
+
+
+
+        //Tab click function
+        $(document).on("click","." + loadBranch,function(){
+            var buttonx = $(event.target);
+            branchId = buttonx.data('whatever');
+            table1.ajax.reload( null, false );
+
+        });
+
+        //genarate baranch tab
+        $.getJSON( "../../../application/controllers/DBfunctions/JsonAPI.php",{functionName : "getBranchList"}, function( data ) {
+            $('#branchStock').TabList({
+                dataArray : data
+            });
+            // after all tab load first tab id set to varivable branchId and reload the table
+            branchId = (data[0].ValeID);
+            table1.ajax.reload( null, false );
+
+        });
+
+
+        var table1 = $('#example').DataTable({
+
+            ajax: {
+                url: '../../../application/controllers/DBfunctions/JsonAPI.php',
+                dataSrc: '',
+                "data"   : function( d ) {
+                    d.functionName =  "getProductListBranch";
+                    d.branchID =  branchId;
+                }
+            },
+
+
+
+            "columns": [
+                { "data": "P_ID" },
+                { "data": "P_Name" },
+                { "data": "P_Selling_Price" },
+                { "data": "P_Commission" },
+                { "data": "Quantity" },
+                {   "data": null,
+                    "defaultContent": updateButtonmy + removeButton
+                }
+
+
+            ]
+
+        });
+
+        var tableBody = $('#example tbody');
+
+
+
+
+        // table update button
+        tableBody.on("click","." + updateButton,function(){
+            var rowData = table1.row( $(this).parents('tr') ).data();
+
+            //alert( rowData["P_Name"] +"'s salary is: "+ rowData[ "P_Selling_Price"] );
+            //alert(rowData);
+
+
+            updateModel.on('show.bs.modal', function (event) {
+                var modal = $(this);
+
+                modal.find('#SellingPrice').val(rowData["P_Selling_Price"]);
+                modal.find('#Commision').val(rowData["P_Commission"]);
+                modal.find('#ProdutID').val(rowData["P_ID"]);
+                modal.find('#branchID').val(branchId);
+
+            });
+
+            //rest the form when close the model
+            updateModel.on('hidden.bs.modal', function (e) {
+                document.getElementById("removeProduct").reset();
+            });
+
+            updateModel.modal('toggle');
+
+
+
+        });
+
+        //model update button
+        updateModel.on("click","." + submitModel,function(){
+            var validationPass = updaeform.valid();
+            if (validationPass){
+                var formData = updaeform.serialize();
+                //alert(formData);
+                ajaxSend(formData,"updateBranchProduct");
+            }
+
+        });
+
+        tableBody.on("click","." + removeProductModelButton,function(){
+            var rowData = table1.row( $(this).parents('tr') ).data();
+
+            removeProductModel.on('show.bs.modal', function (event) {
+                var modal = $(this);
+
+                modal.find('#rProdutID').val(rowData["P_ID"]);
+                modal.find('#rbranchID').val(branchId);
+
+            });
+
+            //rest the form when close the model
+            removeProductModel.on('hidden.bs.modal', function (e) {
+                document.getElementById("removeProduct").reset();
+            });
+
+            removeProductModel.modal('toggle');
+
+        });
+
+        //model remove button
+        removeProductModel.on("click","." + removeProductModelButton,function(){
+            var validationPass = removeProduct2.valid();
+            if (validationPass){
+                var formData = removeProduct2.serialize();
+                alert(formData);
+                ajaxSend(formData,"removeProductFromStock");
+            }
+
+        });
+
+
+        function ajaxSend(params,action,clickRow){
+            $.ajax({
+                type: "POST",
+                url: "../../../application/controllers/ManageProduct/ManageProduct.php",
+                data : params+"&action="+action+"&User_ID="+userId,
+                dataType: "json",
+                success: function(response){
+                    switch (action){
+                        case "updateBranchProduct":
+                            if(response.success == 1){
+                                updateModel.modal('toggle');
+                                table1.ajax.reload( null, false );
+                            }else{
+                                alert("Unexpected error #4, Please try again")
+                            }
+                            break;
+
+                        case "LoadSave":
+                            if(response.success == 1){
+                                table1.ajax.reload( null, false );
+                                $('#add-new-stock-div').slideUp( "slow" );
+                                document.getElementById("stockAdd").reset();
+                                alert("Complete");
+
+                                //alert(response.id)
+
+                            }else{
+                                alert("Unexpected error #5, Please try again")
+                            }
+                            break;
+
+                        case "LoadTransfer":
+                            if(response.success == 1){
+                                table1.ajax.reload( null, false );
+                                $('#transfer-stock-div').slideUp( "slow" );
+                                document.getElementById("transferStockForm").reset();
+                                alert("Complete");
+                                //alert(response.id)
+
+                            }else{
+                                alert("Unexpected error #6, Please try again")
+                            }
+                            break;
+
+                        case "removeProductFromStock":
+                            if(response.success == 1){
+                                alert("Complete");
+                                //alert(response.id);
+                                removeProductModel.modal('toggle');
+                                table1.ajax.reload( null, false );
+
+                            }else{
+                                alert("Unexpected error #7, Please try again")
+                            }
+                            break;
+                    }
+
+                },
+                error: function(xhr, status, error){
+                    console.log(xhr);
+                    alert("Unexpected error");
+                    console.log(status,error);
+                }
+            });
+
+        }
+
+        //Tab genaration function
+
+        jQuery.fn.extend({
+            TabList: function (optoins) {
+                var select =  $(this);
+                var first = true;
+                //select.html('<li role="presentation" class="active"><a href="#commondiv" class="ajaxBranch"   data-whatever ="M-25" role="tab" data-toggle="tab">Home</a></li>');
+                $.each(optoins.dataArray, function(i) {
+                    var value = String(optoins.dataArray[i].ValeID);
+                    var label = String(optoins.dataArray[i].LableID);
+                    if (first){
+                        select.html('<li role="presentation" class="active"><a href="#commondiv" class="ajaxBranch"   data-whatever ="'+ value+'" role="tab" data-toggle="tab">'+ label +'</a></li>');
+                        branchId = value;  // set initial baranch id to variable
+                        first = false;
+                    }else {
+                        select.append('<li role="presentation" ><a href="#commondiv" class="ajaxBranch"   data-whatever ="' + value + '" role="tab" data-toggle="tab">' + label + '</a></li>');
+                    }
+                });
+            }
+        });
+
+        $.getJSON( "../../../application/controllers/DBfunctions/JsonAPI.php",{functionName : "getAllProductList" }, function( data ) {
+            productName1.selectListWithClickEvent({
+                helpText : 'Select Product',
+                dataArray : data
+            });
+            productName1.selectpicker();     // call plugin
+
+        });
+
+        $.getJSON( "../../../application/controllers/DBfunctions/JsonAPI.php",{functionName : "getAllProductListMain" }, function( data ) {
+            tproductName1.selectListWithClickEvent({
+                helpText : 'Select Product',
+                dataArray : data
+            });
+            tproductName1.selectpicker();     // call plugin
+
+        });
+
+        $.getJSON( "../../../application/controllers/DBfunctions/JsonAPI.php",{functionName : "getBranchListWithOutMain"}, function( data ) {
+            Branch1.selectList({
+                helpText : 'Select branch',
+                dataArray : data
+            });
+
+            Branch1.selectpicker();     // call plugin
+
+        });
+
+
+        // new stock save button
+        $('#LoadSaveButton').click(function(){
+            if (stockAddForm.valid()) {
+                var formData2 = stockAddForm.serialize();
+                //alert(formData)
+                ajaxSend(formData2,"LoadSave");
+
+            }
+
+        });
+
+        // stock transfer button
+        $('#TransferButton').click(function(){
+            if (stockTransfer.valid()) {
+                var formData3 = stockTransfer.serialize();
+                //alert(formData3);
+                ajaxSend(formData3,"LoadTransfer");
+            }
+
+        });
+
+
+
+
+    } );
+
+
+</script>
+
+<script>
+
+$.AdminBSB.input = {
+    activate: function () {
+        //On focus event
+        $('.form-control').focus(function () {
+            $(this).parent().addClass('focused');
+        });
+
+        //On focusout event
+        $('.form-control').focusout(function () {
+            var $this = $(this);
+            if ($this.parents('.form-group').hasClass('form-float')) {
+                if ($this.val() == '') { $this.parents('.form-line').removeClass('focused'); }
+            }
+            else {
+                $this.parents('.form-line').removeClass('focused');
+            }
+        });
+
+        //On label click
+        $('body').on('click', '.form-float .form-line .form-label', function () {
+            $(this).parent().find('input').focus();
+        });
+
+        //Not blank form
+        $('.form-control').each(function () {
+            if ($(this).val() !== '') {
+                $(this).parents('.form-line').addClass('focused');
+            }
+        });
+    }
+}
+
+$.AdminBSB.input.activate();
+</script>
+<!-- Custom Js -->
+<!-- <script src="../../js/admin.js"></script> -->
