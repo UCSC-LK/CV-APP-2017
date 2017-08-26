@@ -7,7 +7,7 @@ var express = require('express'),
     studentCompany = require('./app/api/student-company-api'),
     app = express(),
     mongoose = require('mongoose'),
-    port = 3001,
+    port = 3000,
     passport = require('passport');
 
 

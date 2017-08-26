@@ -29,7 +29,7 @@ $('#loginButton').click(function(e){
 function ajaxSend(params,action){
     $.ajax({
         type: "POST",
-        url: "http://localhost:3001/login",
+        url: "http://localhost:3000/login",
         data : params+"&action="+action,
         dataType: "json",
         success: function(response){
