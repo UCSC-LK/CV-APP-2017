@@ -38,7 +38,7 @@ module.exports = function(app, passport) {
 							// if user is found and password is right create a token
 							var token = jwt.sign(user, config.secret);
 							// return the information including token as JSON
-							res.json({success: true, token: 'JWT ' + token ,id:user.id, path: './student.html'});
+							res.json({success: true, token: 'JWT ' + token ,id:user.id, path: './views/student/student.html'});
 						} else {
 							// res.status(401).send({success: false, msg: 'Authentication failed. Wrong password.'});
 							res.json({success: false, msg: 'Authentication failed.'});
@@ -51,7 +51,7 @@ module.exports = function(app, passport) {
 	// handle logout - Todo
 	app.post("/logout", function(req, res) {
 	  req.logOut();
-	  res.send(200).send({success: true, msg: 'Loged out.'});
+	  res.send({success: true, msg: 'Loged out.', path :'../../index.html'});
 	})
 
 	// loggedin - Todo
