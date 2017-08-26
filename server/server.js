@@ -1,7 +1,7 @@
 var express = require('express'),
     path = require('path'),
     bodyParser = require('body-parser'),
-    api = require('./app/api2'),
+    // api = require('./app/api2'),
     student = require('./app/api/student-api'),
     cv = require('./app/api/cv-api'),
     company = require('./app/api/company-api'),
@@ -16,7 +16,7 @@ mongoose.connect('mongodb://localhost:27017/ucsc-cvapp-2017', {
     useMongoClient: true
 });
 
-///////////////////////////////////
+///////////////////////////////////////
 // // view engine setup
 // app.set('views', path.join(__dirname, '../client'));
 // app.set('view engine', 'ejs');
