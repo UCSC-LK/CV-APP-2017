@@ -15,7 +15,7 @@ mongoose.connect('mongodb://localhost:27017/ucsc-cvapp-2017', {
     useMongoClient: true
 });
 
-/////////////////////////////////
+///////////////////////////////////
 // // view engine setup
 // app.set('views', path.join(__dirname, '../client'));
 // app.set('view engine', 'ejs');
@@ -23,7 +23,7 @@ mongoose.connect('mongodb://localhost:27017/ucsc-cvapp-2017', {
 
 //Set Static Folder
 // app.use(express.static(path.join(__dirname, '../client')));
-app.use(express.static(path.join(__dirname, '../client')));
+app.use(express.static(path.join(__dirname, '../client2')));
 
 require('./app/config/passport')(passport); // pass passport for configuration
 
@@ -47,7 +47,7 @@ app.use(bodyParser.urlencoded({
 }));
 
 // routes ======================================================================
-// load our routes and pass in our app and fully configured passport
+// Load our routes and pass in our app and fully configured passport
 require('./app/api/auth.js')(app, passport);
 
 // app.use('/api2', api);
