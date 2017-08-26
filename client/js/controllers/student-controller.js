@@ -7,21 +7,23 @@ app.controller('studentController', ['$scope', '$resource', function ($scope, $r
         $scope.students = results;
     });
 
-    $scope.createStudent = function () {
-        var student = new Student();
-        student.name = $scope.studentName;
-        student.phone = $scope.studentPhone;
-        student.year = $scope.studentYear;
-        student.email = $scope.studentEmail;
-        student.stream = $scope.studentStream;
-        student.$save(function (result) {
-            $scope.students.push(result);
-            $scope.studentName = "";
-            $scope.studentPhone = "";
-            $scope.studentYear = "";
-            $scope.studentEmail = "";
-            $scope.studentStream = "";
-        });
+    $scope.createStudent = function (isValid) {
+        if (isValid) {
+            var student = new Student();
+            student.name = $scope.studentName;
+            student.phone = $scope.studentPhone;
+            student.year = $scope.studentYear;
+            student.email = $scope.studentEmail;
+            student.stream = $scope.studentStream;
+            student.$save(function (result) {
+                $scope.students.push(result);
+                $scope.studentName = "";
+                $scope.studentPhone = "";
+                $scope.studentYear = "";
+                $scope.studentEmail = "";
+                $scope.studentStream = "";
+            });
+        }
     }
 }]);
 

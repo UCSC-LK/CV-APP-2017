@@ -1,34 +1,34 @@
 ﻿<!DOCTYPE html>
-<html>
+<html ng-app="cvApp">
 
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <title>Form Validation | Bootstrap Based Admin Template - Material Design</title>
     <!-- Favicon-->
-    <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../assets/favicon.ico" type="image/x-icon">
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
 
     <!-- Bootstrap Core Css -->
-    <link href="assets/plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="../assets/plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
 
     <!-- Waves Effect Css -->
-    <link href="assets/plugins/node-waves/waves.css" rel="stylesheet" />
+    <link href="../assets/plugins/node-waves/waves.css" rel="stylesheet" />
 
     <!-- Animation Css -->
-    <link href="assets/plugins/animate-css/animate.css" rel="stylesheet" />
+    <link href="../assets/plugins/animate-css/animate.css" rel="stylesheet" />
 
     <!-- Sweet Alert Css -->
-    <link href="assets/plugins/sweetalert/sweetalert.css" rel="stylesheet" />
+    <link href="../assets/plugins/sweetalert/sweetalert.css" rel="stylesheet" />
 
     <!-- Custom Css -->
-    <link href="assets/css/style.css" rel="stylesheet">
+    <link href="../assets/css/style.css" rel="stylesheet">
 
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
-    <link href="assets/css/themes/all-themes.css" rel="stylesheet" />
+    <link href="../assets/css/themes/all-themes.css" rel="stylesheet" />
 </head>
 
 <body class="theme-red">
@@ -100,7 +100,7 @@
             <!-- User Info -->
             <div class="user-info">
                 <div class="image">
-                    <img src="assets/images/user.png" width="48" height="48" alt="User" />
+                    <img src="../assets/images/user.png" width="48" height="48" alt="User" />
                 </div>
                 <div class="info-container">
                     <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">John Doe</div>
@@ -308,7 +308,7 @@
 
     </section>
 
-    <section class="content">
+    <section class="content" ng-controller="studentController">
         <div class="container-fluid">
 
             <!-- Basic Validation -->
@@ -319,43 +319,44 @@
                             <h2>Student Details</h2>
                         </div>
                         <div class="body">
-                            <form id="form_validation" method="POST">
+                            <form name="studentForm" id="form_validation" ng-submit="createStudent(studentForm.$valid)">
                                 <div class="form-group form-float">
                                     <div class="form-line">
-                                        <input type="text" class="form-control" name="name" required>
+                                        <input type="text" class="form-control" name="name" required ng-model="studentName">
                                         <label class="form-label">Name</label>
                                     </div>
                                 </div>
                                 <div class="form-group form-float">
                                     <div class="form-line">
-                                        <input type="tel" pattern="^\+94-\d{2}-\d{3}-\d{4}$" class="form-control" name="phone" required>
+                                        <input type="tel" pattern="^\+94-\d{2}-\d{3}-\d{4}$" class="form-control" name="phone"
+                                               required ng-model="studentPhone">
                                         <label class="form-label">Phone</label>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <input type="radio" name="degree" id="4thyear" class="with-gap" required>
+                                        <input type="radio" name="year" id="4thyear" class="with-gap" value="4thyear" required ng-model="studentYear">
                                         <label for="4thyear">4th year</label>
 
-                                        <input type="radio" name="degree" id="3rdyear" class="with-gap" required>
+                                        <input type="radio" name="year" id="3rdyear" class="with-gap" value="3rdyear" required ng-model="studentYear">
                                         <label for="3rdyear" class="m-l-20">3rd year</label>
 
-                                        <input type="radio" name="degree" id="passedout" class="with-gap" required>
+                                        <input type="radio" name="year" id="passedout" class="with-gap" value="passedout" required ng-model="studentYear">
                                         <label for="passedout" class="m-l-20">Passed Out</label>
                                     </div>
                                 </div>
                                 <div class="form-group form-float">
                                     <div class="form-line">
-                                        <input type="email" class="form-control" name="email" required>
+                                        <input type="email" class="form-control" name="email" required ng-model="studentEmail">
                                         <label class="form-label">Email</label>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <input type="radio" name="stream" id="cs" class="with-gap" required>
+                                        <input type="radio" name="stream" id="cs" class="with-gap" value="cs" required ng-model="studentStream">
                                         <label for="cs">Computer Science</label>
 
-                                        <input type="radio" name="stream" id="is" class="with-gap" required>
+                                        <input type="radio" name="stream" id="is" class="with-gap" value="is" required ng-model="studentStream">
                                         <label for="is" class="m-l-20">Information Systems</label>
                                     </div>
                                 </div>
@@ -370,35 +371,42 @@
     </section>
 
     <!-- Jquery Core Js -->
-    <script src="assets/plugins/jquery/jquery.min.js"></script>
+    <script src="../assets/plugins/jquery/jquery.min.js"></script>
 
     <!-- Bootstrap Core Js -->
-    <script src="assets/plugins/bootstrap/js/bootstrap.js"></script>
+    <script src="../assets/plugins/bootstrap/js/bootstrap.js"></script>
 
     <!-- Select Plugin Js -->
-    <script src="assets/plugins/bootstrap-select/js/bootstrap-select.js"></script>
+    <script src="../assets/plugins/bootstrap-select/js/bootstrap-select.js"></script>
 
     <!-- Slimscroll Plugin Js -->
-    <script src="assets/plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
+    <script src="../assets/plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
 
     <!-- Jquery Validation Plugin Css -->
-    <script src="assets/plugins/jquery-validation/jquery.validate.js"></script>
+    <script src="../assets/plugins/jquery-validation/jquery.validate.js"></script>
 
     <!-- JQuery Steps Plugin Js -->
-    <script src="assets/plugins/jquery-steps/jquery.steps.js"></script>
+    <script src="../assets/plugins/jquery-steps/jquery.steps.js"></script>
 
     <!-- Sweet Alert Plugin Js -->
-    <script src="assets/plugins/sweetalert/sweetalert.min.js"></script>
+    <script src="../assets/plugins/sweetalert/sweetalert.min.js"></script>
 
     <!-- Waves Effect Plugin Js -->
-    <script src="assets/plugins/node-waves/waves.js"></script>
+    <script src="../assets/plugins/node-waves/waves.js"></script>
 
     <!-- Custom Js -->
-    <script src="assets/js/admin.js"></script>
-    <script src="assets/js/pages/forms/form-validation.js"></script>
+    <script src="../assets/js/admin.js"></script>
+    <script src="../assets/js/pages/forms/form-validation.js"></script>
 
     <!-- Demo Js -->
-    <script src="assets/js/demo.js"></script>
+    <script src="../assets/js/demo.js"></script>
+
+    <!-- Angular JS -->
+    <script type="application/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>
+    <script type="application/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-resource.min.js"></script>
+    <script type="application/javascript" src="../js/app.js"></script>
+    <script type="application/javascript" src="../js/controllers/student-controller.js"></script>
+
 </body>
 
 </html>

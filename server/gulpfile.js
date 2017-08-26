@@ -17,6 +17,8 @@ gulp.task('server:start', function() {
 gulp.task('server:restart', function() {
     gulp.watch(['./server.js'], server.restart);
     gulp.watch(['./routes/*.js'], server.restart);
+    gulp.watch(['../client/js/controllers/*.js'], server.restart);
+    gulp.watch(['./app/api/*.js'], server.restart);
 });
 
 gulp.task('useref', function() {
