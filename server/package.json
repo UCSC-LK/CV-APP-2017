@@ -9,14 +9,21 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.17.2",
+    "cookie-parser": "^1.4.3",
     "ejs": "^2.5.7",
     "express": "^4.15.4",
+    "express-session": "^1.15.5",
     "gulp-cssnano": "^2.1.2",
     "gulp-if": "^2.0.2",
     "jsend": "^1.0.2",
+    "jshint": "^2.9.5",
+    "jsonwebtoken": "^7.4.3",
     "lodash": "^4.17.4",
-    "mongoose": "^4.11.8"
+    "mongoose": "^4.11.8",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0"
   },
   "devDependencies": {
     "browser-sync": "^2.17.5",
