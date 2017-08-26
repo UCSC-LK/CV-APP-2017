@@ -3,6 +3,7 @@ var express = require('express'),
     bodyParser = require('body-parser'),
     api = require('./app/api2'),
     student = require('./app/api/student-api'),
+    cv = require('./app/api/cv-api'),
     company = require('./app/api/company-api'),
     studentCompany = require('./app/api/student-company-api'),
     app = express(),
@@ -24,6 +25,9 @@ mongoose.connect('mongodb://localhost:27017/ucsc-cvapp-2017', {
 //Set Static Folder
 app.use(express.static(path.join(__dirname, '../client')));
 // app.use(express.static(path.join(__dirname, '../client2')));
+
+app.use('/assets', express.static('../client/assets'));
+
 
 require('./app/config/passport')(passport); // pass passport for configuration
 
@@ -52,6 +56,8 @@ require('./app/api/auth.js')(app, passport);
 
 // app.use('/api2', api);
 app.use('/student', student);
+app.use('/cv', cv);
+app.use('/compnay', company);
 app.use('/student_company', studentCompany);
 
 app.listen(port, function() {
