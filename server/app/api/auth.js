@@ -23,7 +23,7 @@ module.exports = function(app, passport) {
 
 	// process the login form  -  //OK
 	app.post('/login', function(req, res) {
-		console.log("Login");
+		console.log("auth.login");
 		User.findOne({
 			username: req.body.username
 			}, function(err, user) {
