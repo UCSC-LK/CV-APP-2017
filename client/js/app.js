@@ -1,4 +1,4 @@
-var app = angular.module('cvApp', ['ngResource', 'ngRoute']);
+var app = angular.module('cvApp', ['ngResource']);
 
 // app.config(function($routeProvider) {
 //     $routeProvider

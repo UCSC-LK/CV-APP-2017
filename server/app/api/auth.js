@@ -135,7 +135,7 @@ module.exports = function(app, passport) {
 				if (err) {
 				  return res.json({success: false, msg: 'Some thing went wrong.Try again'});
 				}
-				res.json({success: true, msg: 'Successfuly password updated'});
+				res.json({success: true, msg: 'Password updated successfully'});
 			  });
 			} else {
 			  // res.status(401).send({success: false, msg: 'Authentication failed. Wrong password.'});
