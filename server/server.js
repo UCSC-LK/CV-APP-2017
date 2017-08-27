@@ -11,16 +11,16 @@ var express = require('express'),
     port = 3000,
     passport = require('passport');
 
+    var jwt = require('express-jwt');
+    var config  = require('./app/config/conf');
 
-mongoose.connect('mongodb://localhost:27017/ucsc-cvapp-2017', {
+mongoose.connect(config.database, {
     useMongoClient: true
 });
 
-///////////////////////////////////////////////////
-// // view engine setup
-// app.set('views', path.join(__dirname, '../client'));
-// app.set('view engine', 'ejs');
-// app.engine('html',require('ejs').renderFile);
+
+
+/////////////////////////////////////////////
 
 //Set Static Folder
 app.use(express.static(path.join(__dirname, '../client')));
@@ -28,18 +28,17 @@ app.use(express.static(path.join(__dirname, '../client')));
 
 app.use('/assets', express.static('../client/assets'));
 
-
 require('./app/config/passport')(passport); // pass passport for configuration
 
 //Cookie and session
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 app.use(session({
-  secret: 'keyboard cat',
+  secret: config.secret,
   resave: false,
   saveUninitialized: true,
-  // cookie: { secure: true }
 }));
+
 app.use(cookieParser());
 app.use(passport.initialize());
 app.use(passport.session());
@@ -50,6 +49,7 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 
+
 // routes ======================================================================
 // Load our routes and pass in our app and fully configured passport
 require('./app/api/auth.js')(app, passport);
@@ -59,6 +59,19 @@ app.use('/student', student);
 app.use('/cv', cv);
 app.use('/company', company);
 app.use('/student_company', studentCompany);
+
+// error handlers
+// Catch unauthorised errors
+app.use(function (err, req, res, next) {
+  if (err.name === 'UnauthorizedError') {
+    res.status(401);
+    res.json({"message" : err.name + ": " + err.message});
+    console.log("Log - UnauthorizedError");
+  }else{
+    console.log("Log - Unhandlied");
+  }
+});
+
 
 app.listen(port, function() {
     console.log('Server started on port : ' + port);

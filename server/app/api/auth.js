@@ -1,22 +1,15 @@
 var User    = require('../model/user');
 var jwt     = require('jsonwebtoken');
 var config  = require('../config/conf');
-// getToken = function (headers) {
-//   if (headers && headers.authorization) {
-//     var parted = headers.authorization.split(' ');
-//     if (parted.length === 2) {
-//       return parted[1];
-//     } else {
-//       return null;
-//     }
-//   } else {
-//     return null;
-//   }
-// };
 
 module.exports = function(app, passport) {
 	//Delete this
 	// process the login form
+	// app.post("/login", passport.authenticate('local-login',{failureFlash: true}), function(req, res) {
+	// 	// console.log(done);
+	//   res.json(req.user);
+	// });
+
 	// app.post("/login", passport.authenticate('local-login',{failureFlash: true}), function(req, res) {
 	// 	// console.log(done);
 	//   res.json(req.user);
@@ -28,20 +21,22 @@ module.exports = function(app, passport) {
 		User.findOne({
 			username: req.body.username
 			}, function(err, user) {
-				if (err) throw err;
+				if(err) return next(err);
 				if (!user) {
 				// res.status(401).send({success: false, msg: 'Authentication failed. User not found.'});
 					res.json({success: false, msg: 'Authentication failed. User not found.'});
 				} else {
 					// check if password matches
 					user.comparePassword(req.body.password, function (err, isMatch) {
+						if(err) return next(err);
 						if (isMatch && !err) {
 							// if user is found and password is right create a token
-							var token = jwt.sign(user, config.secret);
+							// var token = jwt.sign(user, config.secret);
+							var token = user.generateJwt();
 							// return the information including token as JSON
 							req.login(user, function(err){
 									 if(err) return next(err);
-									res.json({success: true, token: 'JWT ' + token ,id:user.id, path: './views/student'});
+									res.json({success: true, token: 'Bearer ' + token ,id:user.id, path: './views/student'});
 							 });
 							// res.json({success: true, token: 'JWT ' + token ,id:user.id, path: './views/student'});
 						} else {

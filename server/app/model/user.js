@@ -1,7 +1,8 @@
 // load the things we need
 var mongoose = require('mongoose');
 var bcrypt   = require('bcrypt-nodejs');
-
+var config  = require('../config/conf');
+var jwt     = require('jsonwebtoken');
 
 // define the schema for our user model
 var userSchema = mongoose.Schema({
@@ -26,10 +27,10 @@ userSchema.methods.generateHash = function(password) {
 };
 
 // //Delete this
-// // // checking if password is valid
-// userSchema.methods.validPassword = function(password) {
-//     return bcrypt.compareSync(password, this.password);
-// };
+// // checking if password is valid
+userSchema.methods.validPassword = function(password) {
+    return bcrypt.compareSync(password, this.password);
+};
 
 userSchema.methods.comparePassword = function (passw, cb) {
     bcrypt.compare(passw, this.password, function (err, isMatch) {
@@ -59,6 +60,17 @@ userSchema.pre('save', function (next) {
         return next();
     }
 });
+
+userSchema.methods.generateJwt = function() {
+  var expiry = new Date();
+  expiry.setDate(expiry.getDate() + 7);
+  return jwt.sign({
+    _id: this._id,
+    email: this.email,
+    name: this.username,
+    exp: parseInt(expiry.getTime() / 1000),
+  }, config.secret); // DO NOT KEEP YOUR SECRET IN THE CODE!
+};
 
 // create the model for users and expose it to our app
 module.exports = mongoose.model('User', userSchema);
