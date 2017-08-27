@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 
 // define the schema for our cv model
 var cvSchema = mongoose.Schema({
-    student: {
+    userID: {
         type: String,
         required: true
     },
