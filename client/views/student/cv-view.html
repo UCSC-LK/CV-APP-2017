@@ -1,44 +1,57 @@
-    <section class="content">
-        <div class="container-fluid">
-            <div class="block-header">
-                <h2>MY CV</h2>
+<!-- File Upload | Drag & Drop OR With Click & Choose -->
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>
+                    PLEASE UPLOAD YOUR CV
+                </h2>
             </div>
-
-            <!-- File Upload | Drag & Drop OR With Click & Choose -->
-            <div class="row clearfix">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="card">
-                        <div class="header">
-                            <h2>
-                                PLEASE UPLOAD YOUR CV
-                            </h2>
-                        </div>
-                        <div class="body">
-                            <form name="cvForm" method="post" enctype="multipart/form-data" action="/cv/upload">
-                                <div class="form-group">
-                                    <div class="form-line">
-                                        <div class="fallback">
-                                            <input name="file" type="file" required/>
-                                        </div>
-                                    </div>
-                                </div>
-                                <button class="btn btn-primary waves-effect" type="submit">SUBMIT</button>
-                            </form>
+            <div class="body">
+                <form name="cvForm" method="post" enctype="multipart/form-data" action="/cv/upload">
+                    <div class="form-group">
+                        <div class="form-line">
+                            <div class="fallback">
+                                <input name="file" type="file" required/>
+                            </div>
                         </div>
                     </div>
-                </div>
+                    <button class="btn btn-primary waves-effect" type="submit">SUBMIT</button>
+                </form>
             </div>
-            <!-- #END# File Upload | Drag & Drop OR With Click & Choose -->
         </div>
-    </section>
+    </div>
+</div>
+  <!-- #END# File Upload | Drag & Drop OR With Click & Choose -->
 
     <!-- Custom Js -->
-    <script src="../../assets/js/admin.js"></script>
-    <script src="../../assets/js/pages/forms/form-validation.js"></script>
+    <!-- <script src="../../assets/js/admin.js"></script> -->
+    <!-- <script src="../../assets/js/pages/forms/form-validation.js"></script> -->
     <!-- Demo Js -->
-    <script src="../../assets/js/demo.js"></script>
+    <!-- <script src="../../assets/js/demo.js"></script> -->
 
     <script type="application/javascript" src="../../js/app.js"></script>
-</body>
 
-</html>
+
+<script>
+$(function () {
+    $('#change_password').validate({
+        highlight: function (input) {
+            console.log(input);
+            $(input).parents('.form-line').addClass('error');
+        },
+        unhighlight: function (input) {
+            $(input).parents('.form-line').removeClass('error');
+        },
+        errorPlacement: function (error, element) {
+            $(element).parents('.input-group').append(error);
+            $(element).parents('.form-group').append(error);
+        }
+    });
+});
+
+$(function () {
+    $.AdminBSB.input.activate();
+    $.AdminBSB.select.activate();
+});
+</script>
