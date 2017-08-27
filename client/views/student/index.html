@@ -92,8 +92,8 @@
                 <img src="../../assets/images/user.png" width="48" height="48" alt="User" />
             </div>
             <div class="info-container">
-                <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">John Doe</div>
-                <div class="email">john.doe@example.com</div>
+                <div class="name" data-toggle="dropdown" aria-haspopup="true" id="username"aria-expanded="false">John Doe</div>
+                <!-- <div class="email">john.doe@example.com</div> -->
             </div>
         </div>
         <!-- #User Info -->
@@ -228,8 +228,9 @@
             dataType: "json",
             success: function(response){
                 if (response.success == true){
-                    window.location.replace(response.path);
-                    sessionStorage.removeItem('token');
+                    window.location.replace(response.path);user_id
+                    sessionStorage.removeItem('jwt_token');
+                    sessionStorage.removeItem('user_id');
                     console.log(response);
                 }else{
                     alert("Something went wrong")
@@ -247,4 +248,48 @@
     console.log(jwt_token);
     var user_id = sessionStorage.getItem('user_id');
     console.log(user_id);
+
+    function getToken(){
+      return sessionStorage.getItem('jwt_token');
+    }
+
+    function isLoggedIn()  {
+      var token = getToken();
+      var payload;
+
+      if(token){
+        payload = token.split('.')[1];
+        payload = window.atob(payload);
+        payload = JSON.parse(payload);
+
+        console.log(payload);
+        return payload.exp > Date.now() / 1000;
+      } else {
+        return false;
+      }
+    };
+
+    // var tempppp = isLoggedIn();
+    // console.log(tempppp);
+
+    var currentUser = function() {
+      if(isLoggedIn()){
+        var token = getToken();
+        var payload = token.split('.')[1];
+        payload = window.atob(payload);
+        payload = JSON.parse(payload);
+        return {
+          email : payload.email,
+          name : payload.name
+        };
+      }
+    };
+
+    if(isLoggedIn()){
+      user_info = currentUser();
+      $('#username').html(user_info.name);
+    }else{
+      window.location.replace('../../index.html');
+    }
+
 </script>
