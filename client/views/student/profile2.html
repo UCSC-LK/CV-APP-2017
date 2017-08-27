@@ -1,0 +1,346 @@
+
+<div class="row "> <!--do not remove this -->
+
+    <div class="col-lg-12">
+        <div class="row page-header" style="margin:8px 0px 20px">
+
+            <div class="row page-header" style="margin:8px 0px 20px">
+                <div class="col-lg-12">
+                    <h3 >
+                        GENERAL ACCOUNT SETTING
+                    </h3>
+                </div>
+            </div>
+
+                <div class="col-xm-4 col-md-2 col-sm-offset-1 col-md-offset-1" style="padding-bottom: 10px">
+                    <img src="../../../assets/images/user.png" class="img-rounded img-responsive" />
+                </div>
+                <div class="col-sm-6 col-md-8">
+                    <div class="alert alert-info">
+                        <h2>User Bio : </h2>
+                        <div class="panel-body">
+                            <label class="control-label col-sm-8 col-md-6">Name :</label>
+                            <label class="control-label col-sm-8 col-md-6 " id="nameLable"></label>
+                            <label class="control-label col-sm-8 col-md-6 ">email :</label>
+                            <label class="control-label col-sm-8 col-md-6 " id="emailLabel"></label>
+                            <label class="control-label col-sm-8 col-md-6 ">User Id :</label>
+                            <label class="control-label col-sm-8 col-md-6 " id="userIdLabel"></label>
+                            <label class="control-label col-sm-8 col-md-6 ">User Type :</label>
+                            <label class="control-label col-sm-8 col-md-6 " id="userTypeLabel"></label>
+                            <label class="control-label col-sm-8 col-md-6 ">Telephone :</label>
+                            <label class="control-label col-sm-8 col-md-6 "  id="telephoneLabel"></label>
+                            <label class="control-label col-sm-8 col-md-6 ">Address :</label>
+                            <label class="control-label col-sm-8 col-md-6 " id="addressLabel"></label>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div id = "respond" class=" col-md-offset-1	col-md-10 col-sm-offset-1 col-sm-10 "></div>
+
+
+                <div class=" col-md-offset-1	col-md-10 col-sm-offset-1 col-sm-10 ">
+
+                    <div class="panel-group" id="accordion">
+
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#infoChange">Update info</a>
+                                </h4>
+                            </div>
+                            <div id="infoChange" class="panel-collapse collapse">
+                                <div class="panel-body">
+
+                                    <form id="infoChangeForm" class="horizontal">
+
+                                        <div class="form-group" style="padding-bottom: 30px">
+                                            <label for="name" class="col-sm-2 form-control-label">Name</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" id="fullName" name="fullName"  placeholder="Name">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group " style="padding-bottom: 30px">
+                                            <label for="address" class="col-sm-2 form-control-label">Address</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" id="address" name="address" placeholder="Address">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group " style="padding-bottom: 30px">
+                                            <label for="telephone" class="col-sm-2 form-control-label">Telephone</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" id="telephone" name="telephone"  placeholder="Telephone">
+                                            </div>
+                                        </div>
+
+                                        <button type="button" id="infoChangeButton"  class="btn btn-default">Submit</button>
+                                        <button type="button" data-toggle="collapse" data-parent="#accordion" href="#name" class="btn btn-default">Cancel</button>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#emailChange">Change Email address</a>
+                                </h4>
+                            </div>
+                            <div id="emailChange" class="panel-collapse collapse">
+                                <div class="panel-body">
+
+
+                                    <form id ="mailChangeForm" class="horizontal">
+                                        <div class="form-group" style="padding-bottom: 30px;">
+                                            <label class="control-label col-sm-6">Current email </label>
+                                            <label class="control-label col-sm-6" id="currentEmail"></label>
+                                        </div>
+                                        <div class="form-group" style="padding-bottom: 30px;">
+                                            <label for="newEmail" class="col-sm-3 form-control-label">New email</label>
+                                            <div class="col-sm-9">
+                                                <input type="email" class="form-control" id="newEmail" name="newEmail" placeholder="New Email">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" style="padding-bottom: 30px;">
+                                            <label for="currentPasswordEmail" class="col-sm-3 form-control-label">Current password</label>
+                                            <div class="col-sm-9">
+                                                <input type="password" class="form-control" id="currentPasswordEmail"  name="currentPasswordEmail" placeholder="password">
+                                            </div>
+                                        </div>
+
+
+                                        <button type="button" id="changeEmailButton" class="btn btn-default">Submit</button>
+                                        <button type="button" data-toggle="collapse" data-parent="#accordion" href="#email" class="btn btn-default">Cancel</button>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#passwordChange">Change password</a>
+                                </h4>
+                            </div>
+                            <div id="passwordChange" class="panel-collapse collapse">
+                                <div class="panel-body">
+
+                                    <form id = "changePasswordForm" class="horizontal">
+                                        <div class="form-group" style="padding-bottom: 30px;">
+                                            <label for="currentPassword" class="col-sm-3 form-control-label">Current Password</label>
+                                            <div class="col-sm-9">
+                                                <input type="password" class="form-control" id="currentPassword"  name="currentPassword" placeholder="Current Password">
+                                            </div>
+                                        </div>
+                                        <div class="form-group " style="padding-bottom: 30px;">
+                                            <label for="newPassword" class="col-sm-3 form-control-label">New Password </label>
+                                            <div class="col-sm-9">
+                                                <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="New Password">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group " style="padding-bottom: 30px;">
+                                            <label for="confirmPassword" class="col-sm-3 form-control-label">Confirm Password</label>
+                                            <div class="col-sm-9">
+                                                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password">
+                                            </div>
+                                        </div>
+                                        <button type="button" id="changePasswordButton" class="btn btn-default">Submit</button>
+                                        <button type="button" data-toggle="collapse" data-parent="#accordion" href="#password" class="btn btn-default">Cancel</button>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+        </div>
+<a href="../../controllers/userLoginRegistration/updateDetails.php"
+</div><!--do not remove -->
+
+<script>
+
+    $("#changePasswordForm").validate({
+        rules:{
+            currentPassword:{
+                required: true
+            },
+            newPassword: {
+                required: true,
+                strongPassword: true
+            },
+
+            confirmPassword: {
+                required: true,
+                equalTo: "#newPassword"
+            }
+
+        }
+    });
+
+
+    $("#mailChangeForm").validate({
+        rules:{
+            newEmail:{
+                required: true,
+                email: true
+
+            },
+            currentPasswordEmail:{
+                required: true
+            }
+
+        }
+    });
+
+    $("#infoChangeForm").validate({
+        rules: {
+            fullName: {
+                required: true
+            },
+            address: {
+                required: true
+            },
+            telephone: {
+                required: true,
+                number :true
+            }
+
+        }
+    });
+
+
+
+
+    $(document).ready(function() {
+
+        function setinfoValues(){
+            $.getJSON( "../../controllers/userLoginRegistration/userdetailsApi.php",{functionName : "getUserDetails"}, function( data ) {
+                //console.log(data);
+                //set user details - info panal
+                $('#nameLable').html(data.U_Name);
+                $('#emailLabel').html(data.email);
+                $('#userIdLabel').html(data.U_ID);
+                $('#userTypeLabel').html(data.U_Type);
+                $('#telephoneLabel').html(data.U_Telephone);
+                $('#addressLabel').html(data.U_Address);
+
+                // set details for update forms
+
+                $('#fullName').val(data.U_Name);
+                $('#address').val(data.U_Address);
+                $('#telephone').val(data.U_Telephone);
+                $('#currentEmail').html(data.email);
+            });
+        }
+
+        // call function onload
+        setinfoValues();
+
+
+        var infoChangeForm1 = $('#infoChangeForm');
+        var mailChangeForm1 = $('#mailChangeForm');
+        var changePasswordForm1 = $('#changePasswordForm');
+
+
+        $('#infoChangeButton').click(function(){
+            if (infoChangeForm1.valid()) {
+                var formData1 = infoChangeForm1.serialize();
+                //alert(formData1);
+                ajaxSend(formData1,"changeInfo");
+            }
+
+        });
+
+
+        $('#changeEmailButton').click(function(){
+            if (mailChangeForm1.valid()) {
+                var formData2 = mailChangeForm1.serialize();
+                //alert(formData2);
+                ajaxSend(formData2,"changeEmail");
+            }
+
+        });
+
+
+        $('#changePasswordButton').click(function(){
+            if (changePasswordForm1.valid()) {
+                var formData3 = changePasswordForm1.serialize();
+                //alert(formData3);
+                ajaxSend(formData3,"changePassword");
+            }
+
+        });
+
+
+
+        function ajaxSend(params,action){
+            $.ajax({
+                type: "POST",
+                url: "../../controllers/userLoginRegistration/updateDetails.php",
+                data : params+"&action="+action,
+                dataType: "json",
+                success: function(response){
+                    switch (action){
+                        case "changeInfo":
+                            if(response.success == 1){
+                                $("#infoChange").collapse('hide');
+                                setinfoValues();
+                                $("#respond").hide().html('<div class="alert alert-success" role="alert"> Registration Complete '+ response.id+ '</div>').slideDown("slow");
+
+                            }else{
+                                $("#respond").hide().html('<div class="alert alert-danger" role="alert"> Some thing worng,Try again later '+ response.id+ '</div>').slideDown("slow");
+
+                            }
+                            break;
+
+
+                        case "changeEmail":
+                            if(response.success == 1){
+                                $("#emailChange").collapse('hide');
+                                document.getElementById("mailChangeForm").reset();
+                                setinfoValues();
+                                $("#respond").hide().html('<div class="alert alert-success" role="alert"> Registration Complete '+ response.id+ '</div>').slideDown("slow");
+
+                            }else{
+                                $("#respond").hide().html('<div class="alert alert-danger" role="alert"> Some thing worng,Try again later '+ response.id+ '</div>').slideDown("slow");
+
+                            }
+                            break;
+
+
+                        case "changePassword":
+                            if(response.success == 1){
+                                $("#passwordChange").collapse('hide');
+                                document.getElementById("changePasswordForm").reset();
+                                setinfoValues();
+                                $("#respond").hide().html('<div class="alert alert-success" role="alert"> Registration Complete '+ response.id+ '</div>').slideDown("slow");
+
+                            }else{
+                                $("#respond").hide().html('<div class="alert alert-danger" role="alert"> Some thing worng,Try again later '+ response.id+ '</div>').slideDown("slow");
+
+                            }
+                            break;
+                    }
+
+                },
+                error: function(xhr, status, error){
+                    console.log(xhr);
+                    console.log(status,error);
+                }
+
+            });
+
+        }
+
+
+    });
+
+
+</script>

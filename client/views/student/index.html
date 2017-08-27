@@ -24,6 +24,9 @@
     <!-- Sweet Alert Css -->
     <link href="../../assets/plugins/sweetalert/sweetalert.css" rel="stylesheet" />
 
+    <!-- JQuery DataTable Css -->
+    <link href="../../assets/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css" rel="stylesheet">
+
     <!-- Custom Css -->
     <link href="../../assets/css/style.css" rel="stylesheet">
 
@@ -32,147 +35,169 @@
 </head>
 
 <body class="theme-blue">
-    <!-- Page Loader -->
-    <div class="page-loader-wrapper">
-        <div class="loader">
-            <div class="preloader">
-                <div class="spinner-layer pl-blue">
-                    <div class="circle-clipper left">
-                        <div class="circle"></div>
-                    </div>
-                    <div class="circle-clipper right">
-                        <div class="circle"></div>
-                    </div>
+<!-- Page Loader -->
+<div class="page-loader-wrapper">
+    <div class="loader">
+        <div class="preloader">
+            <div class="spinner-layer pl-blue">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
                 </div>
-            </div>
-            <p>Please wait...</p>
-        </div>
-    </div>s
-    <!-- #END# Page Loader -->
-    <!-- Overlay For Sidebars -->
-    <div class="overlay"></div>
-    <!-- #END# Overlay For Sidebars -->
-
-    <!-- Top Bar -->
-    <nav class="navbar">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
-                <a href="javascript:void(0);" class="bars"></a>
-                <a class="navbar-brand" href="../../index.html">Welcome to UCSC CV App 2017</a>
-            </div>
-            <div class="collapse navbar-collapse" id="navbar-collapse">
-                <ul class="nav navbar-nav navbar-right">
-                    <!-- User Menu -->
-                    <li class="dropdown">
-                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button">
-                            <i class="material-icons">keyboard_arrow_down</i>
-                        </a>
-                        <ul class="dropdown-menu pull-right">
-                            <li><a href="javascript:void(0);"><i class="material-icons">person</i>Profile</a></li>
-                            <li role="seperator" class="divider"></li>
-                            <li><a id="logoutButton"> <i class="material-icons">input</i>Sign Out</a></li>
-                        </ul>
-                    </li>
-                    <!-- #END# User Menu -->
-                </ul>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
             </div>
         </div>
-    </nav>
-    <!-- #Top Bar -->
-    <section>
-        <!-- Left Sidebar -->
-        <aside id="leftsidebar" class="sidebar">
-            <!-- User Info -->
-            <div class="user-info">
-                <div class="image">
-                    <img src="../../assets/images/user.png" width="48" height="48" alt="User" />
-                </div>
-                <div class="info-container">
-                    <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">John Doe</div>
-                    <div class="email">john.doe@example.com</div>
-                </div>
+        <p>Please wait...</p>
+    </div>
+</div>s
+<!-- #END# Page Loader -->
+<!-- Overlay For Sidebars -->
+<div class="overlay"></div>
+<!-- #END# Overlay For Sidebars -->
+
+<!-- Top Bar -->
+<nav class="navbar">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
+            <a href="javascript:void(0);" class="bars"></a>
+            <a class="navbar-brand" href="../../index.html">Welcome to UCSC CV App 2017</a>
+        </div>
+        <div class="collapse navbar-collapse" id="navbar-collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <!-- User Menu -->
+                <li class="dropdown">
+                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button">
+                        <i class="material-icons">keyboard_arrow_down</i>
+                    </a>
+                    <ul class="dropdown-menu pull-right">
+                        <li><a href="profile.html" class = "ajax-pg"><i class="material-icons">lock</i>Change Password</a></li>
+                        <li role="seperator" class="divider"></li>
+                        <li><a id="logoutButton"> <i class="material-icons">input</i>Sign Out</a></li>
+                    </ul>
+                </li>
+                <!-- #END# User Menu -->
+            </ul>
+        </div>
+    </div>
+</nav>
+<!-- #Top Bar -->
+<section>
+    <!-- Left Sidebar -->
+    <aside id="leftsidebar" class="sidebar">
+        <!-- User Info -->
+        <div class="user-info">
+            <div class="image">
+                <img src="../../assets/images/user.png" width="48" height="48" alt="User" />
             </div>
-            <!-- #User Info -->
-            <!-- Menu -->
-            <div class="menu">
-                <ul class="list">
-                    <li class="header">STUDENT SECTION</li>
-                    <li class="active">
-                        <a href="javascript:void(0);" class="menu-toggle">
-                            <i class="material-icons">view_list</i>
-                            <span>My Account</span>
-                        </a>
-                        <ul class="ml-menu">
-                            <li class="active">
-                                <a href="student-data-form.html" class="ajax-pg">My Details</a>
-                            </li>
-                            <li>
-                                <a href="cv-view.html" class="ajax-pg">My CV</a>
-                            </li>
-                            <li>
-                                <a href="companies" class="ajax-pg">Companies</a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
+            <div class="info-container">
+                <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">John Doe</div>
+                <div class="email">john.doe@example.com</div>
             </div>
-            <!-- #Menu -->
-            <!-- Footer -->
-            <div class="legal">
-                <div class="copyright">
-                    &copy; 2017 - 2018 <a href="javascript:void(0);">UCSC CV App</a>.
-                </div>
-                <!-- <div class="version">
-                    <b>Version: </b> 1.0.0
-                </div> -->
+        </div>
+        <!-- #User Info -->
+        <!-- Menu -->
+        <div class="menu">
+            <ul class="list">
+                <li class="header">STUDENT SECTION</li>
+                <li class="active">
+                    <a href="javascript:void(0);" class="menu-toggle">
+                        <i class="material-icons">view_list</i>
+                        <span>My Account</span>
+                    </a>
+                    <ul class="ml-menu">
+                        <li class="active">
+                            <a href="student-data-form.html" class="ajax-pg">My Details</a>
+                        </li>
+                        <li>
+                            <a href="cv-view.html" class="ajax-pg">My CV</a>
+                        </li>
+                        <li>
+                            <a href="company-list.html" class="ajax-pg">Companies</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <!-- #Menu -->
+        <!-- Footer -->
+        <div class="legal">
+            <div class="copyright">
+                &copy; 2017 - 2018 <a href="javascript:void(0);">UCSC CV App</a>.
             </div>
-            <!-- #Footer -->
-        </aside>
-        <!-- #END# Left Sidebar -->
+            <!-- <div class="version">
+                <b>Version: </b> 1.0.0
+            </div> -->
+        </div>
+        <!-- #Footer -->
+    </aside>
+    <!-- #END# Left Sidebar -->
 
-    </section>
+</section>
 
-    <div id="page-wrapper"></div>
+<!-- <div id="page-wrapper"></div> -->
+<section class="content">
+    <div class="container-fluid">
+        <div id="page-wrapper" >
+            <div class="block-header">
+                <h2>BLANK PAGE</h2>
+                <!-- Ajax load here -->
+            </div>
+        </div>
+</section>
 
-    <!-- Jquery Core Js -->
-    <script src="../../assets/plugins/jquery/jquery.min.js"></script>
 
-    <!-- Bootstrap Core Js -->
-    <script src="../../assets/plugins/bootstrap/js/bootstrap.js"></script>
+<!-- Jquery Core Js -->
+<script src="../../assets/plugins/jquery/jquery.min.js"></script>
 
-    <!-- Select Plugin Js -->
-    <script src="../../assets/plugins/bootstrap-select/js/bootstrap-select.js"></script>
+<!-- Bootstrap Core Js -->
+<script src="../../assets/plugins/bootstrap/js/bootstrap.js"></script>
 
-    <!-- Slimscroll Plugin Js -->
-    <script src="../../assets/plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
+<!-- Select Plugin Js -->
+<script src="../../assets/plugins/bootstrap-select/js/bootstrap-select.js"></script>
 
-    <!-- Jquery Validation Plugin Css -->
-    <script src="../../assets/plugins/jquery-validation/jquery.validate.js"></script>
+<!-- Slimscroll Plugin Js -->
+<script src="../../assets/plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
 
-    <!-- JQuery Steps Plugin Js -->
-    <script src="../../assets/plugins/jquery-steps/jquery.steps.js"></script>
+<!-- Jquery Validation Plugin Css -->
+<script src="../../assets/plugins/jquery-validation/jquery.validate.js"></script>
 
-    <!-- Sweet Alert Plugin Js -->
-    <script src="../../assets/plugins/sweetalert/sweetalert.min.js"></script>
+<!-- JQuery Steps Plugin Js -->
+<script src="../../assets/plugins/jquery-steps/jquery.steps.js"></script>
 
-    <!-- Waves Effect Plugin Js -->
-    <script src="../../assets/plugins/node-waves/waves.js"></script>
+<!-- Sweet Alert Plugin Js -->
+<script src="../../assets/plugins/sweetalert/sweetalert.min.js"></script>
 
-    <!-- Custom Js -->
-    <script src="../../assets/js/admin.js"></script>
-    <script src="../../assets/js/pages/forms/form-validation.js"></script>
-    <script src="../../assets/js/pages/ui/dialogs.js"></script>
+<!-- Waves Effect Plugin Js -->
+<script src="../../assets/plugins/node-waves/waves.js"></script>
 
-    <!-- Demo Js -->
-    <script src="../../assets/js/demo.js"></script>
+<!-- Custom Js -->
+<script src="../../assets/js/admin.js"></script>
+<script src="../../assets/js/pages/forms/form-validation.js"></script>
+<script src="../../assets/js/pages/ui/dialogs.js"></script>
 
-    <!-- Angular JS -->
-    <!--<script type="application/javascript" src="../../assets/js/angular/angular-1.6.5.min.js"></script>-->
-    <!--<script type="application/javascript" src="../../assets/js/angular/angular-resource-1.6.5.min.js"></script>-->
-    <!--<script type="application/javascript" src="../../assets/js/angular/angular-route-1.6.5.min.js"></script>-->
-    <!--<script type="application/javascript" src="../../js/app.js"></script>-->
-    <!-- <script type="application/javascript" src="../../js/controllers/student-controller.js"></script> -->
+<!-- Demo Js -->
+<script src="../../assets/js/demo.js"></script>
+
+<!-- Jquery DataTable Plugin Js -->
+<script src="../../assets/plugins/jquery-datatable/jquery.dataTables.js"></script>
+<script src="../../assets/plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js"></script>
+<script src="../../assets/plugins/jquery-datatable/extensions/export/dataTables.buttons.min.js"></script>
+<script src="../../assets/plugins/jquery-datatable/extensions/export/buttons.flash.min.js"></script>
+<script src="../../assets/plugins/jquery-datatable/extensions/export/jszip.min.js"></script>
+<script src="../../assets/plugins/jquery-datatable/extensions/export/pdfmake.min.js"></script>
+<script src="../../assets/plugins/jquery-datatable/extensions/export/vfs_fonts.js"></script>
+<script src="../../assets/plugins/jquery-datatable/extensions/export/buttons.html5.min.js"></script>
+<script src="../../assets/plugins/jquery-datatable/extensions/export/buttons.print.min.js"></script>
+
+
+<!-- Angular JS -->
+<!--<script type="application/javascript" src="../../assets/js/angular/angular-1.6.5.min.js"></script>-->
+<!--<script type="application/javascript" src="../../assets/js/angular/angular-resource-1.6.5.min.js"></script>-->
+<!--<script type="application/javascript" src="../../assets/js/angular/angular-route-1.6.5.min.js"></script>-->
+<!--<script type="application/javascript" src="../../js/app.js"></script>-->
+<!-- <script type="application/javascript" src="../../js/controllers/student-controller.js"></script> -->
 </body>
 
 </html>
@@ -188,36 +213,36 @@
             $('.ml-menu li.active').removeClass('active');
             $(this).closest('li').addClass('active');
         });
-        window.onload = pageWrapper.load('student-data-form.html');
+        window.onload = pageWrapper.load('company-list.html');
     });
 </script>
 
 <script>
-var logoutButton   = $('#logoutButton');
-logoutButton.click(function(){
-    // alert("Hello");
-    $.ajax({
-        type: "POST",
-        url: "http://localhost:3000/logout",
-        data : '',
-        dataType: "json",
-        success: function(response){
-          if (response.success == true){
-            window.location.replace(response.path);
-            sessionStorage.removeItem('token');
-            console.log(response);
-          }else{
-            alert("Something went wrong")
-          }
-          console.log(response);
-        },
-        error: function(xhr, status, error){
-            console.log(xhr);
-            console.log(status,error);
-        }
+    var logoutButton   = $('#logoutButton');
+    logoutButton.click(function(){
+        // alert("Hello");
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:3000/logout",
+            data : '',
+            dataType: "json",
+            success: function(response){
+                if (response.success == true){
+                    window.location.replace(response.path);
+                    sessionStorage.removeItem('token');
+                    console.log(response);
+                }else{
+                    alert("Something went wrong")
+                }
+                console.log(response);
+            },
+            error: function(xhr, status, error){
+                console.log(xhr);
+                console.log(status,error);
+            }
+        });
     });
-  });
 
-  var token = sessionStorage.getItem('token')
-  console.log(token);
+    var token = sessionStorage.getItem('token')
+    console.log(token);
 </script>
