@@ -20,4 +20,4 @@ npm-debug.log
 bower_components
 
 # uploads folder
-server/assets/images/uploads/*
+server/assets/*

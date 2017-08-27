@@ -1,44 +1,148 @@
-    <section class="content">
-        <div class="container-fluid">
-            <div class="block-header">
-                <h2>MY CV</h2>
-            </div>
 
-            <!-- File Upload | Drag & Drop OR With Click & Choose -->
-            <div class="row clearfix">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="card">
-                        <div class="header">
-                            <h2>
-                                PLEASE UPLOAD YOUR CV
-                            </h2>
-                        </div>
-                        <div class="body">
-                            <form name="cvForm" method="post" enctype="multipart/form-data" action="/cv/upload">
-                                <div class="form-group">
-                                    <div class="form-line">
-                                        <div class="fallback">
-                                            <input name="file" type="file" required/>
-                                        </div>
-                                    </div>
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="header">
+                    <h2>
+                        Upload Your CV
+                    </h2>
+                </div>
+                <div class="body">
+                    <form name="cvForm" enctype="multipart/form-data" id="form_validation">
+                        <div class="form-group">
+                            <div class="form-line">
+                                <div class="fallback">
+                                    <input name="file" type="file" accept="application/pdf" required/>
                                 </div>
-                                <button class="btn btn-primary waves-effect" type="submit">SUBMIT</button>
-                            </form>
+                            </div>
                         </div>
-                    </div>
+                        <button class="btn btn-primary waves-effect" type="submit">SUBMIT</button>
+                    </form>
+                    <div id="cv-pdf-view"></div>
                 </div>
             </div>
-            <!-- #END# File Upload | Drag & Drop OR With Click & Choose -->
         </div>
-    </section>
+    </div>
 
     <!-- Custom Js -->
-    <script src="../../assets/js/admin.js"></script>
-    <script src="../../assets/js/pages/forms/form-validation.js"></script>
+    <!-- <script src="../../assets/js/admin.js"></script> -->
+    <!-- <script src="../../assets/js/pages/forms/form-validation.js"></script> -->
     <!-- Demo Js -->
-    <script src="../../assets/js/demo.js"></script>
+    <!-- <script src="../../assets/js/demo.js"></script> -->
 
-    <script type="application/javascript" src="../../js/app.js"></script>
-</body>
+    <script>
 
-</html>
+        $(document).ready(function() {
+            // Getting cv details
+            $.ajax({
+                type: "GET",
+                url: "http://localhost:3000/cv",
+                data : {userID: userID},
+                dataType: "json",
+                success: function(response){
+                    if (response.success == true){
+                        if (response.data.length > 0) {
+//                            setPdfView(response.data[0].filename);
+                        }
+                    } else {
+                        showErrorMessage("Something went wrong");
+                        console.log(response);
+                    }
+                    console.log(response);
+                },
+                error: function(xhr, status, error){
+                    console.log(xhr);
+                    console.log(status,error);
+                }
+            });
+
+            // Uploading new cv
+            $('#form_validation').submit(function (e) {
+                if($(this).valid()) {
+                    e.preventDefault();
+                    // check file type
+                    var ext = $('input[name=file]').val().split('.').pop().toLowerCase();
+                    if($.inArray(ext, ['pdf']) == -1) {
+                        showErrorMessage('We accept only PDF formatted file!', 'Error');
+                    } else {
+                        var formData = new FormData(this);
+                        formData.append('userID', userID);
+                        console.log(formData);
+                        $.ajax({
+                            type: "POST",
+                            url: "/cv/upload",
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            success: function (response) {
+                                if (response.success == true){
+                                    showSuccessMessage('Your CV uploaded successfully!');
+                                } else {
+                                    showErrorMessage("Something went wrong");
+                                    console.log(response);
+                                }
+//                                console.log(response);
+                            },
+                            error: function(xhr, status, error){
+                                console.log(xhr);
+                                console.log(status,error);
+                            }
+                        });
+                    }
+                }
+                return false;
+            });
+        });
+
+        function setPdfView(filename) {
+            $.ajax({
+                type: "GET",
+                url: "http://localhost:3000/cv/pdf",
+                data : {filename: filename},
+                dataType: "json",
+                success: function(response){
+                    //todo pdf view
+//                    if (response.success == true){
+//                        if (response.data) {
+//                            var obj =   "<object data=" + response.data.data + " type='application/pdf' width='300' height='200'>" +
+//                                            "alt : <a href='test.pdf'>test.pdf</a>" +
+//                                        "</object>";
+//                            $('#cv-pdf-view').append(obj);
+//                        }
+//                    } else {
+//                        showErrorMessage("Something went wrong loading your CV!");
+//                        console.log(response);
+//                    }
+                    console.log(response);
+                },
+                error: function(xhr, status, error){
+                    console.log(xhr);
+                    console.log(status,error);
+                }
+            });
+        }
+
+    </script>
+
+    <script>
+        $(function () {
+            $('#change_password').validate({
+                highlight: function (input) {
+                    console.log(input);
+                    $(input).parents('.form-line').addClass('error');
+                },
+                unhighlight: function (input) {
+                    $(input).parents('.form-line').removeClass('error');
+                },
+                errorPlacement: function (error, element) {
+                    $(element).parents('.input-group').append(error);
+                    $(element).parents('.form-group').append(error);
+                }
+            });
+        });
+
+        $(function () {
+            $.AdminBSB.input.activate();
+            $.AdminBSB.select.activate();
+        });
+    </script>
