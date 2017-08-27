@@ -1,69 +1,58 @@
-<section class="content" ng-app="cvApp">
-    <div class="container-fluid" ng-controller="studentController">
-        <!-- Basic Validation -->
-        <div class="row clearfix">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div class="card">
-                    <div class="header">
-                        <h2>Setup Your Details</h2>
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>Setup Your Details</h2>
+            </div>
+            <div class="body">
+                <form name="studentForm" id="form_validation">
+                    <div class="form-group form-float">
+                        <div class="form-line">
+                            <input type="text" class="form-control" name="name" required ng-model="studentName">
+                            <label class="form-label">Name</label>
+                        </div>
                     </div>
-                    <div class="body">
-                        <form name="studentForm" id="form_validation">
-                            <div class="form-group form-float">
-                                <div class="form-line">
-                                    <input type="text" class="form-control" name="name" required ng-model="studentName">
-                                    <label class="form-label">Name</label>
-                                </div>
-                            </div>
-                            <div class="form-group form-float">
-                                <div class="form-line">
-                                    <input type="text" pattern="[0-9]{10}" title="Ten digit contact number" class="form-control" name="phone"
-                                           required ng-model="studentPhone">
-                                    <label class="form-label">Phone</label>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <input type="radio" name="year" id="4thyear" class="with-gap" value="4thyear" required ng-model="studentYear">
-                                    <label for="4thyear">4th year</label>
-
-                                    <input type="radio" name="year" id="3rdyear" class="with-gap" value="3rdyear" required ng-model="studentYear">
-                                    <label for="3rdyear" class="m-l-20">3rd year</label>
-
-                                    <input type="radio" name="year" id="passedout" class="with-gap" value="passedout" required ng-model="studentYear">
-                                    <label for="passedout" class="m-l-20">Passed Out</label>
-                                </div>
-                            </div>
-                            <div class="form-group form-float">
-                                <div class="form-line">
-                                    <input type="email" class="form-control" name="email" required ng-model="studentEmail">
-                                    <label class="form-label">Email</label>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="form-line">
-                                    <input type="radio" name="stream" id="cs" class="with-gap" value="cs" required ng-model="studentStream">
-                                    <label for="cs">Computer Science</label>
-
-                                    <input type="radio" name="stream" id="is" class="with-gap" value="is" required ng-model="studentStream">
-                                    <label for="is" class="m-l-20">Information Systems</label>
-                                </div>
-                            </div>
-                            <div class="form-group form-float">
-                                <div class="form-line">
-                                    <input type="text" class="form-control" name="userid" ng-model="studentUserID">
-                                    <label class="form-label">User ID</label>
-                                </div>
-                            </div>
-                            <button class="btn btn-primary waves-effect" type="submit" id="submit-btn">SAVE</button>
-                        </form>
+                    <div class="form-group form-float">
+                        <div class="form-line">
+                            <input type="text" pattern="[0-9]{10}" title="Ten digit contact number" class="form-control" name="phone"
+                                   required ng-model="studentPhone">
+                            <label class="form-label">Phone</label>
+                        </div>
                     </div>
-                </div>
+                    <div class="form-group">
+                        <div class="form-line">
+                            <input type="radio" name="year" id="4thyear" class="with-gap" value="4thyear" required ng-model="studentYear">
+                            <label for="4thyear">4th year</label>
+
+                            <input type="radio" name="year" id="3rdyear" class="with-gap" value="3rdyear" required ng-model="studentYear">
+                            <label for="3rdyear" class="m-l-20">3rd year</label>
+
+                            <input type="radio" name="year" id="passedout" class="with-gap" value="passedout" required ng-model="studentYear">
+                            <label for="passedout" class="m-l-20">Passed Out</label>
+                        </div>
+                    </div>
+                    <div class="form-group form-float">
+                        <div class="form-line">
+                            <input type="email" class="form-control" name="email" required ng-model="studentEmail">
+                            <label class="form-label">Email</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-line">
+                            <input type="radio" name="stream" id="cs" class="with-gap" value="cs" required ng-model="studentStream">
+                            <label for="cs">Computer Science</label>
+
+                            <input type="radio" name="stream" id="is" class="with-gap" value="is" required ng-model="studentStream">
+                            <label for="is" class="m-l-20">Information Systems</label>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary waves-effect" type="submit" id="submit-btn">SAVE</button>
+                </form>
             </div>
         </div>
-        <!-- #END# Basic Validation -->
     </div>
-</section>
+</div>
+
 <!-- Custom Js -->
 <script src="../../assets/js/admin.js"></script>
 <script src="../../assets/js/pages/forms/form-validation.js"></script>
@@ -151,4 +140,28 @@
         });
     }
 
+</script>
+
+
+<script>
+$(function () {
+    $('#change_password').validate({
+        highlight: function (input) {
+            console.log(input);
+            $(input).parents('.form-line').addClass('error');
+        },
+        unhighlight: function (input) {
+            $(input).parents('.form-line').removeClass('error');
+        },
+        errorPlacement: function (error, element) {
+            $(element).parents('.input-group').append(error);
+            $(element).parents('.form-group').append(error);
+        }
+    });
+});
+
+$(function () {
+    $.AdminBSB.input.activate();
+    $.AdminBSB.select.activate();
+});
 </script>

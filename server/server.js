@@ -16,7 +16,7 @@ mongoose.connect('mongodb://localhost:27017/ucsc-cvapp-2017', {
     useMongoClient: true
 });
 
-///////////////////////////////////////////
+///////////////////////////////////////////////////
 // // view engine setup
 // app.set('views', path.join(__dirname, '../client'));
 // app.set('view engine', 'ejs');
@@ -57,7 +57,7 @@ require('./app/api/auth.js')(app, passport);
 // app.use('/api2', api);
 app.use('/student', student);
 app.use('/cv', cv);
-app.use('/compnay', company);
+app.use('/company', company);
 app.use('/student_company', studentCompany);
 
 app.listen(port, function() {

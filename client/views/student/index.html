@@ -107,14 +107,14 @@
                         <span>My Account</span>
                     </a>
                     <ul class="ml-menu">
+                        <li class="active">
+                            <a href="company-list.html" class="ajax-pg">Companies</a>
+                        </li>
                         <li>
                             <a href="student-data-form.html" class="ajax-pg">My Details</a>
                         </li>
                         <li>
                             <a href="cv-view.html" class="ajax-pg">My CV</a>
-                        </li>
-                        <li>
-                            <a href="company-list.html" class="ajax-pg">Companies</a>
                         </li>
                     </ul>
                 </li>
@@ -206,9 +206,7 @@
     var userID;
 
     $(document).ready(function() {
-        // todo should come from a session
-        userID = "59a13d0fc80fd5df48df032b"; //ashan
-//        userID = "59a295f62351a4226a5eb62e"; //vihanga
+        userID = sessionStorage.getItem('user_id');
 
         var pageWrapper = $("#page-wrapper");
         $("a.ajax-pg").on("click", function(e) {
@@ -249,6 +247,8 @@
         });
     });
 
-    var token = sessionStorage.getItem('token')
-//    console.log(token);
+    var jwt_token = sessionStorage.getItem('jwt_token');
+//    console.log(jwt_token);
+    var user_id = sessionStorage.getItem('user_id');
+//    console.log(user_id);
 </script>
