@@ -70,6 +70,7 @@ app.use(function (err, req, res, next) {
     console.log("Log - UnauthorizedError");
   }else{
     console.log("Log - Unhandlied");
+    console.log("message" + err.name + ": " + err.message);
   }
 });
 

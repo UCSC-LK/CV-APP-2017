@@ -12,7 +12,7 @@
                       <!-- pdf appear here -->
                   </div>
               </div>
-              <form id = "file_uplaod" name="cvForm" enctype="multipart/form-data" id="form_validation">
+              <form name="cvForm" enctype="multipart/form-data" id="form_validation">
                   <br>
                   <p>Upload New CV</p>
                   <div class="form-group">
@@ -123,7 +123,7 @@
 
     <script>
         $(function () {
-            $('#file_uplaod').validate({
+            $('#form_validation').validate({
                 highlight: function (input) {
                     console.log(input);
                     $(input).parents('.form-line').addClass('error');
