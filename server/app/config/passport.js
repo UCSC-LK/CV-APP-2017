@@ -14,7 +14,7 @@ module.exports = function(passport) {
     done(null, user);
   });
 
-  // Delete this
+  // // Delete this
 	// passport.use('local-login', new LocalStrategy(
 	//   function(username, password, done) {
 	//     User.findOne({
@@ -25,10 +25,10 @@ module.exports = function(passport) {
   //              return done(err);
   //          // if no user is found, return the message
   //          if (!user)
-  //              return done("Wrong User Name", false);
+  //              return done(null, false);
   //          // if the user is found but the password is wrong
   //          if (!user.validPassword(password))
-  //              return done("Wrong Password", false);
+  //              return done(null, false);
   //          // all is well, return successful user
   //          return done(null, user);
 	//     });
