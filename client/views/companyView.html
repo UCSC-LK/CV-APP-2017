@@ -883,38 +883,50 @@
                                                     console.log(response);
                                                     var table = document.getElementById("table1");
                                                     for(var count = 0; count < data.length; count++){
+
                                                         row=document.createElement("tr");
-                                                        cell1 = document.createElement("td");
+
+                                                        cell1 = document.createElement("th");
                                                         cell2 = document.createElement("td");
                                                         cell3 = document.createElement("td");
                                                         cell4 = document.createElement("td");
                                                         cell5 = document.createElement("td");
                                                         cell6 = document.createElement("td");
-                                                        textnode1=document.createTextNode(data[count].name);
+                                                        cell7 = document.createElement("td");
+
+                                                        textnode1=document.createTextNode(count);
                                                         textnode2=document.createTextNode(data[count].name);
                                                         textnode3=document.createTextNode(data[count].name);
                                                         textnode4=document.createTextNode(data[count].name);
                                                         textnode5=document.createTextNode(data[count].name);
                                                         textnode6=document.createTextNode(data[count].name);
+
                                                         button1 = document.createElement("button");
-                                                        button1.className = "btn bg-orange waves-effect";
+                                                        button1.className = "btn bg-amber waves-effect";
                                                         button1.type = "button";
+                                                        button1.innerHTML = "<i class=\"material-icons\">drafts</i>";
                                                         button2 = document.createElement("button");
                                                         button2.className = "btn bg-orange waves-effect";
                                                         button2.type = "button";
+                                                        button2.innerHTML = "<i class=\"material-icons\">save</i>";
+
                                                         cell1.appendChild(textnode1);
                                                         cell2.appendChild(textnode2);
                                                         cell3.appendChild(textnode3);
                                                         cell4.appendChild(textnode4);
                                                         cell5.appendChild(textnode5);
-                                                        cell6.appendChild(button1);
-                                                        cell6.appendChild(button2);
+                                                        cell6.appendChild(textnode6);
+                                                        cell7.appendChild(button1);
+                                                        cell7.appendChild(button2);
+
                                                         row.appendChild(cell1);
                                                         row.appendChild(cell2);
                                                         row.appendChild(cell3);
                                                         row.appendChild(cell4);
                                                         row.appendChild(cell5);
                                                         row.appendChild(cell6);
+                                                        row.appendChild(cell7);
+
                                                         table.appendChild(row);
                                                     }
 
