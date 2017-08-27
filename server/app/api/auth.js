@@ -115,7 +115,7 @@ module.exports = function(app, passport) {
 
 	//ok
 	app.post('/changepass', function(req, res) {
-	  if (!req.body.username || !req.body.password || !req.body.newpassword) {
+	  if (!req.body.username || !req.body.oldpassword || !req.body.password) {
 		res.json({success: false, msg: 'Please pass username , password & new password.'});
 	  }else {
 	  User.findOne({
@@ -128,9 +128,9 @@ module.exports = function(app, passport) {
 
 		  } else {
 		  // check if password matches
-		  user.comparePassword(req.body.password, function (err, isMatch) {
+		  user.comparePassword(req.body.oldpassword, function (err, isMatch) {
 			if (isMatch && !err) {
-			  user.password = req.body.newpassword;
+			  user.password = req.body.password;
 			  user.save(function(err) {
 				if (err) {
 				  return res.json({success: false, msg: 'Some thing went wrong.Try again'});
