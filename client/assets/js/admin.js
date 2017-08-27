@@ -44,7 +44,7 @@ $.AdminBSB.options = {
 
 /* Left Sidebar - Function =================================================================================================
 *  You can manage the left sidebar menu options
-*  
+*
 */
 $.AdminBSB.leftSideBar = {
     activate: function () {
@@ -157,7 +157,7 @@ $.AdminBSB.leftSideBar = {
 
 /* Right Sidebar - Function ================================================================================================
 *  You can manage the right sidebar menu options
-*  
+*
 */
 $.AdminBSB.rightSideBar = {
     activate: function () {
@@ -189,44 +189,44 @@ $.AdminBSB.rightSideBar = {
 
 /* Searchbar - Function ================================================================================================
 *  You can manage the search bar
-*  
+*
 */
-var $searchBar = $('.search-bar');
-$.AdminBSB.search = {
-    activate: function () {
-        var _this = this;
-
-        //Search button click event
-        $('.js-search').on('click', function () {
-            _this.showSearchBar();
-        });
-
-        //Close search click event
-        $searchBar.find('.close-search').on('click', function () {
-            _this.hideSearchBar();
-        });
-
-        //ESC key on pressed
-        $searchBar.find('input[type="text"]').on('keyup', function (e) {
-            if (e.keyCode == 27) {
-                _this.hideSearchBar();
-            }
-        });
-    },
-    showSearchBar: function () {
-        $searchBar.addClass('open');
-        $searchBar.find('input[type="text"]').focus();
-    },
-    hideSearchBar: function () {
-        $searchBar.removeClass('open');
-        $searchBar.find('input[type="text"]').val('');
-    }
-}
+// var $searchBar = $('.search-bar');
+// $.AdminBSB.search = {
+//     activate: function () {
+//         var _this = this;
+//
+//         //Search button click event
+//         $('.js-search').on('click', function () {
+//             _this.showSearchBar();
+//         });
+//
+//         //Close search click event
+//         $searchBar.find('.close-search').on('click', function () {
+//             _this.hideSearchBar();
+//         });
+//
+//         //ESC key on pressed
+//         $searchBar.find('input[type="text"]').on('keyup', function (e) {
+//             if (e.keyCode == 27) {
+//                 _this.hideSearchBar();
+//             }
+//         });
+//     },
+//     showSearchBar: function () {
+//         $searchBar.addClass('open');
+//         $searchBar.find('input[type="text"]').focus();
+//     },
+//     hideSearchBar: function () {
+//         $searchBar.removeClass('open');
+//         $searchBar.find('input[type="text"]').val('');
+//     }
+// }
 //==========================================================================================================================
 
 /* Navbar - Function =======================================================================================================
 *  You can manage the navbar
-*  
+*
 */
 $.AdminBSB.navbar = {
     activate: function () {
@@ -256,7 +256,7 @@ $.AdminBSB.navbar = {
 
 /* Input - Function ========================================================================================================
 *  You can manage the inputs(also textareas) with name of class 'form-control'
-*  
+*
 */
 $.AdminBSB.input = {
     activate: function () {
@@ -293,7 +293,7 @@ $.AdminBSB.input = {
 
 /* Form - Select - Function ================================================================================================
 *  You can manage the 'select' of form elements
-*  
+*
 */
 $.AdminBSB.select = {
     activate: function () {
@@ -304,7 +304,7 @@ $.AdminBSB.select = {
 
 /* DropdownMenu - Function =================================================================================================
 *  You can manage the dropdown menu
-*  
+*
 */
 
 $.AdminBSB.dropdownMenu = {
@@ -382,7 +382,7 @@ $.AdminBSB.dropdownMenu = {
 
 /* Browser - Function ======================================================================================================
 *  You can manage browser
-*  
+*
 */
 var edge = 'Microsoft Edge';
 var ie10 = 'Internet Explorer 10';
@@ -452,7 +452,6 @@ $(function () {
     $.AdminBSB.dropdownMenu.activate();
     $.AdminBSB.input.activate();
     $.AdminBSB.select.activate();
-    $.AdminBSB.search.activate();
-
+    // $.AdminBSB.search.activate();
     setTimeout(function () { $('.page-loader-wrapper').fadeOut(); }, 50);
 });

@@ -15,10 +15,9 @@ module.exports.getStudents = function (req, res) {
 module.exports.getStudent = function (req, res) {
     Student.find({userID: req.query.userID}, function (err, result) {
         if (err) {
-            res.send(err);
-        } else {
-            res.json(result);
+            return res.json({success: false, error: err});
         }
+        res.json({success: true, data:result});
     });
 };
 
@@ -38,7 +37,7 @@ module.exports.addStudent = function (req, res) {
                 if (err) {
                     return res.json({success: false, msg: 'Some thing went wrong.Try again', error: err});
                 }
-                res.json({success: true, msg: 'Details updated successfully'});
+                res.json({success: true, msg: 'Your details updated successfully'});
             });
         } else {
             console.log("Adding student info"); // add new
@@ -46,7 +45,7 @@ module.exports.addStudent = function (req, res) {
                 if (err) {
                     return res.json({success: false, msg: 'Some thing went wrong.Try again', error: err});
                 }
-                return res.json({success: true, msg: 'Details added successfully'});
+                return res.json({success: true, msg: 'Your details added successfully'});
             });
         }
     });
