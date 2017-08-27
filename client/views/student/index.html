@@ -92,8 +92,8 @@
                 <img src="../../assets/images/user.png" width="48" height="48" alt="User" />
             </div>
             <div class="info-container">
-                <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">John Doe</div>
-                <div class="email">john.doe@example.com</div>
+                <div class="name" data-toggle="dropdown" aria-haspopup="true" id="username"aria-expanded="false">John Doe</div>
+                <!-- <div class="email">john.doe@example.com</div> -->
             </div>
         </div>
         <!-- #User Info -->
@@ -108,13 +108,15 @@
                     </a>
                     <ul class="ml-menu">
                         <li class="active">
-                            <a href="company-list.html" class="ajax-pg">Companies</a>
+                             <a href="company-list.html" class="ajax-pg">Companies</a>
                         </li>
-                        <li>
-                            <a href="student-data-form.html" class="ajax-pg">My Details</a>
-                        </li>
+
                         <li>
                             <a href="cv-view.html" class="ajax-pg">My CV</a>
+                        </li>
+
+                        <li >
+                            <a href="student-data-form.html" class="ajax-pg">My details</a>
                         </li>
                     </ul>
                 </li>
@@ -215,7 +217,8 @@
             // pageWrapper.prepend('<div class="loader"><div class="preloader"><div class="spinner-layer pl-blue"><div class="circle-clipper left"><div class="circle"></div></div><div class="circle-clipper right"><div class="circle"></div></div></div></div><p>Please wait...</p></div>');
             pageWrapper.load(this.href);
             $('.ml-menu li.active').removeClass('active');
-            $(this).closest('li').addClass('active');
+            $(this).parent('li').addClass('active');
+            console.log($(this));
         });
         window.onload = pageWrapper.load('company-list.html');
     });
@@ -232,8 +235,9 @@
             dataType: "json",
             success: function(response){
                 if (response.success == true){
-                    window.location.replace(response.path);
-                    sessionStorage.removeItem('token');
+                    window.location.replace(response.path);user_id
+                    sessionStorage.removeItem('jwt_token');
+                    sessionStorage.removeItem('user_id');
                     console.log(response);
                 }else{
                     alert("Something went wrong")
@@ -247,8 +251,50 @@
         });
     });
 
-    var jwt_token = sessionStorage.getItem('jwt_token');
-//    console.log(jwt_token);
+
     var user_id = sessionStorage.getItem('user_id');
-//    console.log(user_id);
+    console.log(user_id);
+
+    function getToken(){
+      return sessionStorage.getItem('jwt_token');
+    }
+
+    function isLoggedIn()  {
+      var token = getToken();
+      var payload;
+
+      if(token){
+        payload = token.split('.')[1];
+        payload = window.atob(payload);
+        payload = JSON.parse(payload);
+
+        console.log(payload);
+        return payload.exp > Date.now() / 1000;
+      } else {
+        return false;
+      }
+    };
+
+    // var tempppp = isLoggedIn();
+    // console.log(tempppp);
+
+    var currentUser = function() {
+      if(isLoggedIn()){
+        var token = getToken();
+        var payload = token.split('.')[1];
+        payload = window.atob(payload);
+        payload = JSON.parse(payload);
+        return {
+          email : payload.email,
+          name : payload.name
+        };
+      }
+    };
+
+    if(isLoggedIn()){
+      user_info = currentUser();
+      $('#username').html(user_info.name);
+    }else{
+      window.location.replace('../../index.html');
+    }
 </script>

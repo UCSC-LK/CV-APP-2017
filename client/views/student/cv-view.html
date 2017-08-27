@@ -1,28 +1,35 @@
-
-    <div class="row clearfix">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div class="card">
-                <div class="header">
-                    <h2>
-                        Upload Your CV
-                    </h2>
-                </div>
-                <div class="body">
-                    <form name="cvForm" enctype="multipart/form-data" id="form_validation">
-                        <div class="form-group">
-                            <div class="form-line">
-                                <div class="fallback">
-                                    <input name="file" type="file" accept="application/pdf" required/>
-                                </div>
-                            </div>
-                        </div>
-                        <button class="btn btn-primary waves-effect" type="submit">SUBMIT</button>
-                    </form>
-                    <div id="cv-pdf-view"></div>
-                </div>
+<div class="row clearfix">
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      <div class="card">
+          <div class="header">
+              <h2 id="page-header">
+                  Upload Your CV
+              </h2>
+          </div>
+          <div class="body">
+              <div class="form-line">
+                  <div id="cv-pdf-view">
+                      <!-- pdf appear here -->
+                  </div>
+              </div>
+              <form name="cvForm" enctype="multipart/form-data" id="form_validation">
+                  <br>
+                  <p>Upload New CV</p>
+                  <div class="form-group">
+                      <div class="form-line">
+                          <div class="fallback">
+                              <input name="file" type="file" accept="application/pdf" required/>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="form-group">
+                  <button class="btn btn-primary waves-effect" type="submit" id="submit-btn">UPLOAD</button>                  </div>
+              </form>
             </div>
+          </div>
         </div>
-    </div>
+</div>
+
 
     <!-- Custom Js -->
     <!-- <script src="../../assets/js/admin.js"></script> -->
@@ -42,7 +49,7 @@
                 success: function(response){
                     if (response.success == true){
                         if (response.data.length > 0) {
-//                            setPdfView(response.data[0].filename);
+                            setPdfView(response.data[0].filename);
                         }
                     } else {
                         showErrorMessage("Something went wrong");
@@ -76,12 +83,12 @@
                             contentType: false,
                             success: function (response) {
                                 if (response.success == true){
-                                    showSuccessMessage('Your CV uploaded successfully!');
+                                    showSuccessMessage(response.msg);
+                                    setPdfView(response.data.filename);
                                 } else {
-                                    showErrorMessage("Something went wrong");
+                                    showErrorMessage(response.msg);
                                     console.log(response);
                                 }
-//                                console.log(response);
                             },
                             error: function(xhr, status, error){
                                 console.log(xhr);
@@ -95,38 +102,28 @@
         });
 
         function setPdfView(filename) {
-            $.ajax({
-                type: "GET",
-                url: "http://localhost:3000/cv/pdf",
-                data : {filename: filename},
-                dataType: "json",
-                success: function(response){
-                    //todo pdf view
-//                    if (response.success == true){
-//                        if (response.data) {
-//                            var obj =   "<object data=" + response.data.data + " type='application/pdf' width='300' height='200'>" +
-//                                            "alt : <a href='test.pdf'>test.pdf</a>" +
-//                                        "</object>";
-//                            $('#cv-pdf-view').append(obj);
-//                        }
-//                    } else {
-//                        showErrorMessage("Something went wrong loading your CV!");
-//                        console.log(response);
-//                    }
-                    console.log(response);
-                },
-                error: function(xhr, status, error){
-                    console.log(xhr);
-                    console.log(status,error);
-                }
-            });
+            // clear input feild
+            $('input[name=file]').val('');
+
+            // clear pdf embed if exists
+            $('#cv-pdf-view').empty();
+
+            var pdfEmbed = document.createElement("embed");
+            pdfEmbed.setAttribute("src", "/uploads/" + filename);
+            pdfEmbed.setAttribute("width", "100%");
+            pdfEmbed.setAttribute("height", "700px");
+            pdfEmbed.setAttribute("type", "application/pdf");
+            $('#cv-pdf-view').append(pdfEmbed);
+
+            $('#submit-btn').text('UPDATE');
+            $('#page-header').text('Your CV');
         }
 
     </script>
 
     <script>
         $(function () {
-            $('#change_password').validate({
+            $('#form_validation').validate({
                 highlight: function (input) {
                     console.log(input);
                     $(input).parents('.form-line').addClass('error');

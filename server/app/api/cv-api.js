@@ -19,8 +19,6 @@ var upload = multer({ storage: storage });
 
 router.get('/', cvController.getCvDetails);
 
-router.get('/pdf', cvController.getCvPdf);
-
 router.post('/upload', upload.any(), function (req, res) {
     var data = {
         userID: req.body.userID,
@@ -28,13 +26,9 @@ router.post('/upload', upload.any(), function (req, res) {
         type: req.files[0].mimetype,
         path: req.files[0].path
     };
-    cvController.saveCv(data, function (result, err) {
-        if (err) {
-            return res.json({success: false, error: err});
-        }
-        res.json({success: true, data:result});
+    cvController.saveCv(data, function (result) {
+        res.json(result);
     });
-
 });
 
 module.exports = router;

@@ -33,7 +33,7 @@
                       </div>
                   </div>
 
-                  <button id= "changeButton" class="btn btn-block btn-lg bg-blue waves-effect" type="submit">Change</button>
+                  <button id= "submit-btn" class="btn btn-block btn-lg bg-blue waves-effect" type="submit">CHANGE</button>
               </form>
           </div>
       </div>
@@ -78,7 +78,7 @@ $(function () {
 <script>
 var change_pass_form = $("#change_password");
 
-$('#changeButton').click(function(e){
+$('#submit-btn').click(function(e){
   if (change_pass_form.valid()){
     e.preventDefault();
     var change_data = change_pass_form.serialize();
@@ -109,7 +109,7 @@ $('#changeButton').click(function(e){
 
 
 function showSuccessMessage() {
-    swal("Successfuly password updated!",'', "success");
+    swal("Password updated successfuly!",'', "success");
 }
 
 function showErrorMessage(msg) {
