@@ -838,6 +838,7 @@
                         <div class="header">
                             <h2>
                                 Students
+                                <small>Add <code>.table-hover</code> to enable a hover state on table rows within a <code>&lt;tbody&gt;</code>.</small>
                             </h2>
                             <ul class="header-dropdown m-r--5">
                                 <li class="dropdown">
@@ -1054,7 +1055,7 @@
                 if (response.success == true){
                     data = response.data;
                     console.log(response);
-                    var table = document.getElementById("tableBody");
+                    var table = document.getElementById("table1");
                     for(var count = 0; count < data.length; count++){
 
                         row=document.createElement("tr");
@@ -1078,8 +1079,6 @@
                         button1.className = "btn bg-amber waves-effect";
                         button1.type = "button";
                         button1.innerHTML = "<i class=\"material-icons\">drafts</i>";
-
-
                         button2 = document.createElement("button");
                         button2.className = "btn bg-orange waves-effect";
                         button2.type = "button";
@@ -1124,7 +1123,7 @@
 
 <script>
     //
-    $("#tableBody tr").click(function() {
+    $("#table1 tr").click(function() {
         $(this).remove();
         listItem = document.createElement("a");
         listItem.className = "list-group-item";
@@ -1135,6 +1134,39 @@
 </script>
 
 
+
+<script>
+    $(document).ready(function() {
+        var companyTable = $('#companyTable').DataTable({
+            dom: 'Bfrtip',
+            responsive: true,
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ],
+            ajax: {
+                url: 'http://localhost:3000/student_company/companies/Viboda',
+                dataSrc: 'result',
+            },
+            "columns": [
+                { "data": "_id" },
+                { "data": "company" }
+            ]
+        });
+    });
+</script>
+<!--<script>-->
+    <!--var testButton   = $('#test');-->
+    <!--testButton.click(function(){-->
+        <!--var table = document.getElementById("table1");-->
+        <!--row=document.createElement("tr");-->
+        <!--cell1 = document.createElement("td");-->
+        <!--textnode1=document.createTextNode(data[0].name);-->
+        <!--cell1.appendChild(textnode1);-->
+        <!--cell2 = document.createElement("td");-->
+        <!--row.appendChild(cell1);-->
+        <!--table.appendChild(row);-->
+    <!--});-->
+<!--</script>-->
 </body>
 
 </html>
