@@ -44,18 +44,3 @@ module.exports.getCvDetails = function (req, res) {
         res.json({success: true, data:result});
     });
 };
-
-// Return cv by userid
-module.exports.getCvPdf = function (req, res) {
-    console.log(req.query);
-    var filePath = path.join(__dirname, '..', '..', 'assets', 'uploads', req.query.filename);
-    console.log(filePath);
-    fs.readFile(filePath, function (err, data){
-        if (err) {
-            return res.json({success: false, error: err});
-        }
-        res.json({success: true, data:data});
-        // res.contentType("application/pdf");
-        // res.send(data);
-    });
-};

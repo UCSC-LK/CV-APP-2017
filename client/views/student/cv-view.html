@@ -1,31 +1,35 @@
 <div class="row clearfix">
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <div class="card">
-            <div class="header">
-                <h2>
-                    Upload Your CV
-                </h2>
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      <div class="card">
+          <div class="header">
+              <h2 id="page-header">
+                  Upload Your CV
+              </h2>
+          </div>
+          <div class="body">
+              <div class="form-line">
+                  <div id="cv-pdf-view">
+                      <!-- pdf appear here -->
+                  </div>
+              </div>
+              <form id = "file_uplaod" name="cvForm" enctype="multipart/form-data" id="form_validation">
+                  <br>
+                  <p>Upload New CV</p>
+                  <div class="form-group">
+                      <div class="form-line">
+                          <div class="fallback">
+                              <input name="file" type="file" accept="application/pdf" required/>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="form-group">
+                  <button class="btn btn-primary waves-effect" type="submit" id="submit-btn">UPLOAD</button>                  </div>
+              </form>
             </div>
-            <div class="body">
-                <div class="form-line">
-                    <div id="cv-pdf-view">
-                        <p id="cv-pdf-view-name"></p>
-                    </div>
-                </div>
-                <form id="file_uplaod" name="cvForm" enctype="multipart/form-data" id="form_validation">
-                    <div class="form-group">
-                        <div class="form-line">
-                            <div class="fallback">
-                                <input name="file" type="file" accept="application/pdf" required/>
-                            </div>
-                        </div>
-                    </div>
-                    <button class="btn btn-primary waves-effect" type="submit" id="submit-btn">UPLOAD</button>
-                </form>
-            </div>
+          </div>
         </div>
-    </div>
 </div>
+
 
     <!-- Custom Js -->
     <!-- <script src="../../assets/js/admin.js"></script> -->
@@ -100,34 +104,19 @@
         function setPdfView(filename) {
             // clear input feild
             $('input[name=file]').val('');
-//            $.ajax({
-//                type: "GET",
-//                url: "http://localhost:3000/cv/pdf",
-//                data : {filename: filename},
-//                dataType: "json",
-//                success: function(response){
-//                    //todo pdf view
-////                    if (response.success == true){
-////                        if (response.data) {
-////                            var obj =   "<object data=" + response.data.data + " type='application/pdf' width='300' height='200'>" +
-////                                            "alt : <a href='test.pdf'>test.pdf</a>" +
-////                                        "</object>";
-////                            $('#cv-pdf-view').append(obj);
-////                        }
-////                    } else {
-////                        showErrorMessage("Something went wrong loading your CV!");
-////                        console.log(response);
-////                    }
-//                    console.log(response);
-//                },
-//                error: function(xhr, status, error){
-//                    console.log(xhr);
-//                    console.log(status,error);
-//                }
-//            });
-            $('#cv-pdf-view-name').text(filename);
-            $('#submit-btn').text('UPDATE');
 
+            // clear pdf embed if exists
+            $('#cv-pdf-view').empty();
+
+            var pdfEmbed = document.createElement("embed");
+            pdfEmbed.setAttribute("src", "/uploads/" + filename);
+            pdfEmbed.setAttribute("width", "100%");
+            pdfEmbed.setAttribute("height", "700px");
+            pdfEmbed.setAttribute("type", "application/pdf");
+            $('#cv-pdf-view').append(pdfEmbed);
+
+            $('#submit-btn').text('UPDATE');
+            $('#page-header').text('Your CV');
         }
 
     </script>
