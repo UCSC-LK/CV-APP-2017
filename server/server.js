@@ -57,7 +57,7 @@ require('./app/api/auth.js')(app, passport);
 // app.use('/api2', api);
 app.use('/student', student);
 app.use('/cv', cv);
-app.use('/compnay', company);
+app.use('/company', company);
 app.use('/student_company', studentCompany);
 
 app.listen(port, function() {
