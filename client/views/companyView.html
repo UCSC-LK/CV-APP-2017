@@ -7,29 +7,66 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <title>Welcome To | Bootstrap Based Admin Template - Material Design</title>
     <!-- Favicon-->
-    <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../assets/favicon.ico" type="image/x-icon">
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
 
     <!-- Bootstrap Core Css -->
-    <link href="assets/plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="../assets/plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
 
     <!-- Waves Effect Css -->
-    <link href="assets/plugins/node-waves/waves.css" rel="stylesheet" />
+    <link href="../assets/plugins/node-waves/waves.css" rel="stylesheet" />
 
     <!-- Animation Css -->
-    <link href="assets/plugins/animate-css/animate.css" rel="stylesheet" />
+    <link href="../assets/plugins/animate-css/animate.css" rel="stylesheet" />
 
     <!-- Sweet Alert Css -->
-    <link href="assets/plugins/sweetalert/sweetalert.css" rel="stylesheet" />
+    <link href="../assets/plugins/sweetalert/sweetalert.css" rel="stylesheet" />
 
     <!-- Custom Css -->
-    <link href="assets/css/style.css" rel="stylesheet">
+    <link href="../assets/css/style.css" rel="stylesheet">
 
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
-    <link href="assets/css/themes/all-themes.css" rel="stylesheet" />
+    <link href="../assets/css/themes/all-themes.css" rel="stylesheet" />
+
+    <script type="application/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>
+    <script type="application/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-resource.min.js"></script>
+    <script type="application/javascript" src="../js/app.js"></script>
+    <script type="application/javascript" src="../js/controllers/company-controller.js"></script>
+
+    <!-- Jquery Core Js -->
+    <script src="../assets/plugins/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap Core Js -->
+    <script src="../assets/plugins/bootstrap/js/bootstrap.js"></script>
+
+    <!-- Select Plugin Js -->
+    <script src="../assets/plugins/bootstrap-select/js/bootstrap-select.js"></script>
+
+    <!-- Slimscroll Plugin Js -->
+    <script src="../assets/plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
+
+    <!-- Jquery Validation Plugin Css -->
+    <script src="../assets/plugins/jquery-validation/jquery.validate.js"></script>
+
+    <!-- JQuery Steps Plugin Js -->
+    <script src="../assets/plugins/jquery-steps/jquery.steps.js"></script>
+
+    <!-- Sweet Alert Plugin Js -->
+    <script src="../assets/plugins/sweetalert/sweetalert.min.js"></script>
+
+    <!-- Waves Effect Plugin Js -->
+    <script src="../assets/plugins/node-waves/waves.js"></script>
+
+    <!-- Custom Js -->
+    <script src="../assets/js/admin.js"></script>
+    <script src="../assets/js/pages/forms/form-validation.js"></script>
+
+    <!-- Demo Js -->
+    <script src="../assets/js/demo.js"></script>
+
 </head>
 
 <body class="theme-red">
@@ -817,7 +854,7 @@
                             </ul>
                         </div>
                         <div class="body table-responsive">
-                            <table class="table table-hover">
+                            <table id="table1" class="table table-hover">
                                 <thead>
                                 <tr>
                                     <th>#</th>
@@ -830,21 +867,97 @@
                                 </tr>
                                 </thead>
                                 <tbody>
+                                <script>
+                                    var data;
+                                    $(document).ready(function(){
+                                        // alert("Hello");
+                                        $.ajax({
+                                            type: "GET",
+                                            url: "http://localhost:3000/company",
+                                            data : '',
+                                            dataType: "json",
+                                            success: function(response,error){
+
+                                                if (error  == "success"){
+                                                    data = response;
+                                                    console.log(response);
+                                                    var table = document.getElementById("table1");
+                                                    for(var count = 0; count < data.length; count++){
+                                                        row=document.createElement("tr");
+                                                        cell1 = document.createElement("td");
+                                                        cell2 = document.createElement("td");
+                                                        cell3 = document.createElement("td");
+                                                        cell4 = document.createElement("td");
+                                                        cell5 = document.createElement("td");
+                                                        cell6 = document.createElement("td");
+                                                        textnode1=document.createTextNode(data[count].name);
+                                                        textnode2=document.createTextNode(data[count].name);
+                                                        textnode3=document.createTextNode(data[count].name);
+                                                        textnode4=document.createTextNode(data[count].name);
+                                                        textnode5=document.createTextNode(data[count].name);
+                                                        textnode6=document.createTextNode(data[count].name);
+                                                        button1 = document.createElement("button");
+                                                        button1.className = "btn bg-orange waves-effect";
+                                                        button1.type = "button";
+                                                        button2 = document.createElement("button");
+                                                        button2.className = "btn bg-orange waves-effect";
+                                                        button2.type = "button";
+                                                        cell1.appendChild(textnode1);
+                                                        cell2.appendChild(textnode2);
+                                                        cell3.appendChild(textnode3);
+                                                        cell4.appendChild(textnode4);
+                                                        cell5.appendChild(textnode5);
+                                                        cell6.appendChild(button1);
+                                                        cell6.appendChild(button2);
+                                                        row.appendChild(cell1);
+                                                        row.appendChild(cell2);
+                                                        row.appendChild(cell3);
+                                                        row.appendChild(cell4);
+                                                        row.appendChild(cell5);
+                                                        row.appendChild(cell6);
+                                                        table.appendChild(row);
+                                                    }
+
+                                                }else{
+                                                    alert(error)
+                                                }
+                                                console.log(response);
+                                            },
+                                            error: function(xhr, status, error){
+                                                console.log(xhr);
+                                                console.log(status,error);
+                                            }
+                                        });
+
+
+                                    });
+
+                                    function addRow() {
+
+
+                                    }
+
+                                </script>
                                 <tr>
-                                    <th scope="row">1</th>
-                                    <td>L.J.M.V.R.Balalla</td>
-                                    <td>0719347344</td>
-                                    <td>BSC hons</td>
-                                    <td>vbaldfdf@gmail.com</td>
-                                    <td>CS</td>
-                                    <td>
-                                        <button type="button" class="btn bg-amber waves-effect">
-                                            <i class="material-icons">drafts</i>
-                                        </button>
-                                        <button type="button" class="btn bg-orange waves-effect">
-                                            <i class="material-icons">save</i>
-                                        </button>
-                                    </td>
+
+                                        <th scope="row">1</th>
+                                                <td>L.J.M.V.R.Balalla</td>
+                                                <td>0719347344</td>
+                                                <td>BSC hons</td>
+                                            <td>vbaldfdf@gmail.com</td>
+                                            <td>CS</td>
+                                            <td>
+                                            <button type="button" class="btn bg-amber waves-effect">
+                                                <i class="material-icons">drafts</i>
+                                                </button>
+                                                <button type="button" class="btn bg-orange waves-effect">
+                                                <i class="material-icons">save</i>
+                                                </button>
+                                                </td>
+                                    <script>
+
+                                    </script>
+
                                 </tr>
                                 <tr>
                                     <th scope="row">1</th>
@@ -935,7 +1048,7 @@
                                     <td>CS</td>
                                     <td>
                                         <button type="button" class="btn bg-amber waves-effect">
-                                            <i class="material-icons">drafts</i>
+                                            <i href="cvView.html" class="material-icons">drafts</i>
                                         </button>
                                         <button type="button" class="btn bg-orange waves-effect">
                                             <i class="material-icons">save</i>
@@ -997,42 +1110,31 @@
                 </div>
             </div>
         </div>
+
+        <input type="button" id="test">
         <!-- #END# Hover Rows -->
     </div>
 
 </section>
 
 
-<!-- Jquery Core Js -->
-<script src="assets/plugins/jquery/jquery.min.js"></script>
 
-<!-- Bootstrap Core Js -->
-<script src="assets/plugins/bootstrap/js/bootstrap.js"></script>
 
-<!-- Select Plugin Js -->
-<script src="assets/plugins/bootstrap-select/js/bootstrap-select.js"></script>
 
-<!-- Slimscroll Plugin Js -->
-<script src="assets/plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
 
-<!-- Jquery Validation Plugin Css -->
-<script src="assets/plugins/jquery-validation/jquery.validate.js"></script>
-
-<!-- JQuery Steps Plugin Js -->
-<script src="assets/plugins/jquery-steps/jquery.steps.js"></script>
-
-<!-- Sweet Alert Plugin Js -->
-<script src="assets/plugins/sweetalert/sweetalert.min.js"></script>
-
-<!-- Waves Effect Plugin Js -->
-<script src="assets/plugins/node-waves/waves.js"></script>
-
-<!-- Custom Js -->
-<script src="assets/js/admin.js"></script>
-<script src="assets/js/pages/forms/form-validation.js"></script>
-
-<!-- Demo Js -->
-<script src="assets/js/demo.js"></script>
+<script>
+    var testButton   = $('#test');
+    testButton.click(function(){
+        var table = document.getElementById("table1");
+        row=document.createElement("tr");
+        cell1 = document.createElement("td");
+        textnode1=document.createTextNode(data[0].name);
+        cell1.appendChild(textnode1);
+        cell2 = document.createElement("td");
+        row.appendChild(cell1);
+        table.appendChild(row);
+    });
+</script>
 </body>
 
 </html>
