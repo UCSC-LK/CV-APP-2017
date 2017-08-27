@@ -1,28 +1,31 @@
-<!-- File Upload | Drag & Drop OR With Click & Choose -->
 <div class="row clearfix">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="card">
             <div class="header">
                 <h2>
-                    PLEASE UPLOAD YOUR CV
+                    Upload Your CV
                 </h2>
             </div>
             <div class="body">
-                <form name="cvForm" method="post" enctype="multipart/form-data" action="/cv/upload">
+                <div class="form-line">
+                    <div id="cv-pdf-view">
+                        <p id="cv-pdf-view-name"></p>
+                    </div>
+                </div>
+                <form id="file_uplaod" name="cvForm" enctype="multipart/form-data" id="form_validation">
                     <div class="form-group">
                         <div class="form-line">
                             <div class="fallback">
-                                <input name="file" type="file" required/>
+                                <input name="file" type="file" accept="application/pdf" required/>
                             </div>
                         </div>
                     </div>
-                    <button class="btn btn-primary waves-effect" type="submit">SUBMIT</button>
+                    <button class="btn btn-primary waves-effect" type="submit" id="submit-btn">UPLOAD</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
-  <!-- #END# File Upload | Drag & Drop OR With Click & Choose -->
 
     <!-- Custom Js -->
     <!-- <script src="../../assets/js/admin.js"></script> -->
@@ -30,28 +33,124 @@
     <!-- Demo Js -->
     <!-- <script src="../../assets/js/demo.js"></script> -->
 
-    <script type="application/javascript" src="../../js/app.js"></script>
+    <script>
 
+        $(document).ready(function() {
+            // Getting cv details
+            $.ajax({
+                type: "GET",
+                url: "http://localhost:3000/cv",
+                data : {userID: userID},
+                dataType: "json",
+                success: function(response){
+                    if (response.success == true){
+                        if (response.data.length > 0) {
+                            setPdfView(response.data[0].filename);
+                        }
+                    } else {
+                        showErrorMessage("Something went wrong");
+                        console.log(response);
+                    }
+                    console.log(response);
+                },
+                error: function(xhr, status, error){
+                    console.log(xhr);
+                    console.log(status,error);
+                }
+            });
 
-<script>
-$(function () {
-    $('#change_password').validate({
-        highlight: function (input) {
-            console.log(input);
-            $(input).parents('.form-line').addClass('error');
-        },
-        unhighlight: function (input) {
-            $(input).parents('.form-line').removeClass('error');
-        },
-        errorPlacement: function (error, element) {
-            $(element).parents('.input-group').append(error);
-            $(element).parents('.form-group').append(error);
+            // Uploading new cv
+            $('#form_validation').submit(function (e) {
+                if($(this).valid()) {
+                    e.preventDefault();
+                    // check file type
+                    var ext = $('input[name=file]').val().split('.').pop().toLowerCase();
+                    if($.inArray(ext, ['pdf']) == -1) {
+                        showErrorMessage('We accept only PDF formatted file!', 'Error');
+                    } else {
+                        var formData = new FormData(this);
+                        formData.append('userID', userID);
+                        console.log(formData);
+                        $.ajax({
+                            type: "POST",
+                            url: "/cv/upload",
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            success: function (response) {
+                                if (response.success == true){
+                                    showSuccessMessage(response.msg);
+                                    setPdfView(response.data.filename);
+                                } else {
+                                    showErrorMessage(response.msg);
+                                    console.log(response);
+                                }
+                            },
+                            error: function(xhr, status, error){
+                                console.log(xhr);
+                                console.log(status,error);
+                            }
+                        });
+                    }
+                }
+                return false;
+            });
+        });
+
+        function setPdfView(filename) {
+            // clear input feild
+            $('input[name=file]').val('');
+//            $.ajax({
+//                type: "GET",
+//                url: "http://localhost:3000/cv/pdf",
+//                data : {filename: filename},
+//                dataType: "json",
+//                success: function(response){
+//                    //todo pdf view
+////                    if (response.success == true){
+////                        if (response.data) {
+////                            var obj =   "<object data=" + response.data.data + " type='application/pdf' width='300' height='200'>" +
+////                                            "alt : <a href='test.pdf'>test.pdf</a>" +
+////                                        "</object>";
+////                            $('#cv-pdf-view').append(obj);
+////                        }
+////                    } else {
+////                        showErrorMessage("Something went wrong loading your CV!");
+////                        console.log(response);
+////                    }
+//                    console.log(response);
+//                },
+//                error: function(xhr, status, error){
+//                    console.log(xhr);
+//                    console.log(status,error);
+//                }
+//            });
+            $('#cv-pdf-view-name').text(filename);
+            $('#submit-btn').text('UPDATE');
+
         }
-    });
-});
 
-$(function () {
-    $.AdminBSB.input.activate();
-    $.AdminBSB.select.activate();
-});
-</script>
+    </script>
+
+    <script>
+        $(function () {
+            $('#file_uplaod').validate({
+                highlight: function (input) {
+                    console.log(input);
+                    $(input).parents('.form-line').addClass('error');
+                },
+                unhighlight: function (input) {
+                    $(input).parents('.form-line').removeClass('error');
+                },
+                errorPlacement: function (error, element) {
+                    $(element).parents('.input-group').append(error);
+                    $(element).parents('.form-group').append(error);
+                }
+            });
+        });
+
+        $(function () {
+            $.AdminBSB.input.activate();
+            $.AdminBSB.select.activate();
+        });
+    </script>

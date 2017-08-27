@@ -108,14 +108,17 @@
                     </a>
                     <ul class="ml-menu">
                         <li class="active">
-                            <a href="student-data-form.html" class="ajax-pg">My Details</a>
+                            <a href="company-list.html" class="ajax-pg">Companies</a>
                         </li>
+
                         <li>
                             <a href="cv-view.html" class="ajax-pg">My CV</a>
                         </li>
+
                         <li>
-                            <a href="company-list.html" class="ajax-pg">Companies</a>
+                            <a href="student-data-form.html" class="ajax-pg">My Details</a>
                         </li>
+
                     </ul>
                 </li>
             </ul>
@@ -145,6 +148,7 @@
                 <!-- Ajax load here -->
             </div>
         </div>
+    </div>
 </section>
 
 
@@ -174,7 +178,7 @@
 
 <!-- Custom Js -->
 <script src="../../assets/js/admin.js"></script>
-<script src="../../assets/js/pages/forms/form-validation.js"></script>
+<!--<script src="../../assets/js/pages/forms/form-validation.js"></script>-->
 <script src="../../assets/js/pages/ui/dialogs.js"></script>
 
 <!-- Demo Js -->
@@ -191,7 +195,6 @@
 <script src="../../assets/plugins/jquery-datatable/extensions/export/buttons.html5.min.js"></script>
 <script src="../../assets/plugins/jquery-datatable/extensions/export/buttons.print.min.js"></script>
 
-
 <!-- Angular JS -->
 <!--<script type="application/javascript" src="../../assets/js/angular/angular-1.6.5.min.js"></script>-->
 <!--<script type="application/javascript" src="../../assets/js/angular/angular-resource-1.6.5.min.js"></script>-->
@@ -202,8 +205,12 @@
 
 </html>
 <script>
+    //Global userID
+    var userID;
 
     $(document).ready(function() {
+        userID = sessionStorage.getItem('user_id');
+
         var pageWrapper = $("#page-wrapper");
         $("a.ajax-pg").on("click", function(e) {
             e.preventDefault();
@@ -244,8 +251,7 @@
         });
     });
 
-    var jwt_token = sessionStorage.getItem('jwt_token');
-    console.log(jwt_token);
+
     var user_id = sessionStorage.getItem('user_id');
     console.log(user_id);
 
@@ -291,5 +297,4 @@
     }else{
       window.location.replace('../../index.html');
     }
-
 </script>

@@ -47,8 +47,12 @@ function showSuccessMessage(msg) {
     swal("Great!", msg, "success");
 }
 
-function showErrorMessage(msg) {
-    swal("Oops!", msg, "error");
+function showErrorMessage(msg, title) {
+    if (title) {
+        swal(title, msg, "error");
+    } else {
+        swal("Oops!", msg, "error");
+    }
 }
 
 function showConfirmMessage() {

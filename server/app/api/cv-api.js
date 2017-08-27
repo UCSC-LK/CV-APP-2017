@@ -7,7 +7,7 @@ var express = require('express'),
 
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, './assets/images/uploads/')
+        cb(null, './assets/uploads/')
     },
     filename: function (req, file, cb) {
         crypto.pseudoRandomBytes(16, function (err, raw) {
@@ -17,22 +17,20 @@ var storage = multer.diskStorage({
 });
 var upload = multer({ storage: storage });
 
+router.get('/', cvController.getCvDetails);
+
+router.get('/pdf', cvController.getCvPdf);
+
 router.post('/upload', upload.any(), function (req, res) {
-    console.log(req.body);
     var data = {
-        student: '59a1394f87fcd81f0b006983',
+        userID: req.body.userID,
         filename: req.files[0].filename,
         type: req.files[0].mimetype,
         path: req.files[0].path
     };
-    cvController.saveCv(data, function (result, error) {
-        if (error) {
-            res.send(result);
-        } else {
-            res.redirect('/views/cvView.html');
-        }
+    cvController.saveCv(data, function (result) {
+        res.json(result);
     });
-
 });
 
 module.exports = router;
