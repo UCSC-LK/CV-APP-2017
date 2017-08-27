@@ -1,73 +1,160 @@
-<html ng-app="cvApp">
-    <section class="content" ng-controller="studentController">
-        <div class="container-fluid">
-            <!-- Basic Validation -->
-            <div class="row clearfix">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="card">
-                        <div class="header">
-                            <h2>Setup Your Details</h2>
-                        </div>
-                        <div class="body">
-                            <form name="studentForm" id="form_validation" ng-submit="createStudent(studentForm.$valid)">
-                                <div class="form-group form-float">
-                                    <div class="form-line">
-                                        <input type="text" class="form-control" name="name" required ng-model="studentName">
-                                        <label class="form-label">Name</label>
-                                    </div>
+<section class="content" ng-app="cvApp">
+    <div class="container-fluid" ng-controller="studentController">
+        <!-- Basic Validation -->
+        <div class="row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="header">
+                        <h2>Setup Your Details</h2>
+                    </div>
+                    <div class="body">
+                        <form name="studentForm" id="form_validation">
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <input type="text" class="form-control" name="name" required ng-model="studentName">
+                                    <label class="form-label">Name</label>
                                 </div>
-                                <div class="form-group form-float">
-                                    <div class="form-line">
-                                        <input type="text" pattern="[0-9]{10}" title="Ten digit contact number" class="form-control" name="phone"
-                                               required ng-model="studentPhone">
-                                        <label class="form-label">Phone</label>
-                                    </div>
+                            </div>
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <input type="text" pattern="[0-9]{10}" title="Ten digit contact number" class="form-control" name="phone"
+                                           required ng-model="studentPhone">
+                                    <label class="form-label">Phone</label>
                                 </div>
-                                <div class="form-group">
-                                    <div class="form-line">
-                                        <input type="radio" name="year" id="4thyear" class="with-gap" value="4thyear" required ng-model="studentYear">
-                                        <label for="4thyear">4th year</label>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="radio" name="year" id="4thyear" class="with-gap" value="4thyear" required ng-model="studentYear">
+                                    <label for="4thyear">4th year</label>
 
-                                        <input type="radio" name="year" id="3rdyear" class="with-gap" value="3rdyear" required ng-model="studentYear">
-                                        <label for="3rdyear" class="m-l-20">3rd year</label>
+                                    <input type="radio" name="year" id="3rdyear" class="with-gap" value="3rdyear" required ng-model="studentYear">
+                                    <label for="3rdyear" class="m-l-20">3rd year</label>
 
-                                        <input type="radio" name="year" id="passedout" class="with-gap" value="passedout" required ng-model="studentYear">
-                                        <label for="passedout" class="m-l-20">Passed Out</label>
-                                    </div>
+                                    <input type="radio" name="year" id="passedout" class="with-gap" value="passedout" required ng-model="studentYear">
+                                    <label for="passedout" class="m-l-20">Passed Out</label>
                                 </div>
-                                <div class="form-group form-float">
-                                    <div class="form-line">
-                                        <input type="email" class="form-control" name="email" required ng-model="studentEmail">
-                                        <label class="form-label">Email</label>
-                                    </div>
+                            </div>
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <input type="email" class="form-control" name="email" required ng-model="studentEmail">
+                                    <label class="form-label">Email</label>
                                 </div>
-                                <div class="form-group">
-                                    <div class="form-line">
-                                        <input type="radio" name="stream" id="cs" class="with-gap" value="cs" required ng-model="studentStream">
-                                        <label for="cs">Computer Science</label>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="radio" name="stream" id="cs" class="with-gap" value="cs" required ng-model="studentStream">
+                                    <label for="cs">Computer Science</label>
 
-                                        <input type="radio" name="stream" id="is" class="with-gap" value="is" required ng-model="studentStream">
-                                        <label for="is" class="m-l-20">Information Systems</label>
-                                    </div>
+                                    <input type="radio" name="stream" id="is" class="with-gap" value="is" required ng-model="studentStream">
+                                    <label for="is" class="m-l-20">Information Systems</label>
                                 </div>
-                                <button class="btn btn-primary waves-effect" type="submit">SUBMIT</button>
-                            </form>
-                        </div>
+                            </div>
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <input type="text" class="form-control" name="userid" ng-model="studentUserID">
+                                    <label class="form-label">User ID</label>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary waves-effect" type="submit" id="submit-btn">SAVE</button>
+                        </form>
                     </div>
                 </div>
             </div>
-            <!-- #END# Basic Validation -->
         </div>
-    </section>
-    <!-- Custom Js -->
-    <script src="../../assets/js/admin.js"></script>
-    <script src="../../assets/js/pages/forms/form-validation.js"></script>
-    <!-- Demo Js -->
-    <script src="../../assets/js/demo.js"></script>
+        <!-- #END# Basic Validation -->
+    </div>
+</section>
+<!-- Custom Js -->
+<!--<script src="../../assets/js/admin.js"></script>-->
+<!--<script src="../../assets/js/pages/forms/form-validation.js"></script>-->
+<!-- Demo Js -->
+<!--<script src="../../assets/js/demo.js"></script>-->
 
-    <script type="application/javascript" src="../../js/app.js"></script>
-    <script type="application/javascript" src="../../js/controllers/student-controller.js"></script>
+<!--<script type="application/javascript" src="../../js/app.js"></script>-->
+<!--<script type="application/javascript" src="../../js/controllers/student-controller.js"></script>-->
 
+<script>
+    //Global userID
+    var userID;
 
+    // Setting student data in the form if already filled up
+    $(document).ready(function() {
+        // todo should come from a session
+        userID = "59a13d0fc80fd5df48df032b";
 
-</html>
+        // Getting data
+        $.ajax({
+            type: "GET",
+            url: "http://localhost:3000/student",
+            data : {userID: userID},
+            dataType: "json",
+            success: function(response){
+                if (response.success == true){
+                    if (response.data.length > 0) {
+                        var student = response.data[0];
+                        setStudentDetails(student);
+                    }
+                } else {
+                    showErrorMessage("Something went wrong");
+                    console.log(response);
+                }
+            },
+            error: function(xhr, status, error){
+                console.log(xhr);
+                console.log(status,error);
+            }
+        });
+
+        $('#form_validation').submit(function () {
+            if($(this).valid()) {
+                saveStudentDetails();
+            }
+            return false;
+        });
+    });
+
+    // Set details in student data form
+    function setStudentDetails(student) {
+        $("input[name=name]").val(student.name);
+        $("input[name=name]").parent().addClass('focused');
+        $("input[name=phone]").val(student.phone);
+        $("input[name=phone]").parent().addClass('focused');
+        $("input[name=year][value=" + student.year + "]").attr('checked', 'checked');
+        $("input[name=email]").val(student.email);
+        $("input[name=email]").parent().addClass('focused');
+        $("input[name=stream][value=" + student.stream + "]").attr('checked', 'checked');
+
+        $('#submit-btn').text('UPDATE');
+    }
+
+    // Save new student detail or update existing
+    function saveStudentDetails() {
+        var student = {};
+        student.name = $("input[name=name]").val();
+        student.phone = $("input[name=phone]").val();
+        student.year = $('input[name=year]:checked').val();
+        student.email = $("input[name=email]").val();
+        student.stream = $("input[name=stream]:checked").val();
+        student.userID = userID;
+
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:3000/student",
+            data : student,
+            dataType: "json",
+            success: function(response){
+                if (response.success == true){
+                    showSuccessMessage(response.msg);
+                } else {
+                    showErrorMessage("Something went wrong");
+                    console.log(response);
+                }
+            },
+            error: function(xhr, status, error){
+                console.log(xhr);
+                console.log(status,error);
+            }
+        });
+    }
+
+</script>
