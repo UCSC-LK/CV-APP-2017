@@ -8,7 +8,6 @@ var express = require('express'),
 
 router.get('/companies/:query', studentCompanyController.getStudentsForCompany);
 router.get('/students/:query', studentCompanyController.getCompaniesForStudent);
-
 router.post('/', studentCompanyController.addStudentCompany);
 
 module.exports = router;
