@@ -27,7 +27,7 @@ app.use(express.static(path.join(__dirname, '../client')));
 // app.use(express.static(path.join(__dirname, '../client2')));
 
 app.use('/assets', express.static('../client/assets'));
-
+app.use('/uploads', express.static('assets/uploads'));
 
 require('./app/config/passport')(passport); // pass passport for configuration
 

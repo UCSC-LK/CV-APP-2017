@@ -114,7 +114,7 @@
                             <a href="student-data-form.html" class="ajax-pg">My Details</a>
                         </li>
                         <li>
-                            <a href="cv-view.html" class="ajax-pg">My CV</a>
+                            <a href="cv-view.html" class="ajax-pg toggled">My CV</a>
                         </li>
                     </ul>
                 </li>
@@ -216,6 +216,7 @@
             pageWrapper.load(this.href);
             $('.ml-menu li.active').removeClass('active');
             $(this).closest('li').addClass('active');
+            console.log($(this));
         });
         window.onload = pageWrapper.load('company-list.html');
     });

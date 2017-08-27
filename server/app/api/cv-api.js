@@ -19,8 +19,6 @@ var upload = multer({ storage: storage });
 
 router.get('/', cvController.getCvDetails);
 
-router.get('/pdf', cvController.getCvPdf);
-
 router.post('/upload', upload.any(), function (req, res) {
     var data = {
         userID: req.body.userID,
