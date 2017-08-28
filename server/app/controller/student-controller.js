@@ -6,7 +6,8 @@ module.exports.getStudents = function (req, res) {
         if (err) {
             res.send(err);
         } else {
-            res.json(result);
+            var temp = {"result":result};
+            res.json(temp);
         }
     });
 };

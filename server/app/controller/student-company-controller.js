@@ -7,8 +7,8 @@ var jsend = require('jsend');
 
 module.exports.getStudentsForCompany = function (req, res) {
     StudentCompany.find({'student': req.params.query},"company", function (err, result) {
-        console.log(req.payload);
-        res.json( {result} );
+        var temp = {"result":result};
+        res.json(temp);
     });
 };
 
@@ -24,5 +24,5 @@ module.exports.addStudentCompany = function (req, res) {
         res.json(jsend.fromArguments(err, result));
     });
 
-// need remove  StudentCompany objcet. provid it _id 
+// need remove  StudentCompany objcet. provid it _id
 };
