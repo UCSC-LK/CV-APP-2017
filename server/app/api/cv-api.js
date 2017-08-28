@@ -15,19 +15,30 @@ var storage = multer.diskStorage({
         });
     }
 });
-var upload = multer({ storage: storage });
+var upload = multer({
+                storage: storage
+            }).any();
 
 router.get('/', cvController.getCvDetails);
 
-router.post('/upload', upload.any(), function (req, res) {
-    var data = {
-        userID: req.body.userID,
-        filename: req.files[0].filename,
-        type: req.files[0].mimetype,
-        path: req.files[0].path
-    };
-    cvController.saveCv(data, function (result) {
-        res.json(result);
+router.post('/upload', function (req, res) {
+    console.log("Uploading file...");
+    upload(req, res, function (err) {
+        if (err) {
+            console.log("Uploading file failed!");
+            res.json({success: false, msg: 'Some thing went wrong. Please contact site admin.', error: err});
+            return;
+        }
+        console.log("Uploading file complete.");
+        var data = {
+            userID: req.body.userID,
+            filename: req.files[0].filename,
+            type: req.files[0].mimetype,
+            path: req.files[0].path
+        };
+        cvController.saveCv(data, function (result) {
+            res.json(result);
+        });
     });
 });
 

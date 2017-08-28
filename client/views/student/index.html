@@ -34,172 +34,166 @@
 </head>
 
 <body class="theme-blue">
-<!-- Page Loader -->
-<div class="page-loader-wrapper">
-    <div class="loader">
-        <div class="preloader">
-            <div class="spinner-layer pl-blue">
-                <div class="circle-clipper left">
-                    <div class="circle"></div>
+    <!-- Page Loader -->
+    <div class="page-loader-wrapper">
+        <div class="loader">
+            <div class="preloader">
+                <div class="spinner-layer pl-blue">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
                 </div>
-                <div class="circle-clipper right">
-                    <div class="circle"></div>
+            </div>
+            <p>Please wait...</p>
+        </div>
+    </div>s
+    <!-- #END# Page Loader -->
+    <!-- Overlay For Sidebars -->
+    <div class="overlay"></div>
+    <!-- #END# Overlay For Sidebars -->
+
+    <!-- Top Bar -->
+    <nav class="navbar">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
+                <a href="javascript:void(0);" class="bars"></a>
+                <a class="navbar-brand" href="../../index.html">Welcome to UCSC CV App 2017</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <!-- User Menu -->
+                    <li class="dropdown">
+                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button">
+                            <i class="material-icons">keyboard_arrow_down</i>
+                        </a>
+                        <ul class="dropdown-menu pull-right">
+                            <li><a href="profile.html" class = "ajax-pg"><i class="material-icons">lock</i>Change Password</a></li>
+                            <li role="seperator" class="divider"></li>
+                            <li><a id="logoutButton"> <i class="material-icons">input</i>Sign Out</a></li>
+                        </ul>
+                    </li>
+                    <!-- #END# User Menu -->
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- #Top Bar -->
+    <section>
+        <!-- Left Sidebar -->
+        <aside id="leftsidebar" class="sidebar">
+            <!-- User Info -->
+            <div class="user-info">
+                <div class="image">
+                    <img src="../../assets/images/user.png" width="48" height="48" alt="User" />
+                </div>
+                <div class="info-container">
+                    <div class="name" data-toggle="dropdown" aria-haspopup="true" id="username"aria-expanded="false">John Doe</div>
+                    <!-- <div class="email">john.doe@example.com</div> -->
+                </div>
+            </div>
+            <!-- #User Info -->
+            <!-- Menu -->
+            <div class="menu">
+                <ul class="list">
+                    <li class="header">STUDENT SECTION</li>
+                    <li class="active">
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">view_list</i>
+                            <span>My Account</span>
+                        </a>
+                        <ul class="ml-menu">
+                            <li class="active">
+                                 <a href="schedule.html" class="ajax-pg toggled">Schedule</a>
+                            </li>
+                            <li >
+                                <a href="student-data-form.html" class="ajax-pg toggled">My details</a>
+                            </li>
+                            <li>
+                                <a href="cv-view.html" class="ajax-pg toggled">My CV</a>
+                            </li>
+                            <li >
+                                <a href="company-select.html" class="ajax-pg toggled">My companies</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!-- #Menu -->
+            <!-- Footer -->
+            <div class="legal">
+                <div class="copyright">
+                    &copy; 2017 - 2018 <a href="javascript:void(0);">UCSC CV App</a>.
+                </div>
+                <!-- <div class="version">
+                    <b>Version: </b> 1.0.0
+                </div> -->
+            </div>
+            <!-- #Footer -->
+        </aside>
+        <!-- #END# Left Sidebar -->
+
+    </section>
+
+    <!-- <div id="page-wrapper"></div> -->
+    <section class="content">
+        <div class="container-fluid">
+            <div id="page-wrapper" >
+                <div class="block-header">
+                    <h2>BLANK PAGE</h2>
+                    <!-- Ajax load here -->
                 </div>
             </div>
         </div>
-        <p>Please wait...</p>
-    </div>
-</div>s
-<!-- #END# Page Loader -->
-<!-- Overlay For Sidebars -->
-<div class="overlay"></div>
-<!-- #END# Overlay For Sidebars -->
-
-<!-- Top Bar -->
-<nav class="navbar">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
-            <a href="javascript:void(0);" class="bars"></a>
-            <a class="navbar-brand" href="../../index.html">Welcome to UCSC CV App 2017</a>
-        </div>
-        <div class="collapse navbar-collapse" id="navbar-collapse">
-            <ul class="nav navbar-nav navbar-right">
-                <!-- User Menu -->
-                <li class="dropdown">
-                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button">
-                        <i class="material-icons">keyboard_arrow_down</i>
-                    </a>
-                    <ul class="dropdown-menu pull-right">
-                        <li><a href="profile.html" class = "ajax-pg"><i class="material-icons">lock</i>Change Password</a></li>
-                        <li role="seperator" class="divider"></li>
-                        <li><a id="logoutButton"> <i class="material-icons">input</i>Sign Out</a></li>
-                    </ul>
-                </li>
-                <!-- #END# User Menu -->
-            </ul>
-        </div>
-    </div>
-</nav>
-<!-- #Top Bar -->
-<section>
-    <!-- Left Sidebar -->
-    <aside id="leftsidebar" class="sidebar">
-        <!-- User Info -->
-        <div class="user-info">
-            <div class="image">
-                <img src="../../assets/images/user.png" width="48" height="48" alt="User" />
-            </div>
-            <div class="info-container">
-                <div class="name" data-toggle="dropdown" aria-haspopup="true" id="username"aria-expanded="false">John Doe</div>
-                <!-- <div class="email">john.doe@example.com</div> -->
-            </div>
-        </div>
-        <!-- #User Info -->
-        <!-- Menu -->
-        <div class="menu">
-            <ul class="list">
-                <li class="header">STUDENT SECTION</li>
-                <li class="active">
-                    <a href="javascript:void(0);" class="menu-toggle">
-                        <i class="material-icons">view_list</i>
-                        <span>My Account</span>
-                    </a>
-                    <ul class="ml-menu">
-                        <li class="active">
-                             <a href="schedule.html" class="ajax-pg toggled">Schedule</a>
-                        </li>
-                        <li >
-                            <a href="student-data-form.html" class="ajax-pg toggled">My details</a>
-                        </li>
-                        <li>
-                            <a href="cv-view.html" class="ajax-pg toggled">My CV</a>
-                        </li>
-                        <li >
-                            <a href="company-select.html" class="ajax-pg toggled">My companies</a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-        <!-- #Menu -->
-        <!-- Footer -->
-        <div class="legal">
-            <div class="copyright">
-                &copy; 2017 - 2018 <a href="javascript:void(0);">UCSC CV App</a>.
-            </div>
-            <!-- <div class="version">
-                <b>Version: </b> 1.0.0
-            </div> -->
-        </div>
-        <!-- #Footer -->
-    </aside>
-    <!-- #END# Left Sidebar -->
-
-</section>
-
-<!-- <div id="page-wrapper"></div> -->
-<section class="content">
-    <div class="container-fluid">
-        <div id="page-wrapper" >
-            <div class="block-header">
-                <h2>BLANK PAGE</h2>
-                <!-- Ajax load here -->
-            </div>
-        </div>
-    </div>
-</section>
+    </section>
 
 
-<!-- Jquery Core Js -->
-<script src="../../assets/plugins/jquery/jquery.min.js"></script>
+    <!-- Jquery Core Js -->
+    <script src="../../assets/plugins/jquery/jquery.min.js"></script>
 
-<!-- Bootstrap Core Js -->
-<script src="../../assets/plugins/bootstrap/js/bootstrap.js"></script>
+    <!-- Bootstrap Core Js -->
+    <script src="../../assets/plugins/bootstrap/js/bootstrap.js"></script>
 
-<!-- Select Plugin Js -->
-<script src="../../assets/plugins/bootstrap-select/js/bootstrap-select.js"></script>
+    <!-- Select Plugin Js -->
+    <script src="../../assets/plugins/bootstrap-select/js/bootstrap-select.js"></script>
 
-<!-- Slimscroll Plugin Js -->
-<script src="../../assets/plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
+    <!-- Slimscroll Plugin Js -->
+    <script src="../../assets/plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
 
-<!-- Jquery Validation Plugin Css -->
-<script src="../../assets/plugins/jquery-validation/jquery.validate.js"></script>
+    <!-- Jquery Validation Plugin Css -->
+    <script src="../../assets/plugins/jquery-validation/jquery.validate.js"></script>
 
-<!-- JQuery Steps Plugin Js -->
-<script src="../../assets/plugins/jquery-steps/jquery.steps.js"></script>
+    <!-- JQuery Steps Plugin Js -->
+    <script src="../../assets/plugins/jquery-steps/jquery.steps.js"></script>
 
-<!-- Sweet Alert Plugin Js -->
-<script src="../../assets/plugins/sweetalert/sweetalert.min.js"></script>
+    <!-- Sweet Alert Plugin Js -->
+    <script src="../../assets/plugins/sweetalert/sweetalert.min.js"></script>
 
-<!-- Waves Effect Plugin Js -->
-<script src="../../assets/plugins/node-waves/waves.js"></script>
+    <!-- Waves Effect Plugin Js -->
+    <script src="../../assets/plugins/node-waves/waves.js"></script>
 
-<!-- Custom Js -->
-<script src="../../assets/js/admin.js"></script>
-<!--<script src="../../assets/js/pages/forms/form-validation.js"></script>-->
-<script src="../../assets/js/pages/ui/dialogs.js"></script>
+    <!-- Custom Js -->
+    <script src="../../assets/js/admin.js"></script>
+    <!--<script src="../../assets/js/pages/forms/form-validation.js"></script>-->
+    <script src="../../assets/js/pages/ui/dialogs.js"></script>
 
-<!-- Demo Js -->
-<script src="../../assets/js/demo.js"></script>
+    <!-- Demo Js -->
+    <script src="../../assets/js/demo.js"></script>
 
-<!-- Jquery DataTable Plugin Js -->
-<script src="../../assets/plugins/jquery-datatable/jquery.dataTables.js"></script>
-<script src="../../assets/plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js"></script>
-<script src="../../assets/plugins/jquery-datatable/extensions/export/dataTables.buttons.min.js"></script>
-<script src="../../assets/plugins/jquery-datatable/extensions/export/buttons.flash.min.js"></script>
-<script src="../../assets/plugins/jquery-datatable/extensions/export/jszip.min.js"></script>
-<script src="../../assets/plugins/jquery-datatable/extensions/export/pdfmake.min.js"></script>
-<script src="../../assets/plugins/jquery-datatable/extensions/export/vfs_fonts.js"></script>
-<script src="../../assets/plugins/jquery-datatable/extensions/export/buttons.html5.min.js"></script>
-<script src="../../assets/plugins/jquery-datatable/extensions/export/buttons.print.min.js"></script>
+    <!-- Jquery DataTable Plugin Js -->
+    <script src="../../assets/plugins/jquery-datatable/jquery.dataTables.js"></script>
+    <script src="../../assets/plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js"></script>
+    <script src="../../assets/plugins/jquery-datatable/extensions/export/dataTables.buttons.min.js"></script>
+    <script src="../../assets/plugins/jquery-datatable/extensions/export/buttons.flash.min.js"></script>
+    <script src="../../assets/plugins/jquery-datatable/extensions/export/jszip.min.js"></script>
+    <script src="../../assets/plugins/jquery-datatable/extensions/export/pdfmake.min.js"></script>
+    <script src="../../assets/plugins/jquery-datatable/extensions/export/vfs_fonts.js"></script>
+    <script src="../../assets/plugins/jquery-datatable/extensions/export/buttons.html5.min.js"></script>
+    <script src="../../assets/plugins/jquery-datatable/extensions/export/buttons.print.min.js"></script>
 
-<!-- Angular JS -->
-<!--<script type="application/javascript" src="../../assets/js/angular/angular-1.6.5.min.js"></script>-->
-<!--<script type="application/javascript" src="../../assets/js/angular/angular-resource-1.6.5.min.js"></script>-->
-<!--<script type="application/javascript" src="../../assets/js/angular/angular-route-1.6.5.min.js"></script>-->
-<!--<script type="application/javascript" src="../../js/app.js"></script>-->
-<!-- <script type="application/javascript" src="../../js/controllers/student-controller.js"></script> -->
 </body>
 
 </html>
@@ -238,8 +232,8 @@
                     sessionStorage.removeItem('jwt_token');
                     sessionStorage.removeItem('user_id');
                     console.log(response);
-                }else{
-                    alert("Something went wrong")
+                } else {
+                    showErrorMessage("Something went wrong");
                 }
                 console.log(response);
             },
@@ -252,7 +246,7 @@
 
 
     var user_id = sessionStorage.getItem('user_id');
-    console.log(user_id);
+//    console.log(user_id);
 
     function getToken(){
       return sessionStorage.getItem('jwt_token');
@@ -267,7 +261,7 @@
         payload = window.atob(payload);
         payload = JSON.parse(payload);
 
-        console.log(payload);
+//        console.log(payload);
         return payload.exp > Date.now() / 1000;
       } else {
         return false;
