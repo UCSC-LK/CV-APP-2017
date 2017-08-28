@@ -8,5 +8,6 @@ module.exports = mongoose.model('StudentCompany', {
     student: String,
     company: String,
     position: [String],
-    choice: String
+    choice: String,
+    timeStamp:String
 });

@@ -20,6 +20,7 @@ module.exports.getCompaniesForStudent = function (req, res) {
 
 module.exports.addStudentCompany = function (req, res) {
     var studentCompany = new StudentCompany(req.body);
+    studentCompany.timeStamp = Date.now();
     studentCompany.save(function (err, result) {
         res.json(jsend.fromArguments(err, result));
     });
