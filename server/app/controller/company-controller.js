@@ -8,7 +8,7 @@ var jsend = require('jsend');
 
 module.exports.getCompanies = function (req, res) {
     Company.find({}, function (err, result) {
-        res.json({result});
+        res.json(result);
     });
 };
 
