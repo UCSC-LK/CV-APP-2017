@@ -22,12 +22,53 @@
             </div>
         </div>
     </div>
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>
+                    Available Company
+                </h2>
+            </div>
+            <div class="body">
+                <table id = "companyTable" class="table table-bordered table-striped table-hover" cellspacing="0" width="100%">
+                    <thead>
+                    <tr>
+                        <th>Company</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>
+                    Schedule
+                </h2>
+            </div>
+            <div class="body">
+                <table id = "scheduleTable" class="table table-bordered table-striped table-hover" cellspacing="0" width="100%">
+                    <thead>
+                    <tr>
+                        <th>Company</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- #END# Exportable Table -->
 
 <script>
 $(document).ready(function() {
-  var studentTable = $('#studentTable').DataTable({
+    var selectButton =  '<a class="btn btn-warning waves-effect btn-sm ajaxSelect"> </span> Select</a>';
+
+    var studentTable = $('#studentTable').DataTable({
     dom: 'Bfrtip',
     responsive: true,
     buttons: [
@@ -44,6 +85,42 @@ $(document).ready(function() {
           { "data": "email" },
           { "data": "stream" }
       ]
-  });
+    });
+
+    var companyTable = $('#companyTable').DataTable({
+        dom: 'Bfrtip',
+        responsive: true,
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        ajax: {
+            url: 'http://localhost:3000/selected_student_company/students/' + user_id,
+            dataSrc: 'result'
+        },
+        "columns": [
+            { "data": "company" },
+            {   "data": null,
+                "defaultContent": selectButton
+            }
+        ]
+    });
+
+    var scheduleTable = $('#scheduleTable').DataTable({
+        dom: 'Bfrtip',
+        responsive: true,
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        ajax: {
+            url: 'http://localhost:3000/student/all',
+            dataSrc: 'result'
+        },
+        "columns": [
+            { "data": "name" },
+            {   "data": null,
+                "defaultContent": "Hi"
+            }
+        ]
+    });
 });
 </script>
