@@ -1,9 +1,5 @@
-/**
- * Created by vibodha on 8/28/17.
- */
-
-
 var SelectedStudentCompany = require('../model/selected-student-company');
+var Student = require('../model/student');
 var jsend = require('jsend');
 
 module.exports.getSelectedStudentsForCompany = function (req, res) {
@@ -13,9 +9,22 @@ module.exports.getSelectedStudentsForCompany = function (req, res) {
     });
 };
 
-module.exports.getSelectedCompaniesForStudent = function (req, res) {
-    SelectedStudentCompany.find({'company': req.params.query},"student", function (err, result) {
-        res.json(result);
+module.exports.getSelectedStudentsByCompany = function (req, res) {
+    SelectedStudentCompany.find({'company': req.params.query},"student -_id", function (err, result) {
+        if (err) {
+            return res.json({success: false, error: err});
+        }
+        //Getting student data
+        var students = [];
+        result.forEach(function(item){
+            students.push(item.student);
+        });
+        Student.find({'userID': {$in:students}}, function (err, result1) {
+            if (err) {
+                return res.json({success: false, error: err});
+            }
+            res.json({success: true, result:result1});
+        });
     });
 };
 
