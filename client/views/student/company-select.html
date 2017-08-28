@@ -1,0 +1,208 @@
+<!-- Exportable Table -->
+<div class="row clearfix">
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>
+                    Available Company
+                </h2>
+            </div>
+            <div class="body">
+                <table id = "companyTable" class="table table-bordered table-striped table-hover" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Company</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>
+                    Chosed Company
+                </h2>
+            </div>
+            <div class="body">
+                <table id = "chosedTable" class="table table-bordered table-striped table-hover" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Company</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- #END# Exportable Table -->
+
+
+
+<script>
+$(document).ready(function() {
+
+  var selectButton =  '<a class="btn btn-warning waves-effect btn-sm ajaxSelect"> </span> Select</a>';
+  var removeButton =  '<a class="btn btn-danger waves-effect btn-sm ajaxRemove"> Remove</a>';
+  var ajaxRemove = "ajaxRemove";
+  var ajaxSelect = "ajaxSelect";
+
+  var companyTable = $('#companyTable').DataTable({
+    dom: 'Bfrtip',
+    responsive: true,
+    buttons: [
+        'copy', 'csv', 'excel', 'pdf', 'print'
+    ],
+      ajax: {
+          url: 'http://localhost:3000/company',
+          dataSrc: 'result',
+      },
+      "columns": [
+          { "data": "name" },
+          {   "data": null,
+              "defaultContent": selectButton
+          }
+      ],
+  });
+
+  var chosedTable = $('#chosedTable').DataTable({
+    dom: 'Bfrtip',
+    responsive: true,
+    buttons: [
+        'copy', 'csv', 'excel', 'pdf', 'print'
+    ],
+      ajax: {
+          url: 'http://localhost:3000/student_company/companies/'+user_id,
+          dataSrc: 'result',
+      },
+      "columns": [
+          { "data": "company" },
+          {   "data": null,
+              "defaultContent": removeButton
+          }
+      ],
+  });
+
+  chosedTable.on("click","." + ajaxRemove,function(){
+        var rowData = chosedTable.row( $(this).parents('tr') ).data();
+        console.log(rowData);
+        // showAjaxLoaderMessage()
+        if(confirm("Do you really want to delete record ?" + rowData["company"])){
+            var thisRow = $(this).parents('tr');
+            var para = '&_id=' + rowData['_id'];
+            // ajaxSend(para,"ajaxRemove",thisRow);
+            console.log(para);
+        }
+    });
+
+    companyTable.on("click","." + ajaxSelect,function(){
+          var rowData = companyTable.row( $(this).parents('tr') ).data();
+          console.log(rowData);
+          url = "http://localhost:3000/student_company"
+          // if(confirm("Do you really want to select this company ?" + rowData["name"])){
+          //     var thisRow = $(this).parents('tr');
+          //     var para = '&student=' + user_id + '&company=' +
+          //     rowData['_id'] + '&companyName=' + rowData['name'] + '&position=' + rowData['name']
+          //     + '&choice=' + rowData['name'];
+          //     ajaxSend(para,"ajaxSelect",thisRow,url,rowData);
+          //     console.log(para);
+          // }
+
+          var thisRow = $(this).parents('tr');
+          var para = '&student=' + user_id + '&company=' +
+          rowData['_id'] + '&companyName=' + rowData['name'] + '&position=' + rowData['name']
+          + '&choice=' + rowData['name'];
+          swal({
+              title: "Do you really want to select this company ?",
+              text: "-",
+              type: "info",
+              showCancelButton: true,
+              closeOnConfirm: false,
+              showLoaderOnConfirm: true,
+          },function () {
+              ajaxSend(para,"ajaxSelect",thisRow,url,rowData);
+          });
+
+      });
+
+
+      function ajaxSend(params,action,clickRow,url){
+        $.ajax({
+            type: "POST",
+            url: url,
+            data : params,
+            dataType: "json",
+            success: function(response){
+                switch (action){
+                    case "ajaxRemove":
+                        if(response.success == true){
+                            showRemoveSuccessMessage()
+                            // chosedTable.row(clickRow).remove().draw();
+                            // cchosedTable.row.add(rowData).draw( false );
+                            // chosedTable.ajax.reload(null, false )
+                        }else{
+                            // alert("Unexpected error #1, Please try again");
+                            showErrorMessage("Unexpected error #1, Please try again")
+                        }
+                        break;
+
+                    case "ajaxSelect":
+                        if(response.status == 'success'){
+                            showSelectSuccessMessage()
+                            companyTable.row(clickRow).remove().draw();
+                            chosedTable.ajax.reload(null, false )
+                        }else{
+                            // alert("Unexpected error #1, Please try again")
+                            showErrorMessage("Unexpected error #2, Please try again")
+                        }
+                        break;
+                }
+            },
+            error: function(xhr, status, error){
+                console.log(xhr);
+                alert("Unexpected error");
+                console.log(status,error);
+                showErrorMessage(error);
+            }
+        });
+      };
+
+
+      function showSelectSuccessMessage() {
+        swal("Company selection successfuly!",'', "success");
+      }
+
+      function showRemoveSuccessMessage() {
+        swal("Company selection successfuly!",'', "success");
+      }
+
+      function showErrorMessage(msg) {
+        swal(msg+"!",'', "error");
+      }
+
+      function showAjaxLoaderMessage() {
+          swal({
+              title: "Do you really want to select this company ?",
+              text: "Submit to run ajax request",
+              type: "info",
+              showCancelButton: true,
+              closeOnConfirm: false,
+              showLoaderOnConfirm: true,
+          },function () {
+              console.log("Hello World");
+              setTimeout(function () {
+                  swal("Ajax request finished!");
+              }, 2000);
+          });
+        }
+  });
+
+
+
+
+</script>

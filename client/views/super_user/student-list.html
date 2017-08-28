@@ -4,15 +4,18 @@
         <div class="card">
             <div class="header">
                 <h2>
-                    Company Table
+                    Student Table
                 </h2>
             </div>
             <div class="body">
-                <table id = "companyTable" class="table table-bordered table-striped table-hover">
+                <table id = "studentTable" class="table table-bordered table-striped table-hover">
                     <thead>
                         <tr>
-                            <th>Id</th>
-                            <th>Company</th>
+                            <th>Name</th>
+                            <th>Phone</th>
+                            <th>Year</th>
+                            <th>Email</th>
+                            <th>Stream</th>
                         </tr>
                     </thead>
                 </table>
@@ -24,19 +27,22 @@
 
 <script>
 $(document).ready(function() {
-  var companyTable = $('#companyTable').DataTable({
+  var studentTable = $('#studentTable').DataTable({
     dom: 'Bfrtip',
     responsive: true,
     buttons: [
         'copy', 'csv', 'excel', 'pdf', 'print'
     ],
       ajax: {
-          url: 'http://localhost:3000/student_company/companies/Viboda',
-          dataSrc: 'result',
+          url: 'http://localhost:3000/student/all',
+          dataSrc: 'result'
       },
       "columns": [
-          { "data": "_id" },
-          { "data": "company" }
+          { "data": "name" },
+          { "data": "phone" },
+          { "data": "year" },
+          { "data": "email" },
+          { "data": "stream" }
       ]
   });
 });

@@ -1,0 +1,43 @@
+<!-- Exportable Table -->
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>
+                    Schdule Table
+                </h2>
+            </div>
+            <div class="body">
+                <table id = "schduleTable" class="table table-bordered table-striped table-hover" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Company</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- #END# Exportable Table -->
+
+<script>
+$(document).ready(function() {
+  var schduleTable = $('#schduleTable').DataTable({
+    dom: 'Bfrtip',
+    responsive: true,
+    buttons: [
+        'copy', 'csv', 'excel', 'pdf', 'print'
+    ],
+      ajax: {
+          url: 'http://localhost:3000/student_company/companies/'+userID,
+          dataSrc: 'result',
+      },
+      "columns": [
+          { "data": "_id" },
+          { "data": "company" }
+      ]
+  });
+});
+</script>
