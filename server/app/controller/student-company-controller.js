@@ -3,18 +3,25 @@
  */
 
 var StudentCompany = require('../model/student-company');
+var Student = require('../model/student');
+var Company = require('../model/company');
 var jsend = require('jsend');
 
 module.exports.getStudentsForCompany = function (req, res) {
     StudentCompany.find({'student': req.params.query},"company", function (err, result) {
-        var temp = {"result":result};
-        res.json(temp);
+        Company.find({'company': result.company}, function (err, result1) {
+            var temp = {"result":result1};
+            res.json(temp);
+        });
     });
 };
 
 module.exports.getCompaniesForStudent = function (req, res) {
     StudentCompany.find({'company': req.params.query},"student", function (err, result) {
-        res.json(result);
+        Student.find({'student': result.student}, function (err, result1) {
+            var temp = {"result":result1};
+            res.json(temp);
+        });
     });
 };
 
