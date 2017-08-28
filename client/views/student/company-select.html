@@ -59,7 +59,7 @@ $(document).ready(function() {
         'copy', 'csv', 'excel', 'pdf', 'print'
     ],
       ajax: {
-          url: 'http://localhost:3000/company',
+          url: 'http://localhost:3000/company/withoutselected/'+user_id,
           dataSrc: 'result',
       },
       "columns": [
@@ -91,28 +91,26 @@ $(document).ready(function() {
   chosedTable.on("click","." + ajaxRemove,function(){
         var rowData = chosedTable.row( $(this).parents('tr') ).data();
         console.log(rowData);
-        // showAjaxLoaderMessage()
-        if(confirm("Do you really want to delete record ?" + rowData["company"])){
-            var thisRow = $(this).parents('tr');
-            var para = '&_id=' + rowData['_id'];
-            // ajaxSend(para,"ajaxRemove",thisRow);
-            console.log(para);
-        }
+        var thisRow = $(this).parents('tr');
+        var para = '';
+        url = 'http://localhost:3000/student_company/'+rowData['_id']
+        console.log(url);
+        swal({
+            title: "Do you really want to delete this company ?",
+            text: "-",
+            type: "info",
+            showCancelButton: true,
+            closeOnConfirm: false,
+            showLoaderOnConfirm: true,
+        },function () {
+            ajaxSend("DELETE",para,"ajaxRemove",thisRow,url);
+        });
     });
 
     companyTable.on("click","." + ajaxSelect,function(){
           var rowData = companyTable.row( $(this).parents('tr') ).data();
           console.log(rowData);
           url = "http://localhost:3000/student_company"
-          // if(confirm("Do you really want to select this company ?" + rowData["name"])){
-          //     var thisRow = $(this).parents('tr');
-          //     var para = '&student=' + user_id + '&company=' +
-          //     rowData['_id'] + '&companyName=' + rowData['name'] + '&position=' + rowData['name']
-          //     + '&choice=' + rowData['name'];
-          //     ajaxSend(para,"ajaxSelect",thisRow,url,rowData);
-          //     console.log(para);
-          // }
-
           var thisRow = $(this).parents('tr');
           var para = '&student=' + user_id + '&company=' +
           rowData['_id'] + '&companyName=' + rowData['name'] + '&position=' + rowData['name']
@@ -125,26 +123,24 @@ $(document).ready(function() {
               closeOnConfirm: false,
               showLoaderOnConfirm: true,
           },function () {
-              ajaxSend(para,"ajaxSelect",thisRow,url,rowData);
+              ajaxSend("POST",para,"ajaxSelect",thisRow,url);
           });
-
       });
 
 
-      function ajaxSend(params,action,clickRow,url){
+      function ajaxSend(type,params,action,clickRow,url){
         $.ajax({
-            type: "POST",
+            type: type,
             url: url,
             data : params,
             dataType: "json",
             success: function(response){
                 switch (action){
                     case "ajaxRemove":
-                        if(response.success == true){
+                        if(response.status == 'success'){
                             showRemoveSuccessMessage()
-                            // chosedTable.row(clickRow).remove().draw();
-                            // cchosedTable.row.add(rowData).draw( false );
-                            // chosedTable.ajax.reload(null, false )
+                            chosedTable.row(clickRow).remove().draw();
+                            companyTable.ajax.reload(null, false )
                         }else{
                             // alert("Unexpected error #1, Please try again");
                             showErrorMessage("Unexpected error #1, Please try again")
@@ -178,7 +174,7 @@ $(document).ready(function() {
       }
 
       function showRemoveSuccessMessage() {
-        swal("Company selection successfuly!",'', "success");
+        swal("Company remove successfuly!",'', "success");
       }
 
       function showErrorMessage(msg) {
