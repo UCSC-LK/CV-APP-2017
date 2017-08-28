@@ -1,0 +1,291 @@
+<!-- Exportable Table -->
+<div class="row clearfix">
+    <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>
+                    Applicants
+                </h2>
+            </div>
+            <div class="body">
+                <table id = "apllicantTable" class="table table-bordered table-striped table-hover" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Name</th>
+                            <th>Degree</th>
+                            <th>Stream</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>
+                    Short Listed
+                </h2>
+            </div>
+            <div class="body">
+                <table id = "chosedTable" class="table table-bordered table-striped table-hover" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- #END# Exportable Table -->
+
+
+
+<script>
+$(document).ready(function() {
+
+  var selectButton ='<a class="btn btn-success btn-sm  waves-effect ajaxSelect" style = "margin-right:10px;"> <i class="material-icons">drafts</i> </a>';
+  var viewButton   ='<a class="btn btn-info btn-sm  waves-effect ajaxView" style = "margin-right:10px;"> <i class="material-icons">drafts</i> </a>';
+  var downloadButton ='<a class="btn btn-warning btn-sm  waves-effect ajaxDownload" style = "margin-right:10px;"> <i class="material-icons">save</i> </a>';
+  var removeButton =  '<a class="btn btn-danger btn-sm waves-effect  ajaxRemove"> Remove</a>';
+
+  var ajaxRemove = "ajaxRemove";
+  var ajaxSelect = "ajaxSelect";
+  var ajaxView = "ajaxView";
+  var ajaxDownload = "ajaxDownload";
+
+
+  var table = $('#apllicantTable').DataTable({
+    dom: 'Bfrtip',
+    responsive: true,
+    buttons: [
+         'pdf', 'print'
+    ],
+      ajax: {
+          url: 'http://localhost:3000/company',
+          dataSrc: 'result',
+      },
+      "columns": [
+        {
+              "className":      'details-control',
+              "orderable":      false,
+              "data":           null,
+              "defaultContent": ''
+          },
+          { "data": "name" },
+          { "data": "name" },
+          { "data": "name" },
+          {   "data": null,
+              "defaultContent": selectButton + viewButton + downloadButton
+          }
+      ],
+      "order": [[1, 'asc']],
+      initComplete: function () {
+              this.api().columns().every( function () {
+                if (this[0] == 2 || this[0] == 3){
+                  var column = this;
+                  var select = $('<select><option value=""></option></select>')
+                      .appendTo( $(column.header()) )
+                      .on( 'change', function () {
+                          var val = $.fn.dataTable.util.escapeRegex(
+                              $(this).val()
+                          );
+
+                          column
+                              .search( val ? '^'+val+'$' : '', true, false )
+                              .draw();
+                      } );
+
+                  column.data().unique().sort().each( function ( d, j ) {
+                      select.append( '<option value="'+d+'">'+d+'</option>' )
+                  } );
+                }
+              } );
+          }
+  });
+
+  // Add event listener for opening and closing details
+  $('#apllicantTable tbody').on('click', 'td.details-control', function () {
+      var tr = $(this).closest('tr');
+      var row = table.row( tr );
+
+      if ( row.child.isShown() ) {
+          // This row is already open - close it
+          row.child.hide();
+          tr.removeClass('shown');
+      }
+      else {
+          // Open this row
+          row.child( format(row.data()) ).show();
+          tr.addClass('shown');
+      }
+  } );
+
+  function format ( d ) {
+    // `d` is the original data object for the row
+    return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
+        '<tr>'+
+            '<td>Full name:</td>'+
+            '<td>'+d.name+'</td>'+
+        '</tr>'+
+        '<tr>'+
+            '<td>Phone number:</td>'+
+            '<td>'+d.name+'</td>'+
+        '</tr>'+
+        '<tr>'+
+            '<td>Degree:</td>'+
+            '<td>And any further details here (images etc)...</td>'+
+        '</tr>'+
+        '<tr>'+
+            '<td>Email:</td>'+
+            '<td>And any further details here (images etc)...</td>'+
+        '</tr>'+
+        '<tr>'+
+            '<td>Stream:</td>'+
+            '<td>And any further details here (images etc)...</td>'+
+        '</tr>'+
+    '</table>';
+}
+
+  var chosedTable = $('#chosedTable').DataTable({
+    dom: 'Bfrtip',
+    responsive: true,
+    buttons: [
+        'pdf', 'print'
+    ],
+      ajax: {
+          url: 'http://localhost:3000/student_company/companies/'+user_id,
+          dataSrc: 'result',
+      },
+      "columns": [
+          { "data": "company" },
+          {   "data": null,
+              "defaultContent": removeButton
+          }
+      ],
+  });
+
+  chosedTable.on("click","." + ajaxRemove,function(){
+        var rowData = chosedTable.row( $(this).parents('tr') ).data();
+        console.log(rowData);
+        // showAjaxLoaderMessage()
+        if(confirm("Do you really want to delete record ?" + rowData["company"])){
+            var thisRow = $(this).parents('tr');
+            var para = '&_id=' + rowData['_id'];
+            // ajaxSend(para,"ajaxRemove",thisRow);
+            console.log(para);
+        }
+    });
+
+    table.on("click","." + ajaxSelect,function(){
+          var rowData = table.row( $(this).parents('tr') ).data();
+          console.log(rowData);
+          url = "http://localhost:3000/student_company"
+          // if(confirm("Do you really want to select this company ?" + rowData["name"])){
+          //     var thisRow = $(this).parents('tr');
+          //     var para = '&student=' + user_id + '&company=' +
+          //     rowData['_id'] + '&companyName=' + rowData['name'] + '&position=' + rowData['name']
+          //     + '&choice=' + rowData['name'];
+          //     ajaxSend(para,"ajaxSelect",thisRow,url,rowData);
+          //     console.log(para);
+          // }
+
+          var thisRow = $(this).parents('tr');
+          var para = '&student=' + user_id + '&company=' +
+          rowData['_id'] + '&companyName=' + rowData['name'] + '&position=' + rowData['name']
+          + '&choice=' + rowData['name'];
+          swal({
+              title: "Do you really want to select this company ?",
+              text: "-",
+              type: "info",
+              showCancelButton: true,
+              closeOnConfirm: false,
+              showLoaderOnConfirm: true,
+          },function () {
+              ajaxSend(para,"ajaxSelect",thisRow,url,rowData);
+          });
+
+      });
+
+
+      function ajaxSend(params,action,clickRow,url){
+        $.ajax({
+            type: "POST",
+            url: url,
+            data : params,
+            dataType: "json",
+            success: function(response){
+                switch (action){
+                    case "ajaxRemove":
+                        if(response.success == true){
+                            showRemoveSuccessMessage()
+                            // chosedTable.row(clickRow).remove().draw();
+                            // cchosedTable.row.add(rowData).draw( false );
+                            // chosedTable.ajax.reload(null, false )
+                        }else{
+                            // alert("Unexpected error #1, Please try again");
+                            showErrorMessage("Unexpected error #1, Please try again")
+                        }
+                        break;
+
+                    case "ajaxSelect":
+                        if(response.status == 'success'){
+                            showSelectSuccessMessage()
+                            apllicantTable.row(clickRow).remove().draw();
+                            chosedTable.ajax.reload(null, false )
+                        }else{
+                            // alert("Unexpected error #1, Please try again")
+                            showErrorMessage("Unexpected error #2, Please try again")
+                        }
+                        break;
+                }
+            },
+            error: function(xhr, status, error){
+                console.log(xhr);
+                alert("Unexpected error");
+                console.log(status,error);
+                showErrorMessage(error);
+            }
+        });
+      };
+
+
+      function showSelectSuccessMessage() {
+        swal("Company selection successfuly!",'', "success");
+      }
+
+      function showRemoveSuccessMessage() {
+        swal("Company selection successfuly!",'', "success");
+      }
+
+      function showErrorMessage(msg) {
+        swal(msg+"!",'', "error");
+      }
+
+      function showAjaxLoaderMessage() {
+          swal({
+              title: "Do you really want to select this company ?",
+              text: "Submit to run ajax request",
+              type: "info",
+              showCancelButton: true,
+              closeOnConfirm: false,
+              showLoaderOnConfirm: true,
+          },function () {
+              console.log("Hello World");
+              setTimeout(function () {
+                  swal("Ajax request finished!");
+              }, 2000);
+          });
+        }
+  });
+
+
+
+
+</script>
