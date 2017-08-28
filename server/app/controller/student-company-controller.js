@@ -6,8 +6,8 @@ var StudentCompany = require('../model/student-company');
 
 module.exports.getStudentsForCompany = function (req, res) {
     StudentCompany.find({'student': req.params.query},"company", function (err, result) {
-      console.log(req.payload);
-        res.json( {result} );
+        var temp = {"result":result};
+        res.json(temp);
     });
 };
 
