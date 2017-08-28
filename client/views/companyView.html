@@ -867,7 +867,8 @@
                                 </thead>
                                 <tbody id="tableBody">
 
-                                <tr id="myRow">
+                                <tr data-toggle="collapse" data-parent="#accordion_1" href="#collapseTwo_1" aria-expanded="false"
+                                    aria-controls="collapseTwo_1">
 
                                         <th scope="row">1</th>
                                                 <td>L.J.M.V.R.Balalla</td>
@@ -1038,6 +1039,11 @@
         <!-- #END# Hover Rows -->
     </div>
 
+
+    <div id="collapseTwo_1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo_1">
+        <div class="panel-body">Anim pariatur cliche reprehenderit</div>
+    </div>
+
 </section>
 
 <script>
@@ -1126,6 +1132,14 @@
     //
     $("#tableBody tr").click(function() {
         $(this).remove();
+
+//        var table = document.getElementById("tableBody");
+//        row2=document.createElement("tr");
+//        row2.innerHTML = "<div id=\"collapseTwo_1\" class=\"panel-collapse collapse\" role=\"tabpanel\" aria-labelledby=\"headingTwo_1\"> " +
+//            "<div class=\"panel-body\">Anim pariatur cliche reprehenderit</div> " +
+//            "</div> "
+//        table.appendChild(row2);
+
         listItem = document.createElement("a");
         listItem.className = "list-group-item";
         listItem.innerHTML = $(this).children("td").html();
