@@ -6,6 +6,7 @@ var express = require('express'),
     cv = require('./app/api/cv-api'),
     company = require('./app/api/company-api'),
     studentCompany = require('./app/api/student-company-api'),
+    selectedStudentCompany = require('./app/api/selected-student-company-api'),
     app = express(),
     mongoose = require('mongoose'),
     port = 3000,
@@ -60,6 +61,7 @@ app.use('/student', student);
 app.use('/cv', cv);
 app.use('/company', company);
 app.use('/student_company', studentCompany);
+app.use('/selected_student_company', selectedStudentCompany);
 
 // error handlers
 // Catch unauthorised errors
