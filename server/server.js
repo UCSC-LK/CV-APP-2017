@@ -20,7 +20,7 @@ mongoose.connect(config.database, {
 
 
 
-/////////////////////////////////////////////
+///////////////////////////////////////////////
 
 //Set Static Folder
 app.use(express.static(path.join(__dirname, '../client')));
