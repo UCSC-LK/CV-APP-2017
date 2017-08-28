@@ -228,9 +228,9 @@
             dataType: "json",
             success: function(response){
                 if (response.success == true){
-                    window.location.replace(response.path);user_id
+                    window.location.replace(response.path);
                     sessionStorage.removeItem('jwt_token');
-                    sessionStorage.removeItem('user_id');
+                    // sessionStorage.removeItem('user_id');
                     console.log(response);
                 }else{
                     showErrorMessage("Something went wrong");
@@ -245,8 +245,9 @@
     });
 
 
-    var user_id = sessionStorage.getItem('user_id');
-//    console.log(user_id);
+    // var user_id = sessionStorage.getItem('user_id');
+
+    // console.log(sessionStorage.getItem('user_id'));
 
     function getToken(){
         return sessionStorage.getItem('jwt_token');
@@ -261,15 +262,11 @@
             payload = window.atob(payload);
             payload = JSON.parse(payload);
 
-//            console.log(payload);
             return payload.exp > Date.now() / 1000;
         } else {
             return false;
         }
     };
-
-    // var tempppp = isLoggedIn();
-    // console.log(tempppp);
 
     var currentUser = function() {
         if(isLoggedIn()){
@@ -278,14 +275,22 @@
             payload = window.atob(payload);
             payload = JSON.parse(payload);
             return {
-                email : payload.email,
-                name : payload.name
+                name : payload.name,
+                _id: payload._id,
+                isfirst: payload.isfirst,
+                usertype:payload.usertype,
+                name: payload.username,
             };
         }
     };
 
     if(isLoggedIn()){
         user_info = currentUser();
+        if (user_info.usertype != 0){
+          window.location.replace('../../index.html');
+        }
+        user_id = user_info._id  // user id <----------------------<<<<<<
+        console.log(user_id);
         $('#username').html(user_info.name);
     }else{
         window.location.replace('../../index.html');

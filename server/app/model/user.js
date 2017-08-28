@@ -15,8 +15,14 @@ var userSchema = mongoose.Schema({
         type: String,
         required: true
     },
-  email: String,
-  lastName: String
+  usertype: {
+        type: String,
+        required: true
+    },
+  isfirst: {
+        type: String,
+        required: true
+    }
 });
 
 
@@ -63,10 +69,11 @@ userSchema.pre('save', function (next) {
 
 userSchema.methods.generateJwt = function() {
   var expiry = new Date();
-  expiry.setDate(expiry.getDate() + 7);
+  expiry.setDate(expiry.getDate() + 21);
   return jwt.sign({
     _id: this._id,
-    email: this.email,
+    isfirst: this.isfirst,
+    usertype:this.usertype,
     name: this.username,
     exp: parseInt(expiry.getTime() / 1000),
   }, config.secret); // DO NOT KEEP YOUR SECRET IN THE CODE!

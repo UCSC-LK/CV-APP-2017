@@ -36,7 +36,7 @@ module.exports = function(app, passport) {
 							// return the information including token as JSON
 							req.login(user, function(err){
 									 if(err) return next(err);
-									res.json({success: true, token: 'Bearer ' + token ,id:user.id, path: './views/student'});
+									res.json({success: true, token: 'Bearer ' + token });
 							 });
 							// res.json({success: true, token: 'JWT ' + token ,id:user.id, path: './views/student'});
 						} else {
@@ -96,12 +96,14 @@ module.exports = function(app, passport) {
 
 	// OK
 	app.post('/signup', function(req, res) {
-	  if (!req.body.username || !req.body.password) {
+	  if (!req.body.username || !req.body.password || !req.body.usertype ) {
 		res.json({success: false, msg: 'Please pass username and password.'});
 	  } else {
 		var newUser = new User({
 		  username: req.body.username,
-		  password: req.body.password
+		  password: req.body.password,
+			usertype:	req.body.usertype,
+			isfirst : 1
 		});
 		// save the user
 		newUser.save(function(err) {
