@@ -26,7 +26,6 @@
 
     <!-- JQuery DataTable Css -->
     <link href="../../assets/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css" rel="stylesheet">
-
     <!-- Custom Css -->
     <link href="../../assets/css/style.css" rel="stylesheet">
 
@@ -62,7 +61,7 @@
         <div class="navbar-header">
             <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
             <a href="javascript:void(0);" class="bars"></a>
-            <a class="navbar-brand" href="../../index.html">Welcome to UCSC CV App 2017</a>
+            <a class="navbar-brand" href="index.html">Welcome to UCSC CV App 2017</a>
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
@@ -92,23 +91,23 @@
                 <img src="../../assets/images/user.png" width="48" height="48" alt="User" />
             </div>
             <div class="info-container">
-                <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">John Doe</div>
-                <div class="email">john.doe@example.com</div>
+                <div class="name" data-toggle="dropdown" aria-haspopup="true" id="username"aria-expanded="false">John Doe</div>
+                <!-- <div class="email">john.doe@example.com</div> -->
             </div>
         </div>
         <!-- #User Info -->
         <!-- Menu -->
         <div class="menu">
             <ul class="list">
-                <li class="header">Company View</li>
+                <li class="header">Company SECTION</li>
                 <li class="active">
                     <a href="javascript:void(0);" class="menu-toggle">
                         <i class="material-icons">view_list</i>
                         <span>My Account</span>
                     </a>
                     <ul class="ml-menu">
-                        <li>
-                            <a href="companyView.html" class="ajax-pg">Student List</a>
+                        <li class="active">
+                            <a href="applicants.html" class="ajax-pg">Applicants</a>
                         </li>
                     </ul>
                 </li>
@@ -139,6 +138,7 @@
                 <!-- Ajax load here -->
             </div>
         </div>
+    </div>
 </section>
 
 
@@ -168,7 +168,7 @@
 
 <!-- Custom Js -->
 <script src="../../assets/js/admin.js"></script>
-<script src="../../assets/js/pages/forms/form-validation.js"></script>
+<!--<script src="../../assets/js/pages/forms/form-validation.js"></script>-->
 <script src="../../assets/js/pages/ui/dialogs.js"></script>
 
 <!-- Demo Js -->
@@ -185,7 +185,6 @@
 <script src="../../assets/plugins/jquery-datatable/extensions/export/buttons.html5.min.js"></script>
 <script src="../../assets/plugins/jquery-datatable/extensions/export/buttons.print.min.js"></script>
 
-
 <!-- Angular JS -->
 <!--<script type="application/javascript" src="../../assets/js/angular/angular-1.6.5.min.js"></script>-->
 <!--<script type="application/javascript" src="../../assets/js/angular/angular-resource-1.6.5.min.js"></script>-->
@@ -196,8 +195,12 @@
 
 </html>
 <script>
+    //Global userID
+    var userID;
 
     $(document).ready(function() {
+        userID = sessionStorage.getItem('user_id');
+
         var pageWrapper = $("#page-wrapper");
         $("a.ajax-pg").on("click", function(e) {
             e.preventDefault();
@@ -205,9 +208,9 @@
             // pageWrapper.prepend('<div class="loader"><div class="preloader"><div class="spinner-layer pl-blue"><div class="circle-clipper left"><div class="circle"></div></div><div class="circle-clipper right"><div class="circle"></div></div></div></div><p>Please wait...</p></div>');
             pageWrapper.load(this.href);
             $('.ml-menu li.active').removeClass('active');
-            $(this).closest('li').addClass('active');
+            $(this).parent().addClass('active');
         });
-        window.onload = pageWrapper.load('companyView.html');
+        window.onload = pageWrapper.load('applicants.html');
     });
 </script>
 
@@ -222,8 +225,9 @@
             dataType: "json",
             success: function(response){
                 if (response.success == true){
-                    window.location.replace(response.path);
-                    sessionStorage.removeItem('token');
+                    window.location.replace(response.path);user_id
+                    sessionStorage.removeItem('jwt_token');
+                    sessionStorage.removeItem('user_id');
                     console.log(response);
                 }else{
                     alert("Something went wrong")
@@ -237,6 +241,50 @@
         });
     });
 
-    var token = sessionStorage.getItem('token')
-    console.log(token);
+
+    var user_id = sessionStorage.getItem('user_id');
+    console.log(user_id);
+
+    function getToken(){
+      return sessionStorage.getItem('jwt_token');
+    }
+
+    function isLoggedIn()  {
+      var token = getToken();
+      var payload;
+
+      if(token){
+        payload = token.split('.')[1];
+        payload = window.atob(payload);
+        payload = JSON.parse(payload);
+
+        console.log(payload);
+        return payload.exp > Date.now() / 1000;
+      } else {
+        return false;
+      }
+    };
+
+    // var tempppp = isLoggedIn();
+    // console.log(tempppp);
+
+    var currentUser = function() {
+      if(isLoggedIn()){
+        var token = getToken();
+        var payload = token.split('.')[1];
+        payload = window.atob(payload);
+        payload = JSON.parse(payload);
+        return {
+          email : payload.email,
+          name : payload.name
+        };
+      }
+    };
+
+    if(isLoggedIn()){
+      user_info = currentUser();
+      $('#username').html(user_info.name);
+    }else{
+      window.location.replace('../../index.html');
+    }
 </script>

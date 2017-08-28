@@ -22,9 +22,9 @@ module.exports.getSelectedCompaniesForStudent = function (req, res) {
 module.exports.addSelectedStudentCompany = function (req, res) {
     var selectedStudentCompany = new SelectedStudentCompany(req.body);
     selectedStudentCompany.save(function (err, result) {
-        var d = new Date();
-        var n = d.getTime();
-        selectedStudentCompany.timeStamp = n;
+        // var d = new Date();
+        // var n = d.getTime();
+        selectedStudentCompany.timeStamp = Date.now();
         res.json(jsend.fromArguments(err, result));
     });
 };

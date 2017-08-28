@@ -27,6 +27,7 @@ module.exports.getCompaniesForStudent = function (req, res) {
 
 module.exports.addStudentCompany = function (req, res) {
     var studentCompany = new StudentCompany(req.body);
+    studentCompany.timeStamp = Date.now();
     studentCompany.save(function (err, result) {
         res.json(jsend.fromArguments(err, result));
     });
@@ -35,9 +36,7 @@ module.exports.addStudentCompany = function (req, res) {
 };
 
 module.exports.deleteStudentCompany = function (req, res) {
-    StudentCompany.find({'_id': req.params.query}, function (err, result) {
-        StudentCompany.remove({ _id: req.params.query }, function(err) {
-            res.json(jsend.fromArguments(err, result));
-        });
+    StudentCompany.findByIdAndRemove({'_id': req.params.query}, function (err, result) {
+      res.json(jsend.fromArguments(err, result));
     });
 };
