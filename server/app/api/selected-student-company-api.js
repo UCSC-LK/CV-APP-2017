@@ -1,7 +1,3 @@
-/**
- * Created by vibodha on 8/28/17.
- */
-
 var express = require('express'),
     router = express.Router(),
     SelectedStudentCompanyController = require('../controller/selected-student-company-controller');
@@ -16,7 +12,7 @@ var auth = jwt({
 
 // router.get('/companies/:query', auth, studentCompanyController.getSelectedStudentsForCompany);
 router.get('/companies/:query', SelectedStudentCompanyController.getSelectedStudentsForCompany);
-router.get('/students/:query', SelectedStudentCompanyController.getSelectedCompaniesForStudent);
+router.get('/students/:query', SelectedStudentCompanyController.getSelectedStudentsByCompany);
 router.post('/', SelectedStudentCompanyController.addSelectedStudentCompany);
 router.delete('/:query', SelectedStudentCompanyController.deleteSelectedStudentCompany);
 

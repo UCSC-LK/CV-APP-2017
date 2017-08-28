@@ -164,11 +164,11 @@
                 'pdf', 'print'
             ],
             ajax: {
-                url: 'http://localhost:3000/student_company/companies/' + user_id,
+                url: 'http://localhost:3000/selected_student_company/students/' + companyId,
                 dataSrc: 'result'
             },
             "columns": [
-                {"data": "company"},
+                {"data": "name"},
                 {
                     "data": null,
                     "defaultContent": removeButton
@@ -193,7 +193,7 @@
             console.log(rowData);
             url = "http://localhost:3000/selected_student_company"
             var thisRow = $(this).parents('tr');
-            var para = '&company=' + companyId + '&student=' + rowData['_id'];
+            var para = '&company=' + companyId + '&student=' + rowData['userID'];
             ajaxSend(para, "ajaxSelect", thisRow, url, rowData);
         });
 

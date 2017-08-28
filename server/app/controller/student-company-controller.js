@@ -1,8 +1,5 @@
-/**
- * Created by vibodha on 8/24/17.
- */
-
 var StudentCompany = require('../model/student-company');
+var SelectedStudentCompany = require('../model/selected-student-company');
 var Student = require('../model/student');
 var Company = require('../model/company');
 var jsend = require('jsend');
@@ -21,15 +18,30 @@ module.exports.getStudentsByCompany = function (req, res) {
         if (err) {
             return res.json({success: false, error: err});
         }
-        var students = [];
+        var studentsInStudentCompany = [];
         result.forEach(function(item){
-            students.push(item.student);
+            studentsInStudentCompany.push(item.student);
         });
-        Student.find({'userID': {$in:students}}, function (err, result1) {
+
+        SelectedStudentCompany.find({'company': req.params.query},"student -_id", function (err, result) {
             if (err) {
                 return res.json({success: false, error: err});
             }
-            res.json({success: true, result:result1});
+            var studentsInSelectedStudentCompany = [];
+            result.forEach(function(item){
+                studentsInSelectedStudentCompany.push(item.student);
+            });
+
+            //students = studentsInStudentCompany - studentsInStudentCompany
+            var students = studentsInStudentCompany.filter(function(x) { return studentsInSelectedStudentCompany.indexOf(x) < 0 });
+
+            //Get student data
+            Student.find({'userID': {$in:students}}, function (err, result1) {
+                if (err) {
+                    return res.json({success: false, error: err});
+                }
+                res.json({success: true, result:result1});
+            });
         });
     });
 };
