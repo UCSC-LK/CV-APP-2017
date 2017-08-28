@@ -60,14 +60,15 @@ $(document).ready(function() {
     ],
       ajax: {
           url: 'http://localhost:3000/company',
-          dataSrc: 'result',
+          dataSrc: ''
       },
       "columns": [
           { "data": "name" },
-          {   "data": null,
+          {
+              "data": null,
               "defaultContent": selectButton
           }
-      ],
+      ]
   });
 
   var chosedTable = $('#chosedTable').DataTable({
@@ -78,14 +79,15 @@ $(document).ready(function() {
     ],
       ajax: {
           url: 'http://localhost:3000/student_company/companies/'+user_id,
-          dataSrc: 'result',
+          dataSrc: 'result'
       },
       "columns": [
           { "data": "company" },
-          {   "data": null,
+          {
+              "data": null,
               "defaultContent": removeButton
           }
-      ],
+      ]
   });
 
   chosedTable.on("click","." + ajaxRemove,function(){
