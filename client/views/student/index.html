@@ -26,7 +26,6 @@
 
     <!-- JQuery DataTable Css -->
     <link href="../../assets/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css" rel="stylesheet">
-
     <!-- Custom Css -->
     <link href="../../assets/css/style.css" rel="stylesheet">
 
@@ -108,7 +107,7 @@
                     </a>
                     <ul class="ml-menu">
                         <li class="active">
-                             <a href="company-list.html" class="ajax-pg">Companies</a>
+                             <a href="schedule.html" class="ajax-pg">Schedule</a>
                         </li>
 
                         <li>
@@ -117,6 +116,10 @@
 
                         <li >
                             <a href="student-data-form.html" class="ajax-pg">My details</a>
+                        </li>
+
+                        <li >
+                            <a href="company-select.html" class="ajax-pg">My companies</a>
                         </li>
                     </ul>
                 </li>
@@ -220,7 +223,7 @@
             $(this).parent('li').addClass('active');
             console.log($(this));
         });
-        window.onload = pageWrapper.load('company-list.html');
+        window.onload = pageWrapper.load('schedule.html');
     });
 </script>
 

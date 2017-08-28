@@ -4,11 +4,11 @@
         <div class="card">
             <div class="header">
                 <h2>
-                    Company Table
+                    Schdule Table
                 </h2>
             </div>
             <div class="body">
-                <table id = "companyTable" class="table table-bordered table-striped table-hover">
+                <table id = "schduleTable" class="table table-bordered table-striped table-hover" cellspacing="0" width="100%">
                     <thead>
                         <tr>
                             <th>Id</th>
@@ -24,14 +24,14 @@
 
 <script>
 $(document).ready(function() {
-  var companyTable = $('#companyTable').DataTable({
+  var schduleTable = $('#schduleTable').DataTable({
     dom: 'Bfrtip',
     responsive: true,
     buttons: [
         'copy', 'csv', 'excel', 'pdf', 'print'
     ],
       ajax: {
-          url: 'http://localhost:3000/student_company/companies/Viboda',
+          url: 'http://localhost:3000/student_company/companies/'+userID,
           dataSrc: 'result',
       },
       "columns": [
