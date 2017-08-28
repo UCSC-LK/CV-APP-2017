@@ -27,6 +27,17 @@ module.exports.addSelectedStudentCompany = function (req, res) {
         selectedStudentCompany.timeStamp = n;
         res.json(jsend.fromArguments(err, result));
     });
-
-// need remove  StudentCompany objcet. provid it _id
 };
+
+module.exports.deleteSelectedStudentCompany = function (req, res) {
+    SelectedStudentCompany.find({'_id': req.params.query}, function (err, result) {
+        SelectedStudentCompany.remove({ _id: req.params.query }, function(err) {
+            if (!err) {
+                res.json(jsend.fromArguments(err, result));
+            }
+            else {
+            }
+        });
+    });
+};
+// need remove  StudentCompany objcet. provid it _id
