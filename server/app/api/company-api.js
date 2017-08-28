@@ -6,6 +6,7 @@ var express = require('express'),
     router = express.Router(),
     companyController = require('../controller/company-controller');
 
+router.get('/withoutselected/:query', companyController.getCompaniesWithoutSelected);
 router.get('/', companyController.getCompanies);
 router.post('/', companyController.addCompany);
 

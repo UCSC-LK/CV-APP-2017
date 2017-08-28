@@ -73,6 +73,7 @@ app.use(function (err, req, res, next) {
   }else{
     console.log("Log - Unhandlied");
     console.log("message" + err.name + ": " + err.message);
+    res.json({"message" : err.name + ": " + err.message});
   }
 });
 
