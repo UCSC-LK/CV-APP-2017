@@ -18,5 +18,6 @@ var auth = jwt({
 router.get('/companies/:query', SelectedStudentCompanyController.getSelectedStudentsForCompany);
 router.get('/students/:query', SelectedStudentCompanyController.getSelectedCompaniesForStudent);
 router.post('/', SelectedStudentCompanyController.addSelectedStudentCompany);
+router.delete('/:query', SelectedStudentCompanyController.deleteSelectedStudentCompany);
 
 module.exports = router;
