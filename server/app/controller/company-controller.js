@@ -10,7 +10,7 @@ var StudentCompany = require('../model/student-company');
 
 module.exports.getCompanies = function (req, res) {
     Company.find({}, function (err, result) {
-        res.json({result});
+        res.json(result);
     });
 };
 // {"_id": 1}

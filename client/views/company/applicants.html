@@ -13,9 +13,9 @@
                         <tr>
                             <th></th>
                             <th>Name</th>
-                            <th>Degree</th>
+                            <th>Year</th>
                             <th>Stream</th>
-                            <th>Action</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                 </table>
@@ -27,7 +27,7 @@
         <div class="card">
             <div class="header">
                 <h2>
-                    Short Listed
+                    Short Listed Applicants
                 </h2>
             </div>
             <div class="body">
@@ -35,7 +35,7 @@
                     <thead>
                         <tr>
                             <th>Name</th>
-                            <th>Action</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                 </table>
@@ -44,7 +44,6 @@
     </div>
 </div>
 <!-- #END# Exportable Table -->
-
 
 
 <script>
@@ -60,6 +59,8 @@ $(document).ready(function() {
   var ajaxView = "ajaxView";
   var ajaxDownload = "ajaxDownload";
 
+  //todo should come from session
+    companyId = "59a46bdfd3ef5a20734c86b9";
 
   var table = $('#apllicantTable').DataTable({
     dom: 'Bfrtip',
@@ -68,20 +69,21 @@ $(document).ready(function() {
          'pdf', 'print'
     ],
       ajax: {
-          url: 'http://localhost:3000/company',
-          dataSrc: 'result',
+          url: 'http://localhost:3000/student_company/students/' + companyId,
+          dataSrc: 'result'
       },
       "columns": [
-        {
+          {
               "className":      'details-control',
               "orderable":      false,
               "data":           null,
               "defaultContent": ''
           },
           { "data": "name" },
-          { "data": "name" },
-          { "data": "name" },
-          {   "data": null,
+          { "data": "year" },
+          { "data": "stream" },
+          {
+              "data": null,
               "defaultContent": selectButton + viewButton + downloadButton
           }
       ],
@@ -136,19 +138,19 @@ $(document).ready(function() {
         '</tr>'+
         '<tr>'+
             '<td>Phone number:</td>'+
-            '<td>'+d.name+'</td>'+
+            '<td>'+d.phone+'</td>'+
         '</tr>'+
         '<tr>'+
-            '<td>Degree:</td>'+
-            '<td>And any further details here (images etc)...</td>'+
+            '<td>Year:</td>'+
+            '<td>'+d.year+'</td>'+
         '</tr>'+
         '<tr>'+
             '<td>Email:</td>'+
-            '<td>And any further details here (images etc)...</td>'+
+            '<td>'+d.email+'</td>'+
         '</tr>'+
         '<tr>'+
             '<td>Stream:</td>'+
-            '<td>And any further details here (images etc)...</td>'+
+            '<td>'+d.stream+'</td>'+
         '</tr>'+
     '</table>';
 }

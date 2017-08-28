@@ -9,10 +9,16 @@ module.exports.saveCv = function (data, callback) {
     // Check if cv exists
     Cv.findOne({userID:cv.userID}, function (err, result) {
         if (result) {
-            console.log("Updating cv info"); // update info
-            // delete old file
+            console.log("Updating cv info..."); // update info
+            // delete old fil
             var filePath = path.join(__dirname, '..', '..', 'assets', 'uploads', result.filename);
-            fs.unlink(filePath);
+            console.log("Deleting old file " + filePath);
+            fs.unlink(filePath, function (err) {
+                if (err) {
+                    console.log("Deleting file failed!");
+                    return;
+                }
+            });
             // update db
             result.filename = cv.filename;
             result.type = cv.type;
@@ -24,7 +30,7 @@ module.exports.saveCv = function (data, callback) {
                 callback({success: true, msg: 'Your cv updated successfully', data: data});
             });
         } else {
-            console.log("Adding new cv"); // add new
+            console.log("Adding new cv..."); // add new
             cv.save(function (err) {
                 if (err) {
                     callback({success: false, msg: 'Some thing went wrong. Try again', error: err});

@@ -4,15 +4,15 @@
         <div class="card">
             <div class="header">
                 <h2>
-                    Available Company
+                    Available Companies
                 </h2>
             </div>
             <div class="body">
                 <table id = "companyTable" class="table table-bordered table-striped table-hover" cellspacing="0" width="100%">
                     <thead>
                         <tr>
-                            <th>Company</th>
-                            <th>Action</th>
+                            <th>Company Name</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                 </table>
@@ -24,15 +24,15 @@
         <div class="card">
             <div class="header">
                 <h2>
-                    Chosed Company
+                    Chosen Companies
                 </h2>
             </div>
             <div class="body">
                 <table id = "chosedTable" class="table table-bordered table-striped table-hover" cellspacing="0" width="100%">
                     <thead>
                         <tr>
-                            <th>Company</th>
-                            <th>Action</th>
+                            <th>Company Name</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                 </table>
@@ -56,36 +56,43 @@ $(document).ready(function() {
     dom: 'Bfrtip',
     responsive: true,
     buttons: [
-        'copy', 'csv', 'excel', 'pdf', 'print'
+//        'copy', 'csv', 'excel', 'pdf', 'print'
     ],
       ajax: {
+<<<<<<< HEAD
           url: 'http://localhost:3000/company/withoutselected/'+user_id,
           dataSrc: 'result',
+=======
+          url: 'http://localhost:3000/company',
+          dataSrc: ''
+>>>>>>> ab15eb4779648380d93c5ed7ecdcfdde0c2704ba
       },
       "columns": [
           { "data": "name" },
-          {   "data": null,
+          {
+              "data": null,
               "defaultContent": selectButton
           }
-      ],
+      ]
   });
 
   var chosedTable = $('#chosedTable').DataTable({
     dom: 'Bfrtip',
     responsive: true,
     buttons: [
-        'copy', 'csv', 'excel', 'pdf', 'print'
+//        'copy', 'csv', 'excel', 'pdf', 'print'
     ],
       ajax: {
           url: 'http://localhost:3000/student_company/companies/'+user_id,
-          dataSrc: 'result',
+          dataSrc: 'result'
       },
       "columns": [
           { "data": "company" },
-          {   "data": null,
+          {
+              "data": null,
               "defaultContent": removeButton
           }
-      ],
+      ]
   });
 
   chosedTable.on("click","." + ajaxRemove,function(){

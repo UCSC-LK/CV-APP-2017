@@ -47,11 +47,28 @@ module.exports.getCompaniesByStudent = function (req, res,next) {
     });
 };
 
+<<<<<<< HEAD
 module.exports.getStudentbyCompanies = function (req, res) {
     StudentCompany.find({'company': req.params.query},"student", function (err, result) {
         Student.find({'student': result.student}, function (err, result1) {
             var temp = {"result":result1};
             res.json(temp);
+=======
+module.exports.getStudentsByCompany = function (req, res) {
+    StudentCompany.find({'company': req.params.query},"student -_id", function (err, result) {
+        if (err) {
+            return res.json({success: false, error: err});
+        }
+        var students = [];
+        result.forEach(function(item){
+            students.push(item.student);
+        });
+        Student.find({'userID': {$in:students}}, function (err, result1) {
+            if (err) {
+                return res.json({success: false, error: err});
+            }
+            res.json({success: true, result:result1});
+>>>>>>> ab15eb4779648380d93c5ed7ecdcfdde0c2704ba
         });
     });
 };

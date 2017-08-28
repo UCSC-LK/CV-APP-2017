@@ -56,9 +56,10 @@
                         showErrorMessage("Something went wrong");
                         console.log(response);
                     }
-                    console.log(response);
+//                    console.log(response);
                 },
                 error: function(xhr, status, error){
+                    showErrorMessage("Something went wrong");
                     console.log(xhr);
                     console.log(status,error);
                 }
@@ -75,7 +76,6 @@
                     } else {
                         var formData = new FormData(this);
                         formData.append('userID', userID);
-                        console.log(formData);
                         $.ajax({
                             type: "POST",
                             url: "/cv/upload",
