@@ -220,6 +220,31 @@ s
         window.onload = pageWrapper.load('schedule.html');
     });
 
+    function setStudentName(name) {
+        if (name) {
+            $('#username').text(name);
+        } else {
+            $.ajax({
+                type: "GET",
+                url: "http://localhost:3000/student",
+                data: {userID: userID},
+                dataType: "json",
+                success: function (response) {
+                    if (response.success == true) {
+                        $('#username').text(response.data[0].name);
+                    } else {
+                        showErrorMessage("Something went wrong");
+                        console.log(response);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log(xhr);
+                    console.log(status, error);
+                }
+            });
+        }
+    }
+
     // Logout btn action
     var logoutButton = $('#logoutButton');
     logoutButton.click(function () {
@@ -250,31 +275,6 @@ s
         return sessionStorage.getItem('jwt_token');
     }
 
-    function setStudentName(name) {
-        if (name) {
-            $('#username').text(name);
-        } else {
-            $.ajax({
-                type: "GET",
-                url: "http://localhost:3000/student",
-                data: {userID: userID},
-                dataType: "json",
-                success: function (response) {
-                    if (response.success == true) {
-                        $('#username').text(response.data[0].name);
-                    } else {
-                        showErrorMessage("Something went wrong");
-                        console.log(response);
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.log(xhr);
-                    console.log(status, error);
-                }
-            });
-        }
-    }
-
     function isLoggedIn() {
         var token = getToken();
         var payload;
@@ -290,18 +290,20 @@ s
         }
     }
 
-    var currentUser = function () {
-        var token = getToken();
-        var payload = token.split('.')[1];
-        payload = window.atob(payload);
-        payload = JSON.parse(payload);
-        return {
-            _id: payload._id,
-            isfirst: payload.isfirst,
-            usertype: payload.usertype,
-            name: payload.name
-        };
-    };
+    function currentUser() {
+//        if (isLoggedIn()) {
+            var token = getToken();
+            var payload = token.split('.')[1];
+            payload = window.atob(payload);
+            payload = JSON.parse(payload);
+            return {
+                _id: payload._id,
+                isfirst: payload.isfirst,
+                usertype: payload.usertype,
+                name: payload.name
+            };
+//        }
+    }
 
     if (isLoggedIn()) {
         user_info = currentUser();

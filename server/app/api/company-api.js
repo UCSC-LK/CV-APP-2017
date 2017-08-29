@@ -7,7 +7,11 @@ var express = require('express'),
     companyController = require('../controller/company-controller');
 
 router.get('/withoutselected/:query', companyController.getCompaniesWithoutSelected);
-router.get('/', companyController.getCompanies);
+
+router.get('/', companyController.getCompany);
+
+router.get('/all', companyController.getCompanies);
+
 router.post('/', companyController.addCompany);
 
 module.exports = router;

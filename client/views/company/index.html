@@ -192,12 +192,6 @@ s
 <script src="../../assets/plugins/jquery-datatable/extensions/export/buttons.html5.min.js"></script>
 <script src="../../assets/plugins/jquery-datatable/extensions/export/buttons.print.min.js"></script>
 
-<!-- Angular JS -->
-<!--<script type="application/javascript" src="../../assets/js/angular/angular-1.6.5.min.js"></script>-->
-<!--<script type="application/javascript" src="../../assets/js/angular/angular-resource-1.6.5.min.js"></script>-->
-<!--<script type="application/javascript" src="../../assets/js/angular/angular-route-1.6.5.min.js"></script>-->
-<!--<script type="application/javascript" src="../../js/app.js"></script>-->
-<!-- <script type="application/javascript" src="../../js/controllers/student-controller.js"></script> -->
 </body>
 
 </html>
@@ -205,21 +199,20 @@ s
     //Global userID
     var userID;
 
+
     $(document).ready(function () {
+        // Code to inject html code into index
         var pageWrapper = $("#page-wrapper");
         $("a.ajax-pg").on("click", function (e) {
             e.preventDefault();
             pageWrapper.empty();
-            // pageWrapper.prepend('<div class="loader"><div class="preloader"><div class="spinner-layer pl-blue"><div class="circle-clipper left"><div class="circle"></div></div><div class="circle-clipper right"><div class="circle"></div></div></div></div><p>Please wait...</p></div>');
             pageWrapper.load(this.href);
             $('.ml-menu li.active').removeClass('active');
             $(this).parent().addClass('active');
         });
         window.onload = pageWrapper.load('applicants.html');
     });
-</script>
 
-<script>
     var logoutButton = $('#logoutButton');
     logoutButton.click(function () {
         // alert("Hello");
@@ -246,10 +239,6 @@ s
         });
     });
 
-
-    userID = sessionStorage.getItem('user_id');
-    console.log("Setting user id : " + userID);
-
     function getToken() {
         return sessionStorage.getItem('jwt_token');
     }
@@ -263,31 +252,39 @@ s
             payload = window.atob(payload);
             payload = JSON.parse(payload);
 
-            console.log(payload);
             return payload.exp > Date.now() / 1000;
         } else {
             return false;
         }
-    };
+    }
 
-    var currentUser = function () {
+    function currentUser() {
         if (isLoggedIn()) {
             var token = getToken();
             var payload = token.split('.')[1];
             payload = window.atob(payload);
             payload = JSON.parse(payload);
             return {
-                email: payload.email,
+                _id: payload._id,
+                isfirst: payload.isfirst,
+                usertype: payload.usertype,
                 name: payload.name
             };
         }
-    };
+    }
 
     if (isLoggedIn()) {
         user_info = currentUser();
+        // check if logged in user is a company
+        if (user_info.usertype != 1) {
+            window.location.replace('../../index.html');
+        }
+        userID = user_info._id;
+//        console.log(user_info);
+//        console.log("Setting user id : " + userID);
         $('#username').html(user_info.name);
     } else {
-        // window.location.replace('../../index.html');
-        alert("User not log in");
+        window.location.replace('../../index.html');
     }
+
 </script>

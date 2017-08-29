@@ -21,13 +21,13 @@
                     </div>
                     <div class="form-group">
                         <div class="form-line">
-                            <input type="radio" name="year" id="4thyear" class="with-gap" value="4thyear" required ng-model="studentYear">
+                            <input type="radio" name="year" id="4thyear" class="with-gap" value="4th Year" required ng-model="studentYear">
                             <label for="4thyear">4th year</label>
 
-                            <input type="radio" name="year" id="3rdyear" class="with-gap" value="3rdyear" required ng-model="studentYear">
+                            <input type="radio" name="year" id="3rdyear" class="with-gap" value="3rd Year" required ng-model="studentYear">
                             <label for="3rdyear" class="m-l-20">3rd year</label>
 
-                            <input type="radio" name="year" id="passedout" class="with-gap" value="passedout" required ng-model="studentYear">
+                            <input type="radio" name="year" id="passedout" class="with-gap" value="Passed Out" required ng-model="studentYear">
                             <label for="passedout" class="m-l-20">Passed Out</label>
                         </div>
                     </div>
@@ -39,10 +39,10 @@
                     </div>
                     <div class="form-group">
                         <div class="form-line">
-                            <input type="radio" name="stream" id="cs" class="with-gap" value="cs" required ng-model="studentStream">
+                            <input type="radio" name="stream" id="cs" class="with-gap" value="CS" required ng-model="studentStream">
                             <label for="cs">Computer Science</label>
 
-                            <input type="radio" name="stream" id="is" class="with-gap" value="is" required ng-model="studentStream">
+                            <input type="radio" name="stream" id="is" class="with-gap" value="IS" required ng-model="studentStream">
                             <label for="is" class="m-l-20">Information Systems</label>
                         </div>
                     </div>
@@ -58,26 +58,28 @@
     // Setting student data in the form if already filled up
     $(document).ready(function() {
         // Getting data
-        $.ajax({
-            type: "GET",
-            url: "http://localhost:3000/student",
-            data : {userID: userID},
-            dataType: "json",
-            success: function(response){
-                if (response.success == true){
-                    if (response.data.length > 0) {
-                        var student = response.data[0];
-                        setStudentDetails(student);
+        $(function () {
+            $.ajax({
+                type: "GET",
+                url: "http://localhost:3000/student",
+                data: {userID: userID},
+                dataType: "json",
+                success: function (response) {
+                    if (response.success == true) {
+                        if (response.data.length > 0) {
+                            var student = response.data[0];
+                            setStudentDetails(student);
+                        }
+                    } else {
+                        showErrorMessage("Something went wrong");
+                        console.log(response);
                     }
-                } else {
-                    showErrorMessage("Something went wrong");
-                    console.log(response);
+                },
+                error: function (xhr, status, error) {
+                    console.log(xhr);
+                    console.log(status, error);
                 }
-            },
-            error: function(xhr, status, error){
-                console.log(xhr);
-                console.log(status,error);
-            }
+            });
         });
 
         $('#form_validation').submit(function () {
@@ -94,10 +96,10 @@
         $("input[name=name]").parent().addClass('focused');
         $("input[name=phone]").val(student.phone);
         $("input[name=phone]").parent().addClass('focused');
-        $("input[name=year][value=" + student.year + "]").attr('checked', 'checked');
+        $("input[name=year][value='" + student.year + "']").attr('checked', 'checked');
         $("input[name=email]").val(student.email);
         $("input[name=email]").parent().addClass('focused');
-        $("input[name=stream][value=" + student.stream + "]").attr('checked', 'checked');
+        $("input[name=stream][value='" + student.stream + "']").attr('checked', 'checked');
 
         $('#submit-btn').text('UPDATE');
     }
