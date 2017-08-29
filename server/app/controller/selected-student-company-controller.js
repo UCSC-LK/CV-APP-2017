@@ -37,14 +37,8 @@ module.exports.addSelectedStudentCompany = function (req, res) {
 };
 
 module.exports.deleteSelectedStudentCompany = function (req, res) {
-    SelectedStudentCompany.find({'_id': req.params.query}, function (err, result) {
-        SelectedStudentCompany.remove({ _id: req.params.query }, function(err) {
-            if (!err) {
-                res.json(jsend.fromArguments(err, result));
-            }
-            else {
-            }
-        });
+    StudentCompany.findByIdAndRemove({'_id': req.params.query}, function (err, result) {
+        res.json(jsend.fromArguments(err, result));
     });
 };
 // need remove  StudentCompany objcet. provid it _id
