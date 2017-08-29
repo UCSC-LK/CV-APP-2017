@@ -181,7 +181,7 @@
             var thisRow = $(this).parents('tr');
             var para = '';
             var url = 'http://localhost:3000/selected_student_company/' + rowData['_id'];
-            console.log(url + para);
+//            console.log(url + para);
             ajaxSend("DELETE", para, "ajaxRemove", thisRow, url);
         });
 
@@ -190,7 +190,7 @@
             var url = "http://localhost:3000/selected_student_company"
             var thisRow = $(this).parents('tr');
             var para = '&company=' + companyId + '&student=' + rowData['userID'];
-            console.log(url + para);
+//            console.log(url + para);
             ajaxSend("POST", para, "ajaxSelect", thisRow, url);
         });
 

@@ -96,17 +96,8 @@
             var thisRow = $(this).parents('tr');
             var para = '';
             var url = 'http://localhost:3000/student_company/' + rowData['_id'];
-            console.log(url + para);
-//        swal({
-//            title: "Do you really want to delete this company ?",
-//            text: "-",
-//            type: "info",
-//            showCancelButton: true,
-//            closeOnConfirm: false,
-//            showLoaderOnConfirm: true,
-//        },function () {
+//            console.log(url + para);nfirm: true,
             ajaxSend("DELETE", para, "ajaxRemove", thisRow, url);
-//        });
         });
 
         companyTable.on("click", "." + ajaxSelect, function () {
@@ -116,17 +107,8 @@
             var para = '&student=' + userID + '&company=' +
                 rowData['_id'] + '&companyName=' + rowData['name'] + '&position=' + rowData['name']
                 + '&choice=' + rowData['name'];
-            console.log(url + para);
-//          swal({
-//              title: "Do you really want to select this company ?",
-//              text: "-",
-//              type: "info",
-//              showCancelButton: true,
-//              closeOnConfirm: false,
-//              showLoaderOnConfirm: true,
-//          },function () {
+//            console.log(url + para);
             ajaxSend("POST", para, "ajaxSelect", thisRow, url);
-//          });
         });
 
 

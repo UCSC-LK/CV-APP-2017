@@ -95,8 +95,8 @@ s
                 <img src="../../assets/images/user.png" width="48" height="48" alt="User"/>
             </div>
             <div class="info-container">
-                <div class="name" data-toggle="dropdown" aria-haspopup="true" id="username" aria-expanded="false">John
-                    Doe
+                <div class="name" data-toggle="dropdown" aria-haspopup="true" id="username" aria-expanded="false">
+                    John Doe
                 </div>
                 <!-- <div class="email">john.doe@example.com</div> -->
             </div>
@@ -207,24 +207,22 @@ s
     //Global userID
     var userID;
 
+    // Code to inject html code into index
     $(document).ready(function () {
         var pageWrapper = $("#page-wrapper");
         $("a.ajax-pg").on("click", function (e) {
             e.preventDefault();
             pageWrapper.empty();
-            // pageWrapper.prepend('<div class="loader"><div class="preloader"><div class="spinner-layer pl-blue"><div class="circle-clipper left"><div class="circle"></div></div><div class="circle-clipper right"><div class="circle"></div></div></div></div><p>Please wait...</p></div>');
             pageWrapper.load(this.href);
             $('.ml-menu li.active').removeClass('active');
             $(this).parent().addClass('active');
         });
         window.onload = pageWrapper.load('schedule.html');
     });
-</script>
 
-<script>
+    // Logout btn action
     var logoutButton = $('#logoutButton');
     logoutButton.click(function () {
-        // alert("Hello");
         $.ajax({
             type: "POST",
             url: "http://localhost:3000/logout",
@@ -238,8 +236,8 @@ s
                     console.log(response);
                 } else {
                     showErrorMessage("Something went wrong");
+                    console.log(response);
                 }
-//                console.log(response);
             },
             error: function (xhr, status, error) {
                 console.log(xhr);
@@ -248,9 +246,33 @@ s
         });
     });
 
-
     function getToken() {
         return sessionStorage.getItem('jwt_token');
+    }
+
+    function setStudentName(name) {
+        if (name) {
+            $('#username').text(name);
+        } else {
+            $.ajax({
+                type: "GET",
+                url: "http://localhost:3000/student",
+                data: {userID: userID},
+                dataType: "json",
+                success: function (response) {
+                    if (response.success == true) {
+                        $('#username').text(response.data[0].name);
+                    } else {
+                        showErrorMessage("Something went wrong");
+                        console.log(response);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log(xhr);
+                    console.log(status, error);
+                }
+            });
+        }
     }
 
     function isLoggedIn() {
@@ -266,31 +288,31 @@ s
         } else {
             return false;
         }
-    };
+    }
 
     var currentUser = function () {
-        if (isLoggedIn()) {
-            var token = getToken();
-            var payload = token.split('.')[1];
-            payload = window.atob(payload);
-            payload = JSON.parse(payload);
-            return {
-                name: payload.name,
-                _id: payload._id,
-                isfirst: payload.isfirst,
-                usertype: payload.usertype,
-                name: payload.username,
-            };
-        }
+        var token = getToken();
+        var payload = token.split('.')[1];
+        payload = window.atob(payload);
+        payload = JSON.parse(payload);
+        return {
+            name: payload.name,
+            _id: payload._id,
+            isfirst: payload.isfirst,
+            usertype: payload.usertype,
+            name: payload.username
+        };
     };
 
     if (isLoggedIn()) {
         user_info = currentUser();
+        // check if logged in user is a student
         if (user_info.usertype != 0) {
             window.location.replace('../../index.html');
         }
-        userID = user_info._id  // user id <----------------------<<<<<<
-        console.log("Setting user id : " + userID);
+        userID = user_info._id;
+        setStudentName();
+//        console.log("Setting user id : " + userID);
         $('#username').html(user_info.name);
     } else {
         window.location.replace('../../index.html');
