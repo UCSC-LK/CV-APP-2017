@@ -296,11 +296,10 @@ s
         payload = window.atob(payload);
         payload = JSON.parse(payload);
         return {
-            name: payload.name,
             _id: payload._id,
             isfirst: payload.isfirst,
             usertype: payload.usertype,
-            name: payload.username
+            name: payload.name
         };
     };
 
@@ -311,7 +310,8 @@ s
             window.location.replace('../../index.html');
         }
         userID = user_info._id;
-        setStudentName();
+        console.log(user_info);
+        // setStudentName();
 //        console.log("Setting user id : " + userID);
         $('#username').html(user_info.name);
     } else {
