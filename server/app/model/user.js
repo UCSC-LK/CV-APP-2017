@@ -1,25 +1,25 @@
 // load the things we need
 var mongoose = require('mongoose');
-var bcrypt   = require('bcrypt-nodejs');
-var config  = require('../config/conf');
-var jwt     = require('jsonwebtoken');
+var bcrypt = require('bcrypt-nodejs');
+var config = require('../config/conf');
+var jwt = require('jsonwebtoken');
 
 // define the schema for our user model
 var userSchema = mongoose.Schema({
-  username: {
+    username: {
         type: String,
         unique: true,
         required: true
     },
-  password: {
+    password: {
         type: String,
         required: true
     },
-  usertype: {
+    usertype: {
         type: String,
         required: true
     },
-  isfirst: {
+    isfirst: {
         type: String,
         required: true
     }
@@ -28,13 +28,13 @@ var userSchema = mongoose.Schema({
 
 // methods ======================
 // generating a hash
-userSchema.methods.generateHash = function(password) {
+userSchema.methods.generateHash = function (password) {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
 };
 
 // //Delete this
 // // checking if password is valid
-userSchema.methods.validPassword = function(password) {
+userSchema.methods.validPassword = function (password) {
     return bcrypt.compareSync(password, this.password);
 };
 
@@ -67,16 +67,16 @@ userSchema.pre('save', function (next) {
     }
 });
 
-userSchema.methods.generateJwt = function() {
-  var expiry = new Date();
-  expiry.setDate(expiry.getDate() + 21);
-  return jwt.sign({
-    _id: this._id,
-    isfirst: this.isfirst,
-    usertype:this.usertype,
-    name: this.username,
-    exp: parseInt(expiry.getTime() / 1000),
-  }, config.secret); // DO NOT KEEP YOUR SECRET IN THE CODE!
+userSchema.methods.generateJwt = function () {
+    var expiry = new Date();
+    expiry.setDate(expiry.getDate() + 21);
+    return jwt.sign({
+        _id: this._id,
+        isfirst: this.isfirst,
+        usertype: this.usertype,
+        name: this.username,
+        exp: parseInt(expiry.getTime() / 1000),
+    }, config.secret); // DO NOT KEEP YOUR SECRET IN THE CODE!
 };
 
 // create the model for users and expose it to our app

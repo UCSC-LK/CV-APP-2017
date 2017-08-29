@@ -16,8 +16,8 @@ var storage = multer.diskStorage({
     }
 });
 var upload = multer({
-                storage: storage
-            }).any();
+    storage: storage
+}).any();
 
 router.get('/', cvController.getCvDetails);
 

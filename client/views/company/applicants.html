@@ -177,10 +177,10 @@
         });
 
         shortListedTable.on("click", "." + ajaxRemove, function () {
-            var rowData = shortListedTable.row( $(this).parents('tr') ).data();
+            var rowData = shortListedTable.row($(this).parents('tr')).data();
             var thisRow = $(this).parents('tr');
             var para = '';
-            var url = 'http://localhost:3000/selected_student_company/'+rowData['_id'];
+            var url = 'http://localhost:3000/selected_student_company/' + rowData['_id'];
             console.log(url + para);
             ajaxSend("DELETE", para, "ajaxRemove", thisRow, url);
         });
@@ -205,8 +205,8 @@
                         case "ajaxRemove":
                             if (response.status == 'success') {
                                 showSuccessMessage("Student removed successfully!");
-                                 shortListedTable.row(clickRow).remove().draw();
-                                 applicantTable.ajax.reload(null, false )
+                                shortListedTable.row(clickRow).remove().draw();
+                                applicantTable.ajax.reload(null, false)
                             } else {
                                 showErrorMessage("Unexpected error #1, Please try again");
                                 console.log(response);

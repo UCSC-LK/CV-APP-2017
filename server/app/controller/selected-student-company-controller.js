@@ -4,12 +4,12 @@ var jsend = require('jsend');
 var _ = require('lodash');
 
 function keyVal(n) {
-    return {[n.userID]:n.name};
+    return {[n.userID]: n.name};
 }
 
 module.exports.getSelectedStudentsForCompany = function (req, res) {
-    SelectedStudentCompany.find({'student': req.params.query},"company", function (err, result) {
-        var temp = {"result":result};
+    SelectedStudentCompany.find({'student': req.params.query}, "company", function (err, result) {
+        var temp = {"result": result};
         res.json(temp);
     });
 };
@@ -23,7 +23,7 @@ module.exports.getSelectedStudentsByCompany = function (req, res) {
         // console.log(result1);
         //Getting student data
         var students = _.map(result1, 'student');
-        Student.find({'userID': {$in:students}}, function (err, result2) {
+        Student.find({'userID': {$in: students}}, function (err, result2) {
             if (err) {
                 return res.json({success: false, error: err});
             }
@@ -46,7 +46,7 @@ module.exports.getSelectedStudentsByCompany = function (req, res) {
                 final.push(value)
             });
             // console.log(final);
-            res.json({success: true, result:final});
+            res.json({success: true, result: final});
         });
     });
 };

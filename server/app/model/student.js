@@ -28,16 +28,4 @@ var studentSchema = mongoose.Schema({
     }
 });
 
-// Check if student name exists
-// studentSchema.pre('save', function (next) {
-//     var student = this;
-//     console.log(student);
-//     if (this.isModified('name') || this.isNew) {
-//         return next();
-//     } else {
-//         console.log('user exists: ',student.name);
-//         next(new Error("User exists!"));
-//     }
-// }) ;
-
 module.exports = mongoose.model('Student', studentSchema);

@@ -3,7 +3,7 @@ var express = require('express'),
     SelectedStudentCompanyController = require('../controller/selected-student-company-controller');
 
 var jwt = require('express-jwt');
-var config  = require('../config/conf');
+var config = require('../config/conf');
 var auth = jwt({
     secret: config.secret,
     userProperty: 'payload'

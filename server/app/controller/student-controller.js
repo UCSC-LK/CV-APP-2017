@@ -6,7 +6,7 @@ module.exports.getStudents = function (req, res) {
         if (err) {
             res.send(err);
         } else {
-            var temp = {"result":result};
+            var temp = {"result": result};
             res.json(temp);
         }
     });
@@ -18,7 +18,7 @@ module.exports.getStudent = function (req, res) {
         if (err) {
             return res.json({success: false, error: err});
         }
-        res.json({success: true, data:result});
+        res.json({success: true, data: result});
     });
 };
 
@@ -26,7 +26,7 @@ module.exports.getStudent = function (req, res) {
 module.exports.addStudent = function (req, res) {
     var student = new Student(req.body);
     // Check if student exists
-    Student.findOne({userID:student.userID}, function (err, result) {
+    Student.findOne({userID: student.userID}, function (err, result) {
         if (result) {
             console.log("Updating student info"); // update info
             result.name = student.name;

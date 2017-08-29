@@ -1,7 +1,3 @@
-/**
- * Created by vibodha on 8/24/17.
- */
-
 var mongoose = require('mongoose');
 
 module.exports = mongoose.model('StudentCompany', {
@@ -9,5 +5,5 @@ module.exports = mongoose.model('StudentCompany', {
     company: String,
     position: [String],
     choice: String,
-    timeStamp:String
+    timeStamp: String
 });

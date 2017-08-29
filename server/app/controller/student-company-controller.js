@@ -6,14 +6,14 @@ var jsend = require('jsend');
 var _ = require('lodash');
 
 function keyVal(n) {
-  return {[n._id]:n.name};
+    return {[n._id]: n.name};
 }
 
 function toObj(arr) {
-  return arr.reduce(function(p, c, i) {
-    p[names[i]] = c;
-    return p;
-  }, {});
+    return arr.reduce(function (p, c, i) {
+        p[names[i]] = c;
+        return p;
+    }, {});
 }
 
 module.exports.getCompaniesByStudent = function (req, res, next) {
@@ -46,33 +46,35 @@ module.exports.getCompaniesByStudent = function (req, res, next) {
 
 //http://localhost:3000/student_company/students/59a46bdfd3ef5a20734c86b9
 module.exports.getStudentsByCompany = function (req, res) {
-    StudentCompany.find({'company': req.params.query},"student -_id", function (err, result) {
+    StudentCompany.find({'company': req.params.query}, "student -_id", function (err, result) {
         if (err) {
             return res.json({success: false, error: err});
         }
         var studentsInStudentCompany = [];
-        result.forEach(function(item){
+        result.forEach(function (item) {
             studentsInStudentCompany.push(item.student);
         });
 
-        SelectedStudentCompany.find({'company': req.params.query},"student -_id", function (err, result) {
+        SelectedStudentCompany.find({'company': req.params.query}, "student -_id", function (err, result) {
             if (err) {
                 return res.json({success: false, error: err});
             }
             var studentsInSelectedStudentCompany = [];
-            result.forEach(function(item){
+            result.forEach(function (item) {
                 studentsInSelectedStudentCompany.push(item.student);
             });
 
             //students = studentsInStudentCompany - studentsInStudentCompany
-            var students = studentsInStudentCompany.filter(function(x) { return studentsInSelectedStudentCompany.indexOf(x) < 0 });
+            var students = studentsInStudentCompany.filter(function (x) {
+                return studentsInSelectedStudentCompany.indexOf(x) < 0
+            });
 
             //Get student data
-            Student.find({'userID': {$in:students}}, function (err, result1) {
+            Student.find({'userID': {$in: students}}, function (err, result1) {
                 if (err) {
                     return res.json({success: false, error: err});
                 }
-                res.json({success: true, result:result1});
+                res.json({success: true, result: result1});
             });
         });
     });
@@ -89,6 +91,6 @@ module.exports.addStudentCompany = function (req, res) {
 module.exports.deleteStudentCompany = function (req, res) {
     console.log("student-company-controller.deleteStudentCompany: Deleting studentCompany record - " + req.params.query);
     StudentCompany.findByIdAndRemove({'_id': req.params.query}, function (err, result) {
-      res.json(jsend.fromArguments(err, result));
+        res.json(jsend.fromArguments(err, result));
     });
 };

@@ -7,7 +7,7 @@ module.exports.saveCv = function (data, callback) {
     var cv = new Cv(data);
 
     // Check if cv exists
-    Cv.findOne({userID:cv.userID}, function (err, result) {
+    Cv.findOne({userID: cv.userID}, function (err, result) {
         if (result) {
             console.log("Updating cv info..."); // update info
             // delete old fil
@@ -47,6 +47,6 @@ module.exports.getCvDetails = function (req, res) {
         if (err) {
             return res.json({success: false, error: err});
         }
-        res.json({success: true, data:result});
+        res.json({success: true, data: result});
     });
 };
