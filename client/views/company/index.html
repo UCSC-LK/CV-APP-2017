@@ -199,12 +199,13 @@ s
     //Global userID
     var userID;
 
+
     $(document).ready(function () {
+        // Code to inject html code into index
         var pageWrapper = $("#page-wrapper");
         $("a.ajax-pg").on("click", function (e) {
             e.preventDefault();
             pageWrapper.empty();
-            // pageWrapper.prepend('<div class="loader"><div class="preloader"><div class="spinner-layer pl-blue"><div class="circle-clipper left"><div class="circle"></div></div><div class="circle-clipper right"><div class="circle"></div></div></div></div><p>Please wait...</p></div>');
             pageWrapper.load(this.href);
             $('.ml-menu li.active').removeClass('active');
             $(this).parent().addClass('active');
@@ -279,7 +280,7 @@ s
             window.location.replace('../../index.html');
         }
         userID = user_info._id;
-        console.log(user_info);
+//        console.log(user_info);
 //        console.log("Setting user id : " + userID);
         $('#username').html(user_info.name);
     } else {

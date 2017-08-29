@@ -61,15 +61,32 @@
 
 
 <script>
-    //todo should come from session
-    var companyId = "59a46bdfd3ef5a20734c86b9";
+    var companyObject;
 
-    function getCompanyInfo() {
-        
-    }
-    
     $(document).ready(function () {
+        $.ajax({
+            type: "GET",
+            url: "http://localhost:3000/company",
+            data: {userID: userID},
+            dataType: "json",
+            success: function (response) {
+                if (response.success == true) {
+                    companyObject = response.data[0];
+                    init();
+                } else {
+                    showErrorMessage("Something went wrong");
+                    console.log(response);
+                }
+                console.log(response);
+            },
+            error: function (xhr, status, error) {
+                console.log(xhr);
+                console.log(status, error);
+            }
+        });
+    });
 
+    function init() {
         var selectButton = '<a class="btn btn-success btn-sm  waves-effect ajaxSelect" style = "margin-right:10px;" title="Select"> <i class="material-icons">drafts</i> </a>';
         var viewButton = '<a class="btn btn-info btn-sm  waves-effect ajaxView" style = "margin-right:10px;" title="View CV"> <i class="material-icons">drafts</i> </a>';
         var downloadButton = '<a class="btn btn-warning btn-sm  waves-effect ajaxDownload" style = "margin-right:10px;"> <i class="material-icons">save</i> </a>';
@@ -80,7 +97,15 @@
         var ajaxView = "ajaxView";
         var ajaxDownload = "ajaxDownload";
 
-        var position = "Software Engineer";
+        // Set positions
+        var allObjects = "";
+        companyObject.positions.forEach(function (t) {
+            allObjects += "<button class=\"btn btn-primary waves-effect positionBtn\">" + t + "</button>";
+        });
+        $('#available-positions').html(allObjects);
+
+        var position = companyObject.positions[0];
+        $('#applicant-table-header').text(position + ' Applicants');
 
         var applicantTable = $('#apllicantTable').DataTable({
             dom: 'Bfrtip',
@@ -89,10 +114,10 @@
                 'pdf', 'print'
             ],
             ajax: {
-//                url: 'http://localhost:3000/student_company/students/' + companyId,
+//                url: 'http://localhost:3000/student_company/students/' + companyObject._id,
                 url: 'http://localhost:3000/student_company/students',
                 data: function ( d ) {
-                    d.company = companyId;
+                    d.company = companyObject._id;
                     d.position = position;
                 },
                 dataSrc: 'result'
@@ -187,7 +212,7 @@
                 'pdf', 'print'
             ],
             ajax: {
-                url: 'http://localhost:3000/selected_student_company/students/' + companyId,
+                url: 'http://localhost:3000/selected_student_company/students/' + companyObject._id,
                 dataSrc: 'result'
             },
             "columns": [
@@ -212,7 +237,7 @@
             var rowData = applicantTable.row($(this).parents('tr')).data();
             var url = "http://localhost:3000/selected_student_company"
             var thisRow = $(this).parents('tr');
-            var para = '&company=' + companyId + '&student=' + rowData['userID'];
+            var para = '&company=' + companyObject._id + '&student=' + rowData['userID'];
 //            console.log(url + para);
             ajaxSend("POST", para, "ajaxSelect", thisRow, url);
         });
@@ -282,8 +307,7 @@
             $('#applicant-table-header').text(position + ' Applicants');
             applicantTable.ajax.reload();
         });
-
-    });
+    }
 
 
 </script>

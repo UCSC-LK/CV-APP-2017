@@ -1,18 +1,25 @@
-/**
- * Created by vibodha on 8/24/17.
- */
-
 var Company = require('../model/company');
 var _ = require('lodash');
 var jsend = require('jsend');
-var Student = require('../model/student');
 var StudentCompany = require('../model/student-company');
+
+// Return company by userid
+module.exports.getCompany = function (req, res) {
+    // console.log('Sending company info...');
+    Company.find({userID: req.query.userID}, function (err, result) {
+        if (err) {
+            return res.json({success: false, error: err});
+        }
+        res.json({success: true, data: result});
+    });
+};
 
 module.exports.getCompanies = function (req, res) {
     Company.find({}, function (err, result) {
         res.json(result);
     });
 };
+
 // {"_id": 1}
 module.exports.getCompaniesWithoutSelected = function (req, res, next) {
     StudentCompany.find({"student": req.params.query}, {"company": 1, "_id": 0}, function (err, result) {
