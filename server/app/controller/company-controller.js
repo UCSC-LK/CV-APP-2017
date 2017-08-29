@@ -18,10 +18,10 @@ module.exports.getCompaniesWithoutSelected = function (req, res,next) {
     StudentCompany.find({"student":req.params.query},{"company": 1,"_id":0} ,function (err, result) {
       if(err) return next(err);
       var arr =_.map(result, 'company');
-      console.log(arr);
+      console.log("company-controller.getCompaniesWithoutSelected: " + arr);
       Company.find({ "_id": { "$nin": arr } } ,function (err, result) {
         if(err) return next(err);
-        var tempresult = {"result":result}
+        var tempresult = {"result":result};
         res.json(tempresult);
       });
     });

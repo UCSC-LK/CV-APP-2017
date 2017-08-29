@@ -32,7 +32,7 @@
                 </h2>
             </div>
             <div class="body">
-                <table id="chosedTable" class="table table-bordered table-striped table-hover" cellspacing="0"
+                <table id="shortListedTable" class="table table-bordered table-striped table-hover" cellspacing="0"
                        width="100%">
                     <thead>
                     <tr>
@@ -86,7 +86,7 @@
                 {"data": "stream"},
                 {
                     "data": null,
-                    "defaultContent": selectButton + viewButton
+                    "defaultContent": viewButton + selectButton
                 }
             ],
             "order": [[1, 'asc']],
@@ -157,7 +157,7 @@
                 '</table>';
         }
 
-        var chosedTable = $('#chosedTable').DataTable({
+        var shortListedTable = $('#shortListedTable').DataTable({
             dom: 'Bfrtip',
             responsive: true,
             buttons: [
@@ -168,72 +168,67 @@
                 dataSrc: 'result'
             },
             "columns": [
-                {"data": "name"},
+                {"data": "student"},
                 {
                     "data": null,
                     "defaultContent": removeButton
                 }
-            ],
+            ]
         });
 
-        chosedTable.on("click", "." + ajaxRemove, function () {
-            var rowData = chosedTable.row($(this).parents('tr')).data();
-            console.log(rowData);
-            // showAjaxLoaderMessage()
-            if (confirm("Do you really want to delete record ?" + rowData["company"])) {
-                var thisRow = $(this).parents('tr');
-                var para = '&_id=' + rowData['_id'];
-                // ajaxSend(para,"ajaxRemove",thisRow);
-                console.log(para);
-            }
+        shortListedTable.on("click", "." + ajaxRemove, function () {
+            var rowData = shortListedTable.row( $(this).parents('tr') ).data();
+            var thisRow = $(this).parents('tr');
+            var para = '';
+            var url = 'http://localhost:3000/selected_student_company/'+rowData['_id'];
+            console.log(url + para);
+            ajaxSend("DELETE", para, "ajaxRemove", thisRow, url);
         });
 
         applicantTable.on("click", "." + ajaxSelect, function () {
             var rowData = applicantTable.row($(this).parents('tr')).data();
-            console.log(rowData);
-            url = "http://localhost:3000/selected_student_company"
+            var url = "http://localhost:3000/selected_student_company"
             var thisRow = $(this).parents('tr');
             var para = '&company=' + companyId + '&student=' + rowData['userID'];
-            ajaxSend(para, "ajaxSelect", thisRow, url, rowData);
+            console.log(url + para);
+            ajaxSend("POST", para, "ajaxSelect", thisRow, url);
         });
 
-        function ajaxSend(params, action, clickRow, url) {
+        function ajaxSend(type, params, action, clickRow, url) {
             $.ajax({
-                type: "POST",
+                type: type,
                 url: url,
                 data: params,
                 dataType: "json",
                 success: function (response) {
                     switch (action) {
                         case "ajaxRemove":
-                            if (response.success == true) {
-                                showSuccessMessage("Student removed successfully!")
-                                // chosedTable.row(clickRow).remove().draw();
-                                // cchosedTable.row.add(rowData).draw( false );
-                                // chosedTable.ajax.reload(null, false )
+                            if (response.status == 'success') {
+                                showSuccessMessage("Student removed successfully!");
+                                 shortListedTable.row(clickRow).remove().draw();
+                                 applicantTable.ajax.reload(null, false )
                             } else {
-                                // alert("Unexpected error #1, Please try again");
-                                showErrorMessage("Unexpected error #1, Please try again")
+                                showErrorMessage("Unexpected error #1, Please try again");
+                                console.log(response);
                             }
                             break;
 
                         case "ajaxSelect":
                             if (response.status == 'success') {
-                                showSuccessMessage("Student short listed successfully!")
+                                showSuccessMessage("Student short listed successfully!");
                                 applicantTable.row(clickRow).remove().draw();
-                                chosedTable.ajax.reload(null, false)
+                                shortListedTable.ajax.reload(null, false)
                             } else {
-                                // alert("Unexpected error #1, Please try again")
-                                showErrorMessage("Unexpected error #2, Please try again")
+                                showErrorMessage("Unexpected error #2, Please try again");
+                                console.log(response);
                             }
                             break;
                     }
                 },
                 error: function (xhr, status, error) {
                     console.log(xhr);
-                    alert("Unexpected error");
+                    showErrorMessage("Unexpected error");
                     console.log(status, error);
-                    showErrorMessage(error);
                 }
             });
         }

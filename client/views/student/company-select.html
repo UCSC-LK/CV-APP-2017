@@ -60,7 +60,7 @@ $(document).ready(function() {
     ],
       ajax: {
           url: 'http://localhost:3000/company/withoutselected/'+userID,
-          dataSrc: 'result',
+          dataSrc: 'result'
       },
       "columns": [
           { "data": "name" },
@@ -90,44 +90,43 @@ $(document).ready(function() {
       ]
   });
 
-  chosedTable.on("click","." + ajaxRemove,function(){
-        var rowData = chosedTable.row( $(this).parents('tr') ).data();
-        console.log(rowData);
+    chosedTable.on("click", "." + ajaxRemove, function () {
+        var rowData = chosedTable.row($(this).parents('tr')).data();
         var thisRow = $(this).parents('tr');
         var para = '';
-        url = 'http://localhost:3000/student_company/'+rowData['_id']
-        console.log(url);
-        swal({
-            title: "Do you really want to delete this company ?",
-            text: "-",
-            type: "info",
-            showCancelButton: true,
-            closeOnConfirm: false,
-            showLoaderOnConfirm: true,
-        },function () {
-            ajaxSend("DELETE",para,"ajaxRemove",thisRow,url);
-        });
+        var url = 'http://localhost:3000/student_company/' + rowData['_id'];
+        console.log(url + para);
+//        swal({
+//            title: "Do you really want to delete this company ?",
+//            text: "-",
+//            type: "info",
+//            showCancelButton: true,
+//            closeOnConfirm: false,
+//            showLoaderOnConfirm: true,
+//        },function () {
+        ajaxSend("DELETE", para, "ajaxRemove", thisRow, url);
+//        });
     });
 
-    companyTable.on("click","." + ajaxSelect,function(){
-          var rowData = companyTable.row( $(this).parents('tr') ).data();
-          console.log(rowData);
-          url = "http://localhost:3000/student_company"
-          var thisRow = $(this).parents('tr');
-          var para = '&student=' + userID + '&company=' +
-          rowData['_id'] + '&companyName=' + rowData['name'] + '&position=' + rowData['name']
-          + '&choice=' + rowData['name'];
-          swal({
-              title: "Do you really want to select this company ?",
-              text: "-",
-              type: "info",
-              showCancelButton: true,
-              closeOnConfirm: false,
-              showLoaderOnConfirm: true,
-          },function () {
-              ajaxSend("POST",para,"ajaxSelect",thisRow,url);
-          });
-      });
+    companyTable.on("click", "." + ajaxSelect, function () {
+        var rowData = companyTable.row($(this).parents('tr')).data();
+        var url = "http://localhost:3000/student_company";
+        var thisRow = $(this).parents('tr');
+        var para = '&student=' + userID + '&company=' +
+            rowData['_id'] + '&companyName=' + rowData['name'] + '&position=' + rowData['name']
+            + '&choice=' + rowData['name'];
+        console.log(url + para);
+//          swal({
+//              title: "Do you really want to select this company ?",
+//              text: "-",
+//              type: "info",
+//              showCancelButton: true,
+//              closeOnConfirm: false,
+//              showLoaderOnConfirm: true,
+//          },function () {
+        ajaxSend("POST", para, "ajaxSelect", thisRow, url);
+//          });
+    });
 
 
       function ajaxSend(type,params,action,clickRow,url){
