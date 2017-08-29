@@ -59,7 +59,7 @@ $(document).ready(function() {
 //        'copy', 'csv', 'excel', 'pdf', 'print'
     ],
       ajax: {
-          url: 'http://localhost:3000/company/withoutselected/'+user_id,
+          url: 'http://localhost:3000/company/withoutselected/'+userID,
           dataSrc: 'result',
       },
       "columns": [
@@ -78,7 +78,7 @@ $(document).ready(function() {
 //        'copy', 'csv', 'excel', 'pdf', 'print'
     ],
       ajax: {
-          url: 'http://localhost:3000/student_company/companies/'+user_id,
+          url: 'http://localhost:3000/student_company/companies/'+userID,
           dataSrc: 'result'
       },
       "columns": [
@@ -114,7 +114,7 @@ $(document).ready(function() {
           console.log(rowData);
           url = "http://localhost:3000/student_company"
           var thisRow = $(this).parents('tr');
-          var para = '&student=' + user_id + '&company=' +
+          var para = '&student=' + userID + '&company=' +
           rowData['_id'] + '&companyName=' + rowData['name'] + '&position=' + rowData['name']
           + '&choice=' + rowData['name'];
           swal({

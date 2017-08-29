@@ -200,8 +200,6 @@
     var userID;
 
     $(document).ready(function() {
-        userID = sessionStorage.getItem('user_id');
-
         var pageWrapper = $("#page-wrapper");
         $("a.ajax-pg").on("click", function(e) {
             e.preventDefault();
@@ -226,7 +224,7 @@
             dataType: "json",
             success: function(response){
                 if (response.success == true){
-                    window.location.replace(response.path);user_id
+                    window.location.replace(response.path);
                     sessionStorage.removeItem('jwt_token');
                     sessionStorage.removeItem('user_id');
                     console.log(response);
@@ -243,8 +241,8 @@
     });
 
 
-    var user_id = sessionStorage.getItem('user_id');
-    console.log(user_id);
+    userID = sessionStorage.getItem('user_id');
+    console.log("Setting user id : " + userID);
 
     function getToken(){
       return sessionStorage.getItem('jwt_token');
@@ -265,9 +263,6 @@
         return false;
       }
     };
-
-    // var tempppp = isLoggedIn();
-    // console.log(tempppp);
 
     var currentUser = function() {
       if(isLoggedIn()){

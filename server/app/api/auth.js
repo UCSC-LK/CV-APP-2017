@@ -64,7 +64,7 @@ module.exports = function(app, passport) {
 	    res.send({success: true, msg:req.user._id});
 	  }else{
 	    // res.status(401).send({success: false, msg: 'user not loged.'});
-	    res.send({success: false, msg: 'user not loged.'});
+	    res.send({success: false, msg: 'user not logged.'});
 	  }
 	});
 

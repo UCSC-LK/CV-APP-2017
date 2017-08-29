@@ -202,8 +202,6 @@
     var userID;
 
     $(document).ready(function() {
-        userID = sessionStorage.getItem('user_id');
-
         var pageWrapper = $("#page-wrapper");
         $("a.ajax-pg").on("click", function(e) {
             e.preventDefault();
@@ -230,7 +228,7 @@
                 if (response.success == true){
                     window.location.replace(response.path);
                     sessionStorage.removeItem('jwt_token');
-                    // sessionStorage.removeItem('user_id');
+                     sessionStorage.removeItem('user_id');
                     console.log(response);
                 }else{
                     showErrorMessage("Something went wrong");
@@ -244,10 +242,6 @@
         });
     });
 
-
-    // var user_id = sessionStorage.getItem('user_id');
-
-    // console.log(sessionStorage.getItem('user_id'));
 
     function getToken(){
         return sessionStorage.getItem('jwt_token');
@@ -289,8 +283,8 @@
         if (user_info.usertype != 0){
           window.location.replace('../../index.html');
         }
-        user_id = user_info._id  // user id <----------------------<<<<<<
-        console.log(user_id);
+        userID = user_info._id  // user id <----------------------<<<<<<
+        console.log("Setting user id : " + userID);
         $('#username').html(user_info.name);
     }else{
         window.location.replace('../../index.html');
