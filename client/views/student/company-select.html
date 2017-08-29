@@ -34,6 +34,7 @@
                     <thead>
                     <tr>
                         <th>Company Name</th>
+                        <th>Position</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
@@ -44,14 +45,53 @@
 </div>
 <!-- #END# Exportable Table -->
 
+<!-- Modal Dialogs ====================================================================================================================== -->
+<!-- Default Size -->
+<div class="modal fade" id="positionModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog model-sm" role="document">
+        <div class="modal-content ">
+            <div class="modal-header">
+                <h4 class="modal-title" id="positionModalLabel">Positios - Comapny Name</h4>
+            </div>
+
+            <div id ="positionModalBody" class="modal-body">
+              <form name="positionForm_" id="positionForm">
+                  <div id = "position-form-group" class="form-group">
+                        <!-- <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                          <input type="checkbox" id="md_checkbox_26" class="filled-in chk-col-blue" />
+                          <label for="md_checkbox_26">Software Engineer</label>
+                        </div> -->
+
+
+                        <!--dyanamically append data  -->
+                  </div>
+                  <!-- <button class="btn btn-primary waves-effect" type="submit" id="submit-btn">SAVE</button> -->
+              </form>
+            <!-- </br></br> -->
+
+            </div>
+            <div class="modal-footer ">
+              <button type="button" class="btn btn-warning waves-effect" data-dismiss="modal">CLOSE</button>
+              <button type="button" class="btn btn-info waves-effect saveButton">SAVE CHANGES</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 <script>
     $(document).ready(function () {
 
-        var selectButton = '<a class="btn btn-warning waves-effect btn-sm ajaxSelect"> </span> Select</a>';
+        var selectButton = '<a class="btn btn-warning waves-effect btn-sm ajaxSelect"> Select</a>';
         var removeButton = '<a class="btn btn-danger waves-effect btn-sm ajaxRemove"> Remove</a>';
         var ajaxRemove = "ajaxRemove";
         var ajaxSelect = "ajaxSelect";
+        var saveButton = "saveButton";
+        var positionModal = $('#positionModal');
+        var positionForm = $('#positionForm');
+
+        // <button type="button" class="btn btn-default waves-effect m-r-20" data-toggle="modal" data-target="#positionModal">MODAL - DEFAULT SIZE</button>
 
         var companyTable = $('#companyTable').DataTable({
             dom: 'Bfrtip',
@@ -84,6 +124,7 @@
             },
             "columns": [
                 {"data": "company"},
+                {"data": "position"},
                 {
                     "data": null,
                     "defaultContent": removeButton
@@ -100,16 +141,61 @@
             ajaxSend("DELETE", para, "ajaxRemove", thisRow, url);
         });
 
+        var rowData2 = "";
+        var para2 = "";
+        var thisRow2 = "";
         companyTable.on("click", "." + ajaxSelect, function () {
-            var rowData = companyTable.row($(this).parents('tr')).data();
-            var url = "http://localhost:3000/student_company";
-            var thisRow = $(this).parents('tr');
-            var para = '&student=' + userID + '&company=' +
-                rowData['_id'] + '&companyName=' + rowData['name'] + '&position=' + rowData['name']
-                + '&choice=' + rowData['name'];
-//            console.log(url + para);
-            ajaxSend("POST", para, "ajaxSelect", thisRow, url);
+            rowData2 = companyTable.row($(this).parents('tr')).data();
+            thisRow2 = $(this).parents('tr');
+            para2 = '&student=' + userID + '&company=' +
+                rowData2['_id'] + '&companyName=' + rowData2['name']
+                + '&choice=' + rowData2['name'];
+            // console.log(rowData2);
+            positionModal.modal('toggle');
         });
+
+        positionModal.on('show.bs.modal', function (event) {
+            var modal = $(this);
+            modal.find('#positionModalLabel').html(rowData2["name"] + " - Positions");
+            // position-form-group
+            console.log("row data",rowData2["positions"]);
+            $.each(rowData2["positions"], function( index, value ) {
+              console.log( index + ": " + value );
+              var checkbox_div = "<div class='form-group'>" +
+                "<input type='checkbox' name='position[]' value = '"+value+"' id="+index+" class='filled-in chk-col-blue'/>" +
+                "<label for="+index+">"+value+"</label>" +
+              "</div>";
+              $( "#position-form-group" ).append( checkbox_div);
+            });
+        });
+
+        positionModal.on('hidden.bs.modal', function (e) {
+            $( "#position-form-group" ).empty();
+        });
+
+        function getchecked() {
+          var temp = [];
+          $("input[name='position[]']").each( function () {
+              if($(this).is(':checked')){
+              //  alert( $(this).val() );
+               temp.push($(this).val());
+            }
+          });
+          return temp;
+        }
+        positionModal.on("click","." + saveButton,function(){
+          if (positionForm.valid()){
+              var fullpara = para2 + '&position=' + getchecked()
+              var url = "http://localhost:3000/student_company";
+              ajaxSend("POST", fullpara, "ajaxSave", thisRow2, url);
+          }
+        });
+
+        function reset_selection(){
+        var rowData2 = "";
+        var para2 = "";
+        var thisRow2 = "";
+      }
 
 
         function ajaxSend(type, params, action, clickRow, url) {
@@ -131,11 +217,13 @@
                             }
                             break;
 
-                        case "ajaxSelect":
+                        case "ajaxSave":
                             if (response.status == 'success') {
+                                positionModal.modal('toggle');
                                 showSelectSuccessMessage()
                                 companyTable.row(clickRow).remove().draw();
-                                chosedTable.ajax.reload(null, false)
+                                chosedTable.ajax.reload(null, false);
+                                reset_selection();
                             } else {
                                 // alert("Unexpected error #1, Please try again")
                                 showErrorMessage("Unexpected error #2, Please try again")
@@ -165,22 +253,55 @@
             swal(msg + "!", '', "error");
         }
 
-        function showAjaxLoaderMessage() {
-            swal({
-                title: "Do you really want to select this company ?",
-                text: "Submit to run ajax request",
-                type: "info",
-                showCancelButton: true,
-                closeOnConfirm: false,
-                showLoaderOnConfirm: true,
-            }, function () {
-                console.log("Hello World");
-                setTimeout(function () {
-                    swal("Ajax request finished!");
-                }, 2000);
-            });
-        }
+        // function showAjaxLoaderMessage() {
+        //     swal({
+        //         title: "Do you really want to select this company ?",
+        //         text: "Submit to run ajax request",
+        //         type: "info",
+        //         showCancelButton: true,
+        //         closeOnConfirm: false,
+        //         showLoaderOnConfirm: true,
+        //     }, function () {
+        //         console.log("Hello World");
+        //         setTimeout(function () {
+        //             swal("Ajax request finished!");
+        //         }, 2000);
+        //     });
+        // }
     });
 
 
+</script>
+
+
+<script>
+$(function () {
+    $('#positionForm').validate({
+      rules: {
+            'position[]': {
+                required: true
+            }
+        },
+        messages: {
+          'position[]': "You have to select at least one position",
+        },
+        highlight: function (input) {
+            console.log(input);
+            $(input).parents('.form-line').addClass('error');
+        },
+        unhighlight: function (input) {
+            $(input).parents('.form-line').removeClass('error');
+        },
+        errorPlacement: function (error, element) {
+            // $(element).parents('.form-group').append(error);
+            $("#position-form-group").append(error);
+            console.log(error);
+        }
+    });
+});
+
+$(function () {
+    $.AdminBSB.input.activate();
+    $.AdminBSB.select.activate();
+});
 </script>
