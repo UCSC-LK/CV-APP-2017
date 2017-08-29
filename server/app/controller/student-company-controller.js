@@ -44,9 +44,9 @@ module.exports.getCompaniesByStudent = function (req, res, next) {
     });
 };
 
-//http://localhost:3000/student_company/students/59a46bdfd3ef5a20734c86b9
+//http://localhost:3000/student_company/students => data : {company, position}
 module.exports.getStudentsByCompany = function (req, res) {
-    StudentCompany.find({'company': req.params.query}, "student -_id", function (err, result) {
+    StudentCompany.find({'company': req.query.company, 'position': req.query.position}, "student -_id", function (err, result) {
         if (err) {
             return res.json({success: false, error: err});
         }
@@ -55,7 +55,7 @@ module.exports.getStudentsByCompany = function (req, res) {
             studentsInStudentCompany.push(item.student);
         });
 
-        SelectedStudentCompany.find({'company': req.params.query}, "student -_id", function (err, result) {
+        SelectedStudentCompany.find({'company': req.query.company}, "student -_id", function (err, result) {
             if (err) {
                 return res.json({success: false, error: err});
             }

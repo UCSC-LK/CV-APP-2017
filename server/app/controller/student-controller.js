@@ -14,6 +14,7 @@ module.exports.getStudents = function (req, res) {
 
 // Return student by userid
 module.exports.getStudent = function (req, res) {
+    // console.log('Sending student info...');
     Student.find({userID: req.query.userID}, function (err, result) {
         if (err) {
             return res.json({success: false, error: err});
