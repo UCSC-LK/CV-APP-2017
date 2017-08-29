@@ -1,9 +1,10 @@
-var StudentCompany = require('../model/student-company');
-var SelectedStudentCompany = require('../model/selected-student-company');
-var Student = require('../model/student');
-var Company = require('../model/company');
-var jsend = require('jsend');
-var _ = require('lodash');
+var StudentCompany = require('../model/student-company'),
+    SelectedStudentCompany = require('../model/selected-student-company'),
+    Student = require('../model/student'),
+    Company = require('../model/company'),
+    Cv = require('../model/cv'),
+    jsend = require('jsend'),
+    _ = require('lodash');
 
 function keyVal(n) {
     return {[n._id]: n.name};
@@ -55,12 +56,12 @@ module.exports.getStudentsByCompany = function (req, res) {
             studentsInStudentCompany.push(item.student);
         });
 
-        SelectedStudentCompany.find({'company': req.query.company}, "student -_id", function (err, result) {
+        SelectedStudentCompany.find({'company': req.query.company}, "student -_id", function (err, result1) {
             if (err) {
                 return res.json({success: false, error: err});
             }
             var studentsInSelectedStudentCompany = [];
-            result.forEach(function (item) {
+            result1.forEach(function (item) {
                 studentsInSelectedStudentCompany.push(item.student);
             });
 
@@ -70,11 +71,42 @@ module.exports.getStudentsByCompany = function (req, res) {
             });
 
             //Get student data
-            Student.find({'userID': {$in: students}}, function (err, result1) {
+            Student.find({'userID': {$in: students}}, function (err, result2) {
                 if (err) {
                     return res.json({success: false, error: err});
                 }
-                res.json({success: true, result: result1});
+                // get cv data
+                Cv.find({'userID': {$in: students}}, "userID filename -_id", function (err, result3) {
+                    if (err) {
+                        return res.json({success: false, error: err});
+                    }
+                    var arr = _.map(result3, function (n) {
+                        return {[n.userID]:n.filename};
+                    });
+                    // convert array of object in to a single object
+                    var resultObject = arr.reduce(function (result, currentObject) {
+                        for (var key in currentObject) {
+                            if (currentObject.hasOwnProperty(key)) {
+                                result[key] = currentObject[key];
+                            }
+                        }
+                        return result;
+                    }, {});
+
+                    //construct final data array
+                    var final = [];
+                    _.forEach(result2, function (value) {
+                        var e = {};
+                        e.name = value.name;
+                        e.phone = value.phone;
+                        e.email = value.email;
+                        e.year = value.year;
+                        e.stream = value.stream;
+                        e.cv = resultObject[value.userID];
+                        final.push(e);
+                    });
+                    res.json({success: true, result: final});
+                });
             });
         });
     });

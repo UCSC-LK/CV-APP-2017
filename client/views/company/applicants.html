@@ -77,7 +77,6 @@
                     showErrorMessage("Something went wrong");
                     console.log(response);
                 }
-                console.log(response);
             },
             error: function (xhr, status, error) {
                 console.log(xhr);
@@ -153,7 +152,6 @@
                                     .search(val ? '^' + val + '$' : '', true, false)
                                     .draw();
                             });
-
                         column.data().unique().sort().each(function (d, j) {
                             select.append('<option value="' + d + '">' + d + '</option>')
                         });
@@ -240,6 +238,12 @@
             var para = '&company=' + companyObject._id + '&student=' + rowData['userID'];
 //            console.log(url + para);
             ajaxSend("POST", para, "ajaxSelect", thisRow, url);
+        });
+
+        applicantTable.on("click", "." + ajaxView, function () {
+            var rowData = applicantTable.row($(this).parents('tr')).data();
+            var win = window.open('http://localhost:3000/uploads/' + rowData.cv);
+//            console.log(rowData.cv);
         });
 
         function ajaxSend(type, params, action, clickRow, url) {
