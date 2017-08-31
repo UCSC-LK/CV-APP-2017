@@ -45,7 +45,6 @@ module.exports.getSelectedStudentsByCompany = function (req, res) {
                 value.student = resultObject[value.student];
                 final.push(value)
             });
-            console.log(final);
             res.json({success: true, result: final});
         });
     });

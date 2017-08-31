@@ -1,55 +1,47 @@
-<!-- Exportable Table -->
-<!--<div class="row clearfix">-->
-    <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
-        <!--<div class="card">-->
-            <!--<div class="header">-->
-                <!--Available Positions-->
-                <!--<br>-->
-                <!--<div id="available-positions">-->
-                    <!--<button class="btn btn-primary waves-effect positionBtn" type="submit">Software Engineer</button>-->
-                    <!--<button class="btn btn-primary waves-effect positionTab">Business Analyst</button>-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<div class="body">-->
-
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
-<!--</div>-->
 <div class="row clearfix">
-    <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="card">
-            <!-- <div class="header">
-                <h2 id="applicant-table-header"></h2>
-            </div> -->
             <div class="body">
-              <!-- Nav tabs -->
-              <ul  class="nav nav-tabs tab-nav-right" id="navdiv" role="tablist">
-                  <!-- <li role="presentation" class="active"><a href="#tablediv" data-toggle="tab">HOME</a></li> -->
-              </ul>
-              <!-- Tab panes -->
-              <div class="tab-content">
-                  <div role="tabpanel" class="tab-pane fade in active" id="tablediv">
-                      <!-- <b>Home Content</b> -->
-                      <table id="apllicantTable" class="table table-bordered table-striped table-hover" cellspacing="0"
-                             width="100%">
-                          <thead>
+                <ul class="nav nav-tabs tab-nav-right" id="navdiv" role="tablist">
+                    <!-- <li role="presentation" class="active"><a href="#tablediv" data-toggle="tab">HOME</a></li> -->
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row clearfix">
+    <div class="col-lg-8 col-md-7 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2 id="applicant-table-header">Applicants</h2>
+            </div>
+            <div class="body">
+                <!-- Nav tabs -->
+
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane fade in active" id="tablediv">
+                        <!-- <b>Home Content</b> -->
+                        <table id="apllicantTable" class="table table-bordered table-striped table-hover"
+                               cellspacing="0"
+                               width="100%">
+                            <thead>
                             <tr>
-                              <th></th>
-                              <th>Name</th>
-                              <th>Year</th>
-                              <th>Stream</th>
-                              <th>Actions</th>
+                                <th></th>
+                                <th>Name</th>
+                                <th>Year</th>
+                                <th>Stream</th>
+                                <th>Actions</th>
                             </tr>
-                          </thead>
-                      </table>
-                  </div>
-              </div>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+    <div class="col-lg-4 col-md-5 col-sm-12 col-xs-12">
         <div class="card">
             <div class="header">
                 <h2>
@@ -62,7 +54,7 @@
                     <thead>
                     <tr>
                         <th>Name</th>
-                        <th>Position</th>
+                        <!--<th>Position</th>-->
                         <th>Actions</th>
                     </tr>
                     </thead>
@@ -71,7 +63,6 @@
         </div>
     </div>
 </div>
-<!-- #END# Exportable Table -->
 
 
 <script>
@@ -114,14 +105,13 @@
         // Set positions
         var allObjects = "";
         companyObject.positions.forEach(function (t) {
-            // allObjects += "<button class=\"btn btn-primary waves-effect positionBtn\">" + t + "</button>";
-            var navtab = "<li role='presentation'><a class='positionTab' href='#tablediv' data-toggle='tab'>"+t+"</a></li>"
-            $( "#navdiv" ).append(navtab);
+            var navtab = "<li role='presentation'><a class='positionTab' href='#tablediv' data-toggle='tab'>" + t + "</a></li>"
+            $("#navdiv").append(navtab);
         });
         console.log(companyObject);
-        // $('#available-positions').html(allObjects);
+        console.log($("#navdiv:first-child").first());
+
         var position = companyObject.positions[0];
-        // $('#applicant-table-header').text(position + ' Applicants');
 
         var applicantTable = $('#apllicantTable').DataTable({
             dom: 'Bfrtip',
@@ -131,7 +121,7 @@
             ],
             ajax: {
                 url: 'http://localhost:3000/student_company/students',
-                data: function ( d ) {
+                data: function (d) {
                     d.company = companyObject._id;
                     d.position = position;
                 },
@@ -142,12 +132,20 @@
                     "className": 'details-control',
                     "orderable": false,
                     "data": null,
-                    "defaultContent": ''
+                    "defaultContent": '',
+                    "width": "10%"
                 },
                 {"data": "name"},
-                {"data": "year"},
-                {"data": "stream"},
                 {
+                    "data": "year",
+                    "width": "20%"
+                },
+                {
+                    "data": "stream",
+                    "width": "10%"
+                },
+                {
+                    "width": "20%",
                     "data": null,
                     "defaultContent": viewButton + selectButton
                 }
@@ -230,8 +228,9 @@
             },
             "columns": [
                 {"data": "student"},
-                {"data": "position"},
+//                {"data": "position"},
                 {
+                    "width": "20%",
                     "data": null,
                     "defaultContent": removeButton
                 }
@@ -324,7 +323,6 @@
         //Changing position
         $('.positionTab').click(function () {
             position = $(this).text();
-            console.log(position);
             applicantTable.ajax.reload();
         });
     }

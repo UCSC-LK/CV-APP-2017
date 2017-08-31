@@ -55,14 +55,14 @@ module.exports.getStudentsByCompany = function (req, res) {
         result.forEach(function (item) {
             studentsInStudentCompany.push(item.student);
         });
-
-        SelectedStudentCompany.find({'company': req.query.company}, "student -_id", function (err, result1) {
+        SelectedStudentCompany.find({'company': req.query.company}, "student position -_id", function (err, result1) {
             if (err) {
                 return res.json({success: false, error: err});
             }
             var studentsInSelectedStudentCompany = [];
             result1.forEach(function (item) {
-                studentsInSelectedStudentCompany.push(item.student);
+                if (item.position == req.query.position)
+                    studentsInSelectedStudentCompany.push(item.student);
             });
 
             //students = studentsInStudentCompany - studentsInStudentCompany
@@ -95,7 +95,6 @@ module.exports.getStudentsByCompany = function (req, res) {
 
                     //construct final data array
                     var final = [];
-                    console.log(result2);
                     _.forEach(result2, function (value) {
                         var e = {};
                         e.userID = value.userID;
