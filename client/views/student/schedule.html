@@ -4,16 +4,17 @@
         <div class="card">
             <div class="header">
                 <h2>
-                    Schdule Table
+                    Companies you've been short-listed by.
                 </h2>
             </div>
             <div class="body">
-                <table id = "schduleTable" class="table table-bordered table-striped table-hover" cellspacing="0" width="100%">
+                <table id="schduleTable" class="table table-bordered table-striped table-hover" cellspacing="0"
+                       width="100%">
                     <thead>
-                        <tr>
-                            <!-- <th>Id</th> -->
-                            <th>Company</th>
-                        </tr>
+                    <tr>
+                        <th>Id</th>
+                        <th>Company</th>
+                    </tr>
                     </thead>
                 </table>
             </div>
@@ -23,21 +24,23 @@
 <!-- #END# Exportable Table -->
 
 <script>
-$(document).ready(function() {
-  var schduleTable = $('#schduleTable').DataTable({
-    dom: 'Bfrtip',
-    responsive: true,
-    buttons: [
-        'copy', 'csv', 'excel', 'pdf', 'print'
-    ],
-      ajax: {
-          url: 'http://localhost:3000/student_company/companies/'+userID,
-          dataSrc: 'result',
-      },
-      "columns": [
-          // { "data": "_id" },
-          { "data": "company" }
-      ]
-  });
-});
+    $(document).ready(function () {
+        var schduleTable = $('#schduleTable').DataTable({
+            dom: 'Bfrtip',
+            responsive: true,
+            buttons: [
+                'pdf', 'print'
+            ],
+            ajax: {
+                url: 'http://localhost:3000/selected_student_company/companies/' + userID,
+                dataSrc: 'result'
+            },
+            "columns": [
+                {"data": "_id"},
+                {"data": "name"}
+            ]
+        });
+
+        schduleTable.ajax.reload();
+    });
 </script>

@@ -10,8 +10,8 @@ var auth = jwt({
 });
 
 
-// router.get('/companies/:query', auth, studentCompanyController.getSelectedStudentsForCompany);
-router.get('/companies/:query', SelectedStudentCompanyController.getSelectedStudentsForCompany);
+// router.get('/companies/:query', auth, studentCompanyController.getCompaniesBySelectedStudent);
+router.get('/companies/:query', SelectedStudentCompanyController.getCompaniesBySelectedStudent);
 router.get('/students/:query', SelectedStudentCompanyController.getSelectedStudentsByCompany);
 router.get('/students', SelectedStudentCompanyController.getSelectedStudentsByCompanyPosition);
 router.post('/', SelectedStudentCompanyController.addSelectedStudentCompany);

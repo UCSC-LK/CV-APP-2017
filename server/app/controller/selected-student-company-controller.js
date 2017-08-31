@@ -1,17 +1,30 @@
 var SelectedStudentCompany = require('../model/selected-student-company'),
     Student = require('../model/student'),
+    Company = require('../model/company'),
     jsend = require('jsend'),
     Cv = require('../model/cv'),
+    mongoose = require('mongoose'),
     _ = require('lodash');
 
 function keyVal(n) {
     return {[n.userID]: n.name};
 }
 
-module.exports.getSelectedStudentsForCompany = function (req, res) {
-    SelectedStudentCompany.find({'student': req.params.query}, "company", function (err, result) {
-        var temp = {"result": result};
-        res.json(temp);
+module.exports.getCompaniesBySelectedStudent = function (req, res) {
+    SelectedStudentCompany.find({'student': req.params.query}, function (err, result) {
+        if (err) {
+            return res.json({success: false, error: err});
+        }
+
+        //Getting company data
+        var companies = _.map(result, 'company');
+        Company.findById({$in: companies}, function (err, result1) {
+            if (err) {
+                return res.json({success: false, error: err});
+            }
+            console.log(result1);
+            res.json({success: true, result: result1});
+        });
     });
 };
 
@@ -81,10 +94,25 @@ module.exports.getSelectedStudentsByCompanyPosition = function (req, res) {
                     return result;
                 }, {});
 
+                //Array to get selectedStudentCompany entry id
+                var arr2 = _.map(result1, function (n) {
+                    return {[n.student]:n._id};
+                });
+                // convert array of object in to a single object
+                var resultObject2 = arr2.reduce(function (result, currentObject) {
+                    for (var key in currentObject) {
+                        if (currentObject.hasOwnProperty(key)) {
+                            result[key] = currentObject[key];
+                        }
+                    }
+                    return result;
+                }, {});
+
                 //construct final data array
                 var final = [];
                 _.forEach(result2, function (value) {
                     var e = {};
+                    e._id = resultObject2[value.userID];
                     e.userID = value.userID;
                     e.name = value.name;
                     e.phone = value.phone;
@@ -95,7 +123,6 @@ module.exports.getSelectedStudentsByCompanyPosition = function (req, res) {
                     final.push(e);
                 });
 
-                console.log(final);
                 res.json({success: true, result: final});
             });
         });
