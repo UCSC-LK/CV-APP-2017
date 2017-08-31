@@ -223,7 +223,11 @@
                 'pdf', 'print'
             ],
             ajax: {
-                url: 'http://localhost:3000/selected_student_company/students/' + companyObject._id,
+                url: 'http://localhost:3000/selected_student_company/students',
+                data: function (d) {
+                    d.company = companyObject._id;
+                    d.position = position;
+                },
                 dataSrc: 'result'
             },
             "columns": [
@@ -324,6 +328,7 @@
         $('.positionTab').click(function () {
             position = $(this).text();
             applicantTable.ajax.reload();
+            shortListedTable.ajax.reload();
         });
     }
 
