@@ -46,7 +46,7 @@ module.exports.getCompaniesByStudent = function (req, res, next) {
 };
 
 //http://localhost:3000/student_company/students => data : {company, position}
-module.exports.getStudentsByCompany = function (req, res) {
+module.exports.getStudentsByCompanyPosition = function (req, res) {
     StudentCompany.find({'company': req.query.company, 'position': req.query.position}, "student -_id", function (err, result) {
         if (err) {
             return res.json({success: false, error: err});
@@ -108,6 +108,58 @@ module.exports.getStudentsByCompany = function (req, res) {
                     });
                     res.json({success: true, result: final});
                 });
+            });
+        });
+    });
+};
+
+//http://localhost:3000/student_company/students/company
+module.exports.getAllStudentsByCompanyPosition = function (req, res) {
+    StudentCompany.find({'company': req.query.company, 'position': req.query.position}, "student position -_id", function (err, result) {
+        if (err) {
+            return res.json({success: false, error: err});
+        }
+        var students = [];
+        result.forEach(function (item) {
+            students.push(item.student);
+        });
+        //Get student data
+        Student.find({'userID': {$in: students}}, function (err, result2) {
+            if (err) {
+                return res.json({success: false, error: err});
+            }
+            // get cv data
+            Cv.find({'userID': {$in: students}}, "userID filename -_id", function (err, result3) {
+                if (err) {
+                    return res.json({success: false, error: err});
+                }
+                var arr = _.map(result3, function (n) {
+                    return {[n.userID]:n.filename};
+                });
+                // convert array of object in to a single object
+                var resultObject = arr.reduce(function (result, currentObject) {
+                    for (var key in currentObject) {
+                        if (currentObject.hasOwnProperty(key)) {
+                            result[key] = currentObject[key];
+                        }
+                    }
+                    return result;
+                }, {});
+
+                //construct final data array
+                var final = [];
+                _.forEach(result2, function (value) {
+                    var e = {};
+                    e.userID = value.userID;
+                    e.name = value.name;
+                    e.phone = value.phone;
+                    e.email = value.email;
+                    e.year = value.year;
+                    e.stream = value.stream;
+                    e.cv = resultObject[value.userID];
+                    final.push(e);
+                });
+                res.json({success: true, result: final});
             });
         });
     });
