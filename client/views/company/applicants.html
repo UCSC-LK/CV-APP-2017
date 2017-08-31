@@ -2,13 +2,16 @@
 <div class="row clearfix">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="card">
-            <div class="header">
+            <!-- <div class="header">
                 Available Positions
                 <br>
                 <div id="available-positions">
                     <button class="btn btn-primary waves-effect positionBtn" type="submit">Software Engineer</button>
-                    <button class="btn btn-primary waves-effect positionBtn" type="submit">Business Analyst</button>
+                    <button class="btn btn-primary waves-effect positionTab">Business Analyst</button>
                 </div>
+            </div> -->
+            <div class="body">
+
             </div>
         </div>
     </div>
@@ -16,22 +19,32 @@
 <div class="row clearfix">
     <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
         <div class="card">
-            <div class="header">
+            <!-- <div class="header">
                 <h2 id="applicant-table-header"></h2>
-            </div>
+            </div> -->
             <div class="body">
-                <table id="apllicantTable" class="table table-bordered table-striped table-hover" cellspacing="0"
-                       width="100%">
-                    <thead>
-                    <tr>
-                        <th></th>
-                        <th>Name</th>
-                        <th>Year</th>
-                        <th>Stream</th>
-                        <th>Actions</th>
-                    </tr>
-                    </thead>
-                </table>
+              <!-- Nav tabs -->
+              <ul  class="nav nav-tabs tab-nav-right" id="navdiv" role="tablist">
+                  <!-- <li role="presentation" class="active"><a href="#tablediv" data-toggle="tab">HOME</a></li> -->
+              </ul>
+              <!-- Tab panes -->
+              <div class="tab-content">
+                  <div role="tabpanel" class="tab-pane fade in active" id="tablediv">
+                      <!-- <b>Home Content</b> -->
+                      <table id="apllicantTable" class="table table-bordered table-striped table-hover" cellspacing="0"
+                             width="100%">
+                          <thead>
+                            <tr>
+                              <th></th>
+                              <th>Name</th>
+                              <th>Year</th>
+                              <th>Stream</th>
+                              <th>Actions</th>
+                            </tr>
+                          </thead>
+                      </table>
+                  </div>
+              </div>
             </div>
         </div>
     </div>
@@ -72,6 +85,7 @@
             success: function (response) {
                 if (response.success == true) {
                     companyObject = response.data[0];
+                    console.log(response);
                     init();
                 } else {
                     showErrorMessage("Something went wrong");
@@ -99,12 +113,14 @@
         // Set positions
         var allObjects = "";
         companyObject.positions.forEach(function (t) {
-            allObjects += "<button class=\"btn btn-primary waves-effect positionBtn\">" + t + "</button>";
+            // allObjects += "<button class=\"btn btn-primary waves-effect positionBtn\">" + t + "</button>";
+            var navtab = "<li role='presentation'><a class='positionTab' href='#tablediv' data-toggle='tab'>"+t+"</a></li>"
+            $( "#navdiv" ).append(navtab);
         });
-        $('#available-positions').html(allObjects);
-
+        console.log(companyObject);
+        // $('#available-positions').html(allObjects);
         var position = companyObject.positions[0];
-        $('#applicant-table-header').text(position + ' Applicants');
+        // $('#applicant-table-header').text(position + ' Applicants');
 
         var applicantTable = $('#apllicantTable').DataTable({
             dom: 'Bfrtip',
@@ -306,9 +322,9 @@
         }
 
         //Changing position
-        $('.positionBtn').click(function () {
+        $('.positionTab').click(function () {
             position = $(this).text();
-            $('#applicant-table-header').text(position + ' Applicants');
+            console.log(position);
             applicantTable.ajax.reload();
         });
     }
