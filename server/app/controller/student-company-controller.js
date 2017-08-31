@@ -95,8 +95,10 @@ module.exports.getStudentsByCompany = function (req, res) {
 
                     //construct final data array
                     var final = [];
+                    console.log(result2);
                     _.forEach(result2, function (value) {
                         var e = {};
+                        e.userID = value.userID;
                         e.name = value.name;
                         e.phone = value.phone;
                         e.email = value.email;
@@ -113,11 +115,25 @@ module.exports.getStudentsByCompany = function (req, res) {
 };
 
 module.exports.addStudentCompany = function (req, res) {
-    var studentCompany = new StudentCompany(req.body);
-    studentCompany.timeStamp = Date.now();
-    studentCompany.save(function (err, result) {
-        res.json(jsend.fromArguments(err, result));
+    var positions = req.body.position.split(',');
+    var err, result;
+    positions.forEach(function (position) {
+        var params = {};
+        params.student = req.body.student;
+        params.company = req.body.company;
+        params.choice = req.body.choice;
+        params.position = position;
+        var studentCompany = new StudentCompany(params);
+        studentCompany.timeStamp = Date.now();
+        studentCompany.save(function (e, result1) {
+            if (e) {
+                return res.json({status: false, error: e});
+            }
+            err = e;
+            result = result1;
+        });
     });
+    res.json({status:'success', result: result});
 };
 
 module.exports.deleteStudentCompany = function (req, res) {

@@ -6,8 +6,6 @@
                 Available Positions
                 <br>
                 <div id="available-positions">
-                    <button class="btn btn-primary waves-effect positionBtn" type="submit">Software Engineer</button>
-                    <button class="btn btn-primary waves-effect positionBtn" type="submit">Business Analyst</button>
                 </div>
             </div>
         </div>
@@ -49,6 +47,7 @@
                     <thead>
                     <tr>
                         <th>Name</th>
+                        <th>Position</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
@@ -113,7 +112,6 @@
                 'pdf', 'print'
             ],
             ajax: {
-//                url: 'http://localhost:3000/student_company/students/' + companyObject._id,
                 url: 'http://localhost:3000/student_company/students',
                 data: function ( d ) {
                     d.company = companyObject._id;
@@ -147,7 +145,6 @@
                                 var val = $.fn.dataTable.util.escapeRegex(
                                     $(this).val()
                                 );
-
                                 column
                                     .search(val ? '^' + val + '$' : '', true, false)
                                     .draw();
@@ -215,6 +212,7 @@
             },
             "columns": [
                 {"data": "student"},
+                {"data": "position"},
                 {
                     "data": null,
                     "defaultContent": removeButton
@@ -233,9 +231,9 @@
 
         applicantTable.on("click", "." + ajaxSelect, function () {
             var rowData = applicantTable.row($(this).parents('tr')).data();
-            var url = "http://localhost:3000/selected_student_company"
+            var url = "http://localhost:3000/selected_student_company";
             var thisRow = $(this).parents('tr');
-            var para = '&company=' + companyObject._id + '&student=' + rowData['userID'];
+            var para = '&company=' + companyObject._id + '&student=' + rowData['userID'] + '&position=' + position;
 //            console.log(url + para);
             ajaxSend("POST", para, "ajaxSelect", thisRow, url);
         });
