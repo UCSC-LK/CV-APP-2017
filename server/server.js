@@ -15,12 +15,23 @@ var express = require('express'),
 
     var jwt = require('express-jwt');
     var config  = require('./app/config/conf');
+    var morgan = require('morgan');
+    var fs = require('fs');
+    var path = require('path');
 
 mongoose.connect(config.database, {
     useMongoClient: true
 });
 
 
+// create a write stream (in append mode)
+var accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {flags: 'a'})
+
+// setup the logger
+app.use(morgan('common', {stream: accessLogStream}))
+
+// logger stdout
+app.use(morgan('dev'))
 
 ///////////////////////////////////////////////////////////
 //
@@ -51,6 +62,8 @@ app.use(bodyParser.json()); //for parsing application/json
 app.use(bodyParser.urlencoded({
     extended: true
 }));
+
+
 
 
 // routes ======================================================================
