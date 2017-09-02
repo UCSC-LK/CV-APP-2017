@@ -7,6 +7,7 @@ var express = require('express'),
     company = require('./app/api/company-api'),
     studentCompany = require('./app/api/student-company-api'),
     selectedStudentCompany = require('./app/api/selected-student-company-api'),
+    remoteValidation = require('./app/api/validation'),
     app = express(),
     mongoose = require('mongoose'),
     port = 3000,
@@ -21,8 +22,8 @@ mongoose.connect(config.database, {
 
 
 
-///////////////////////////////////////////////
-
+///////////////////////////////////////////////////////////
+//
 //Set Static Folder
 app.use(express.static(path.join(__dirname, '../client')));
 // app.use(express.static(path.join(__dirname, '../client2')));
@@ -62,6 +63,8 @@ app.use('/cv', cv);
 app.use('/company', company);
 app.use('/student_company', studentCompany);
 app.use('/selected_student_company', selectedStudentCompany);
+app.use('/student_company', studentCompany);
+app.use('/validation', remoteValidation);
 
 // error handlers
 // Catch unauthorised errors

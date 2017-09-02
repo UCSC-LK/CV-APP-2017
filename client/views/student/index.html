@@ -212,13 +212,81 @@ s
         var pageWrapper = $("#page-wrapper");
         $("a.ajax-pg").on("click", function (e) {
             e.preventDefault();
-            pageWrapper.empty();
-            pageWrapper.load(this.href);
-            $('.ml-menu li.active').removeClass('active');
-            $(this).parent().addClass('active');
+            validation(this);
+            // pageWrapper.empty();
+            // pageWrapper.load(this.href);
+            // $('.ml-menu li.active').removeClass('active');
+            // $(this).parent().addClass('active');
         });
         window.onload = pageWrapper.load('schedule.html');
+
+        function validation(thisNav){
+          var path = thisNav.href.split("/");
+          var filename = path[path.length - 1]
+
+          var url = "";
+          var msg = "";
+
+          if(filename == 'cv-view.html'){
+            url = "http://localhost:3000/validation/validstudent/" + userID
+            remoteValidation(url,thisNav,filename);
+          }else if(filename == 'company-select.html'){
+            url = "http://localhost:3000/validation/validCv/" + userID
+            remoteValidation(url,thisNav,filename)
+          }else{
+            updatepage(thisNav);
+          }
+          console.log(filename);
+        }
+
+        function remoteValidation(url,thisNav,filename) {
+          $.ajax({
+              type: "GET",
+              url: url,
+              data: {userID: userID},
+              dataType: "json",
+              success: function (response) {
+                  if (response.success == true) {
+                      if(response.isValid == true){
+                        updatepage(thisNav);
+                      }else{
+                        // create deep copy
+                        var newNav = jQuery.extend(true, {}, thisNav);
+                        if(filename == 'cv-view.html'){
+                          newNav.href = "student-data-form.html";
+                          showErrorMessage("You have to fill student details first");
+                        } else if (filename == 'company-select.html'){
+                          if(response.isValidStudent == true){
+                            newNav.href = "cv-view.html";
+                            showErrorMessage("You have to upload CV");
+                          }else{
+                            newNav.href = "student-data-form.html";
+                            showErrorMessage("You have to insert student details & upload CV");
+                          }
+                        }
+                        updatepage(newNav);
+                      }
+                  } else {
+                      showErrorMessage("Something went wrong");
+                      console.log(response);
+                  }
+              },
+              error: function (xhr, status, error) {
+                  console.log(xhr);
+                  console.log(status, error);
+              }
+          });
+        }
+
+        function updatepage(thisNav) {
+          pageWrapper.empty();
+          pageWrapper.load(thisNav.href);
+          $('.ml-menu li.active').removeClass('active');
+          $(thisNav).parent().addClass('active');
+        }
+
     });
+
 
     function setStudentName(name) {
         if (name) {
@@ -291,7 +359,6 @@ s
     }
 
     function currentUser() {
-//        if (isLoggedIn()) {
             var token = getToken();
             var payload = token.split('.')[1];
             payload = window.atob(payload);
@@ -302,7 +369,6 @@ s
                 usertype: payload.usertype,
                 name: payload.name
             };
-//        }
     }
 
     if (isLoggedIn()) {
@@ -318,5 +384,9 @@ s
         $('#username').html(user_info.name);
     } else {
         window.location.replace('../../index.html');
+    }
+
+    function showErrorMessage(msg) {
+        swal(msg + "!", '', "error");
     }
 </script>
