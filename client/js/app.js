@@ -5,23 +5,23 @@ var app = angular.module('cvApp', ['ngResource']);
 //         .when('/student/details', {
 //             templateUrl: 'views/student-data-form.html'
 //         })
-        // .when('/login', {
-        //     templateUrl: 'views/login.html',
-        //     controller: 'LoginCtrl'
-        // })
-        // .when('/signup', {
-        //     templateUrl: 'views/signup.html',
-        //     controller: 'SignUpCtrl'
-        // })
-        // .when('/profile', {
-        //     templateUrl: 'views/profile.html',
-        //     resolve: {
-        //         logincheck: checkLoggedin
-        //     }
-        // })
-        // .otherwise({
-        //     redirectTo: '/login'
-        // })
+// .when('/login', {
+//     templateUrl: 'views/login.html',
+//     controller: 'LoginCtrl'
+// })
+// .when('/signup', {
+//     templateUrl: 'views/signup.html',
+//     controller: 'SignUpCtrl'
+// })
+// .when('/profile', {
+//     templateUrl: 'views/profile.html',
+//     resolve: {
+//         logincheck: checkLoggedin
+//     }
+// })
+// .otherwise({
+//     redirectTo: '/login'
+// })
 // });
 //
 // var checkLoggedin = function($q, $timeout, $http, $location, $rootScope) {

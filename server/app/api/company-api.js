@@ -3,8 +3,8 @@
  */
 
 var express = require('express'),
-    router = express.Router(),
-    companyController = require('../controller/company-controller');
+  router = express.Router(),
+  companyController = require('../controller/company-controller');
 
 router.get('/withoutselected/:query', companyController.getCompaniesWithoutSelected);
 

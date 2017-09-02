@@ -1,34 +1,34 @@
 <div class="row clearfix">
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <div class="card">
-            <div class="header">
-                <h2 id="page-header">
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="card">
+      <div class="header">
+        <h2 id="page-header">
                     Upload Your CV
                 </h2>
-            </div>
-            <div class="body">
-                <div class="form-line">
-                    <div id="cv-pdf-view">
-                        <!-- pdf appear here -->
-                    </div>
-                </div>
-                <form name="cvForm" enctype="multipart/form-data" id="form_validation">
-                    <br>
-                    <p>Upload New CV</p>
-                    <div class="form-group">
-                        <div class="form-line">
-                            <div class="fallback">
-                                <input name="file" type="file" accept="application/pdf" required/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <button class="btn btn-primary waves-effect" type="submit" id="submit-btn">UPLOAD</button>
-                    </div>
-                </form>
-            </div>
+      </div>
+      <div class="body">
+        <div class="form-line">
+          <div id="cv-pdf-view">
+            <!-- pdf appear here -->
+          </div>
         </div>
+        <form name="cvForm" enctype="multipart/form-data" id="form_validation">
+          <br>
+          <p>Upload New CV</p>
+          <div class="form-group">
+            <div class="form-line">
+              <div class="fallback">
+                <input name="file" type="file" accept="application/pdf" required/>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <button class="btn btn-primary waves-effect" type="submit" id="submit-btn">UPLOAD</button>
+          </div>
+        </form>
+      </div>
     </div>
+  </div>
 </div>
 
 
@@ -39,108 +39,108 @@
 <!-- <script src="../../assets/js/demo.js"></script> -->
 
 <script>
-
-    $(document).ready(function () {
-        // Getting cv details
-        $.ajax({
-            type: "GET",
-            url: "http://localhost:3000/cv",
-            data: {userID: userID},
-            dataType: "json",
-            success: function (response) {
-                if (response.success == true) {
-                    if (response.data.length > 0) {
-                        setPdfView(response.data[0].filename);
-                    }
-                } else {
-                    showErrorMessage("Something went wrong");
-                    console.log(response);
-                }
-//                    console.log(response);
-            },
-            error: function (xhr, status, error) {
-                showErrorMessage("Something went wrong");
-                console.log(xhr);
-                console.log(status, error);
-            }
-        });
-
-        // Uploading new cv
-        $('#form_validation').submit(function (e) {
-            if ($(this).valid()) {
-                e.preventDefault();
-                // check file type
-                var ext = $('input[name=file]').val().split('.').pop().toLowerCase();
-                if ($.inArray(ext, ['pdf']) == -1) {
-                    showErrorMessage('We accept only PDF formatted file!', 'Error');
-                } else {
-                    var formData = new FormData(this);
-                    formData.append('userID', userID);
-                    $.ajax({
-                        type: "POST",
-                        url: "/cv/upload",
-                        data: formData,
-                        processData: false,
-                        contentType: false,
-                        success: function (response) {
-                            if (response.success == true) {
-                                showSuccessMessage(response.msg);
-                                setPdfView(response.data.filename);
-                            } else {
-                                showErrorMessage(response.msg);
-                                console.log(response);
-                            }
-                        },
-                        error: function (xhr, status, error) {
-                            console.log(xhr);
-                            console.log(status, error);
-                        }
-                    });
-                }
-            }
-            return false;
-        });
+  $(document).ready(function() {
+    // Getting cv details
+    $.ajax({
+      type: "GET",
+      url: "http://localhost:3000/cv",
+      data: {
+        userID: userID
+      },
+      dataType: "json",
+      success: function(response) {
+        if (response.success == true) {
+          if (response.data.length > 0) {
+            setPdfView(response.data[0].filename);
+          }
+        } else {
+          showErrorMessage("Something went wrong");
+          console.log(response);
+        }
+        //                    console.log(response);
+      },
+      error: function(xhr, status, error) {
+        showErrorMessage("Something went wrong");
+        console.log(xhr);
+        console.log(status, error);
+      }
     });
 
-    function setPdfView(filename) {
-        // clear input feild
-        $('input[name=file]').val('');
+    // Uploading new cv
+    $('#form_validation').submit(function(e) {
+      if ($(this).valid()) {
+        e.preventDefault();
+        // check file type
+        var ext = $('input[name=file]').val().split('.').pop().toLowerCase();
+        if ($.inArray(ext, ['pdf']) == -1) {
+          showErrorMessage('We accept only PDF formatted file!', 'Error');
+        } else {
+          var formData = new FormData(this);
+          formData.append('userID', userID);
+          $.ajax({
+            type: "POST",
+            url: "/cv/upload",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+              if (response.success == true) {
+                showSuccessMessage(response.msg);
+                setPdfView(response.data.filename);
+              } else {
+                showErrorMessage(response.msg);
+                console.log(response);
+              }
+            },
+            error: function(xhr, status, error) {
+              console.log(xhr);
+              console.log(status, error);
+            }
+          });
+        }
+      }
+      return false;
+    });
+  });
 
-        // clear pdf embed if exists
-        $('#cv-pdf-view').empty();
+  function setPdfView(filename) {
+    // clear input feild
+    $('input[name=file]').val('');
 
-        var pdfEmbed = document.createElement("embed");
-        pdfEmbed.setAttribute("src", "/uploads/" + filename);
-        pdfEmbed.setAttribute("width", "100%");
-        pdfEmbed.setAttribute("height", "700px");
-        pdfEmbed.setAttribute("type", "application/pdf");
-        $('#cv-pdf-view').append(pdfEmbed);
+    // clear pdf embed if exists
+    $('#cv-pdf-view').empty();
 
-        $('#submit-btn').text('UPDATE');
-        $('#page-header').text('Your CV');
-    }
+    var pdfEmbed = document.createElement("embed");
+    pdfEmbed.setAttribute("src", "/uploads/" + filename);
+    pdfEmbed.setAttribute("width", "100%");
+    pdfEmbed.setAttribute("height", "700px");
+    pdfEmbed.setAttribute("type", "application/pdf");
+    $('#cv-pdf-view').append(pdfEmbed);
 
+    $('#submit-btn').text('UPDATE');
+    $('#page-header').text('Your CV');
+  }
 </script>
 
 <script>
-    $(function () {
-        $('#form_validation').validate({
-            highlight: function (input) {
-                console.log(input);
-                $(input).parents('.form-line').addClass('error');
-            },
-            unhighlight: function (input) {
-                $(input).parents('.form-line').removeClass('error');
-            },
-            errorPlacement: function (error, element) {
-                $(element).parents('.input-group').append(error);
-                $(element).parents('.form-group').append(error);
-            }
-        });
+  $(function() {
+    $('#form_validation').validate({
+      highlight: function(input) {
+        console.log(input);
+        $(input).parents('.form-line').addClass('error');
+      },
+      unhighlight: function(input) {
+        $(input).parents('.form-line').removeClass('error');
+      },
+      errorPlacement: function(error, element) {
+        $(element).parents('.input-group').append(error);
+        $(element).parents('.form-group').append(error);
+      }
     });
+  });
 
-    $(function () {
-        $.AdminBSB.input.activate();
-        $.AdminBSB.select.activate();
-    });
+  $(function() {
+    $.AdminBSB.input.activate();
+    $.AdminBSB.select.activate();
+  });
 </script>

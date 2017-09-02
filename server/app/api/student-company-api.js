@@ -3,14 +3,14 @@
  */
 
 var express = require('express'),
-    router = express.Router(),
-    studentCompanyController = require('../controller/student-company-controller');
+  router = express.Router(),
+  studentCompanyController = require('../controller/student-company-controller');
 
 var jwt = require('express-jwt');
 var config = require('../config/conf');
 var auth = jwt({
-    secret: config.secret,
-    userProperty: 'payload'
+  secret: config.secret,
+  userProperty: 'payload'
 });
 
 

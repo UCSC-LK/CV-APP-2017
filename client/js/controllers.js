@@ -5,7 +5,7 @@ app.controller("NavCtrl", function($rootScope, $scope, $http, $location) {
         $rootScope.currentUser = null;
         $location.url("/home");
       });
-  }
+  };
 });
 
 app.controller("SignUpCtrl", function($scope, $http, $rootScope, $location) {
@@ -18,11 +18,11 @@ app.controller("SignUpCtrl", function($scope, $http, $rootScope, $location) {
           // $rootScope.currentUser = user;
           // $location.url("/profile");
           console.log(user);
-        }).error(function(err){
-            console.log(err);
-        })
+        }).error(function(err) {
+          console.log(err);
+        });
     }
-  }
+  };
 });
 
 app.controller("LoginCtrl", function($location, $scope, $http, $rootScope) {
@@ -32,9 +32,9 @@ app.controller("LoginCtrl", function($location, $scope, $http, $rootScope) {
         $rootScope.currentUser = response;
         $location.url("/profile");
         console.log(response);
-      }).error(function(err){
-          $scope.msg = err;
-          console.log(err);
-      })
-  }
+      }).error(function(err) {
+        $scope.msg = err;
+        console.log(err);
+      });
+  };
 });
