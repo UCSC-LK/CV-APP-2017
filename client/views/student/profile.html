@@ -87,7 +87,7 @@
             console.log(change_data);
             $.ajax({
                 type: "POST",
-                url: "http://localhost:3000/changepass",
+                url: domain + "changepass",
                 // data : change_data+ &username="+ashan3@gmail.com",
                 data: change_data + "&username=" + "ashan3@gmail.com",
                 dataType: "json",

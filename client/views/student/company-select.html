@@ -97,7 +97,7 @@
                 //        'copy', 'csv', 'excel', 'pdf', 'print'
             ],
             ajax: {
-                url: 'http://localhost:3000/company/withoutselected/' + userID,
+                url: domain + 'company/withoutselected/' + userID,
                 dataSrc: 'result'
             },
             "columns": [{
@@ -117,7 +117,7 @@
                 //        'copy', 'csv', 'excel', 'pdf', 'print'
             ],
             ajax: {
-                url: 'http://localhost:3000/student_company/companies/' + userID,
+                url: domain + 'student_company/companies/' + userID,
                 dataSrc: 'result'
             },
             "columns": [{
@@ -137,7 +137,7 @@
             var rowData = chosedTable.row($(this).parents('tr')).data();
             var thisRow = $(this).parents('tr');
             var para = '';
-            var url = 'http://localhost:3000/student_company/' + rowData['_id'];
+            var url = domain + 'student_company/' + rowData['_id'];
             //            console.log(url + para);nfirm: true,
             ajaxSend("DELETE", para, "ajaxRemove", thisRow, url);
         });
@@ -185,7 +185,7 @@
         positionModal.on("click", "." + saveButton, function () {
             if (positionForm.valid()) {
                 var fullpara = para2 + '&position=' + getCheckedPositions();
-                var url = "http://localhost:3000/student_company";
+                var url = domain + "student_company";
                 ajaxSend("POST", fullpara, "ajaxSave", thisRow2, url);
             }
         });

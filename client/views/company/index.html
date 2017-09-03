@@ -202,6 +202,7 @@ s
     //Global userID
     var userID;
 
+    var domain = "http://localhost:3000/";
 
     $(document).ready(function () {
         // Code to inject html code into index
@@ -221,7 +222,7 @@ s
         // alert("Hello");
         $.ajax({
             type: "POST",
-            url: "http://localhost:3000/logout",
+            url: domain + "logout",
             data: '',
             dataType: "json",
             success: function (response) {

@@ -46,7 +46,7 @@
     $(document).ready(function () {
         $.ajax({
             type: "GET",
-            url: "http://localhost:3000/company",
+            url: domain + "company",
             data: {
                 userID: userID
             },
@@ -91,7 +91,7 @@
                 'pdf', 'print'
             ],
             ajax: {
-                url: 'http://localhost:3000/student_company/students/all',
+                url: domain + 'student_company/students/all',
                 data: function (d) {
                     d.company = companyObject._id;
                     d.position = position;
@@ -149,7 +149,7 @@
         // Open CV pdf in new tab
         applicantTable.on("click", "." + ajaxView, function () {
             var rowData = applicantTable.row($(this).parents('tr')).data();
-            var win = window.open('http://localhost:3000/uploads/' + rowData.cv);
+            var win = window.open(domain + 'uploads/' + rowData.cv);
         });
 
         function showErrorMessage(msg) {

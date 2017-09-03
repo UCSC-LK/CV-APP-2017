@@ -207,6 +207,8 @@ s
     //Global userID
     var userID;
 
+    var domain = "http://localhost:3000/";
+
     // Code to inject html code into index
     $(document).ready(function () {
         var pageWrapper = $("#page-wrapper");
@@ -228,10 +230,10 @@ s
             var msg = "";
 
             if (filename == 'cv-view.html') {
-                url = "http://localhost:3000/validation/validstudent/" + userID
+                url = domain + "validation/validstudent/" + userID
                 remoteValidation(url, thisNav, filename);
             } else if (filename == 'company-select.html') {
-                url = "http://localhost:3000/validation/validCv/" + userID
+                url = domain + "validation/validCv/" + userID
                 remoteValidation(url, thisNav, filename)
             } else {
                 updatepage(thisNav);
@@ -296,7 +298,7 @@ s
         } else {
             $.ajax({
                 type: "GET",
-                url: "http://localhost:3000/student",
+                url: domain + "student",
                 data: {
                     userID: userID
                 },
@@ -322,7 +324,7 @@ s
     logoutButton.click(function () {
         $.ajax({
             type: "POST",
-            url: "http://localhost:3000/logout",
+            url: domain + "logout",
             data: '',
             dataType: "json",
             success: function (response) {

@@ -72,7 +72,7 @@
     $(document).ready(function () {
         $.ajax({
             type: "GET",
-            url: "http://localhost:3000/company",
+            url: domain + "company",
             data: {
                 userID: userID
             },
@@ -121,7 +121,7 @@
                 'pdf', 'print'
             ],
             ajax: {
-                url: 'http://localhost:3000/student_company/students',
+                url: domain + 'student_company/students',
                 data: function (d) {
                     d.company = companyObject._id;
                     d.position = position;
@@ -221,7 +221,7 @@
 
         applicantTable.on("click", "." + ajaxSelect, function () {
             var rowData = applicantTable.row($(this).parents('tr')).data();
-            var url = "http://localhost:3000/selected_student_company";
+            var url = domain + "selected_student_company";
             var thisRow = $(this).parents('tr');
             var para = '&company=' + companyObject._id + '&student=' + rowData['userID'] + '&position=' + position;
             // console.log(url + para);
@@ -231,7 +231,7 @@
         // Open CV pdf in new tab
         applicantTable.on("click", "." + ajaxView, function () {
             var rowData = applicantTable.row($(this).parents('tr')).data();
-            var win = window.open('http://localhost:3000/uploads/' + rowData.cv);
+            var win = window.open(domain + 'uploads/' + rowData.cv);
         });
 
         var shortListedTable = $('#shortListedTable').DataTable({
@@ -241,7 +241,7 @@
                 'pdf', 'print'
             ],
             ajax: {
-                url: 'http://localhost:3000/selected_student_company/students',
+                url: domain + 'selected_student_company/students',
                 data: function (d) {
                     d.company = companyObject._id;
                     d.position = position;
@@ -263,14 +263,14 @@
             var rowData = shortListedTable.row($(this).parents('tr')).data();
             var thisRow = $(this).parents('tr');
             var para = '';
-            var url = 'http://localhost:3000/selected_student_company/' + rowData['_id'];
+            var url = domain + 'selected_student_company/' + rowData['_id'];
             // console.log(url + para);
             ajaxSend("DELETE", para, "ajaxRemove", thisRow, url);
         });
 
         shortListedTable.on( 'draw', function () {
             var para = {company:companyObject._id};
-            var url = "http://localhost:3000/selected_student_company/students/count";
+            var url = domain + "selected_student_company/students/count";
             console.log(ajaxSend("GET", para, "", null, url));
         });
 
