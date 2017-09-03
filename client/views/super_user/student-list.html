@@ -8,15 +8,15 @@
                 </h2>
             </div>
             <div class="body">
-                <table id = "studentTable" class="table table-bordered table-striped table-hover">
+                <table id="studentTable" class="table table-bordered table-striped table-hover">
                     <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Phone</th>
-                            <th>Year</th>
-                            <th>Email</th>
-                            <th>Stream</th>
-                        </tr>
+                    <tr>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Year</th>
+                        <th>Email</th>
+                        <th>Stream</th>
+                    </tr>
                     </thead>
                 </table>
             </div>
@@ -26,24 +26,24 @@
 <!-- #END# Exportable Table -->
 
 <script>
-$(document).ready(function() {
-  var studentTable = $('#studentTable').DataTable({
-    dom: 'Bfrtip',
-    responsive: true,
-    buttons: [
-        'copy', 'csv', 'excel', 'pdf', 'print'
-    ],
-      ajax: {
-          url: 'http://localhost:3000/student/all',
-          dataSrc: 'result'
-      },
-      "columns": [
-          { "data": "name" },
-          { "data": "phone" },
-          { "data": "year" },
-          { "data": "email" },
-          { "data": "stream" }
-      ]
-  });
-});
+    $(document).ready(function () {
+        var studentTable = $('#studentTable').DataTable({
+            dom: 'Bfrtip',
+            responsive: true,
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ],
+            ajax: {
+                url: 'http://localhost:3000/student/all',
+                dataSrc: 'result'
+            },
+            "columns": [
+                {"data": "name"},
+                {"data": "phone"},
+                {"data": "year"},
+                {"data": "email"},
+                {"data": "stream"}
+            ]
+        });
+    });
 </script>

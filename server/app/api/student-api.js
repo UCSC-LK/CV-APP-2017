@@ -1,6 +1,6 @@
 var express = require('express'),
-  router = express.Router(),
-  studentController = require('../controller/student-controller');
+    router = express.Router(),
+    studentController = require('../controller/student-controller');
 
 router.get('/', studentController.getStudent);
 

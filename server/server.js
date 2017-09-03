@@ -1,17 +1,17 @@
 var express = require('express'),
-  path = require('path'),
-  bodyParser = require('body-parser'),
-  // api = require('./app/api2'),
-  student = require('./app/api/student-api'),
-  cv = require('./app/api/cv-api'),
-  company = require('./app/api/company-api'),
-  studentCompany = require('./app/api/student-company-api'),
-  selectedStudentCompany = require('./app/api/selected-student-company-api'),
-  remoteValidation = require('./app/api/validation'),
-  app = express(),
-  mongoose = require('mongoose'),
-  port = 3000,
-  passport = require('passport');
+    path = require('path'),
+    bodyParser = require('body-parser'),
+    // api = require('./app/api2'),
+    student = require('./app/api/student-api'),
+    cv = require('./app/api/cv-api'),
+    company = require('./app/api/company-api'),
+    studentCompany = require('./app/api/student-company-api'),
+    selectedStudentCompany = require('./app/api/selected-student-company-api'),
+    remoteValidation = require('./app/api/validation'),
+    app = express(),
+    mongoose = require('mongoose'),
+    port = 3000,
+    passport = require('passport');
 
 var jwt = require('express-jwt');
 var config = require('./app/config/conf');
@@ -20,17 +20,17 @@ var fs = require('fs');
 var path = require('path');
 
 mongoose.connect(config.database, {
-  useMongoClient: true
+    useMongoClient: true
 });
 
 // create a write stream (in append mode)
 var accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {
-  flags: 'a'
+    flags: 'a'
 });
 
 // setup the logger
 app.use(morgan('common', {
-  stream: accessLogStream
+    stream: accessLogStream
 }));
 
 // logger stdout
@@ -50,9 +50,9 @@ require('./app/config/passport')(passport); // pass passport for configuration
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 app.use(session({
-  secret: config.secret,
-  resave: false,
-  saveUninitialized: true,
+    secret: config.secret,
+    resave: false,
+    saveUninitialized: true,
 }));
 
 app.use(cookieParser());
@@ -62,7 +62,7 @@ app.use(passport.session());
 //Body-parser
 app.use(bodyParser.json()); //for parsing application/json
 app.use(bodyParser.urlencoded({
-  extended: true
+    extended: true
 }));
 
 // routes ======================================================================
@@ -80,23 +80,23 @@ app.use('/validation', remoteValidation);
 
 // error handlers
 // Catch unauthorised errors
-app.use(function(err, req, res, next) {
-  if (err.name === 'UnauthorizedError') {
-    res.status(401);
-    res.json({
-      "message : ": err.name + " : " + err.message
-    });
-    console.log("Log - UnauthorizedError");
-  } else {
-    console.log("Log - Unhandlied");
-    console.log("message" + err.name + ": " + err.message);
-    res.json({
-      "message": err.name + ": " + err.message
-    });
-  }
+app.use(function (err, req, res, next) {
+    if (err.name === 'UnauthorizedError') {
+        res.status(401);
+        res.json({
+            "message : ": err.name + " : " + err.message
+        });
+        console.log("Log - UnauthorizedError");
+    } else {
+        console.log("Log - Unhandlied");
+        console.log("message" + err.name + ": " + err.message);
+        res.json({
+            "message": err.name + ": " + err.message
+        });
+    }
 });
 
 
-app.listen(port, function() {
-  console.log('Server started on port : ' + port);
+app.listen(port, function () {
+    console.log('Server started on port : ' + port);
 });

@@ -2,102 +2,108 @@
 <html ng-app="cvApp">
 
 <head>
-  <meta charset="UTF-8">
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <title>Sign In | Career Fair</title>
-  <!-- Favicon-->
-  <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <title>Sign In | Career Fair</title>
+    <!-- Favicon-->
+    <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet"
+          type="text/css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
 
-  <!-- Bootstrap Core Css -->
-  <link href="assets/plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <!-- Bootstrap Core Css -->
+    <link href="assets/plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
 
-  <!-- Waves Effect Css -->
-  <link href="assets/plugins/node-waves/waves.css" rel="stylesheet" />
+    <!-- Waves Effect Css -->
+    <link href="assets/plugins/node-waves/waves.css" rel="stylesheet"/>
 
-  <!-- Animation Css -->
-  <link href="assets/plugins/animate-css/animate.css" rel="stylesheet" />
+    <!-- Animation Css -->
+    <link href="assets/plugins/animate-css/animate.css" rel="stylesheet"/>
 
-  <!-- Custom Css -->
-  <link href="assets/css/style.css" rel="stylesheet">
+    <!-- Custom Css -->
+    <link href="assets/css/style.css" rel="stylesheet">
 </head>
 
 <body class="login-page">
-  <div class="login-box">
+<div class="login-box">
     <div class="logo">
-      <a href="javascript:void(0);"><b>Career Fair</b> 2017</a>
-      <small>University of Colombo School of Computing</small>
+        <a href="javascript:void(0);"><b>Career Fair</b> 2017</a>
+        <small>University of Colombo School of Computing</small>
     </div>
     <div class="card" ng-controller="loginController">
-      <div class="body">
-        <form id="sign_in" name="loginForm" ng-submit="login(loginForm.$valid)">
-          <div class="msg">Sign in to start your session</div>
-          <div id="respond"></div>
-          <div class="input-group">
+        <div class="body">
+            <form id="sign_in" name="loginForm" ng-submit="login(loginForm.$valid)">
+                <div class="msg">Sign in to start your session</div>
+                <div id="respond"></div>
+                <div class="input-group">
             <span class="input-group-addon">
                             <i class="material-icons">person</i>
                         </span>
-            <div class="form-line">
-              <input type="text" class="form-control" name="username" id="username" placeholder="Username" required autofocus ng-model="username">
-            </div>
-          </div>
-          <div class="input-group">
+                    <div class="form-line">
+                        <input type="text" class="form-control" name="username" id="username" placeholder="Username"
+                               required autofocus ng-model="username">
+                    </div>
+                </div>
+                <div class="input-group">
             <span class="input-group-addon">
                             <i class="material-icons">lock</i>
                         </span>
-            <div class="form-line">
-              <input type="password" class="form-control" name="password" id="password" placeholder="Password" required ng-model="password">
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-xs-8 p-t-5">
-              <input type="checkbox" name="remember" id="remember" class="filled-in chk-col-blue">
-              <label for="remember">Remember Me</label>
-            </div>
-            <div class="col-xs-4">
-              <button class="btn btn-block bg-blue waves-effect">SIGN IN</button>
-            </div>
-          </div>
-          <div class="row m-t-15 m-b--20">
-            <!-- <div class="col-xs-6">
-                            <a href="sign-up.html">Register Now!</a>
-                        </div>
-                        <div class="col-xs-6 align-right">
-                            <a href="forgot-password.html">Forgot Password?</a>
-                        </div> -->
-          </div>
-        </form>
-      </div>
+                    <div class="form-line">
+                        <input type="password" class="form-control" name="password" id="password" placeholder="Password"
+                               required ng-model="password">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-8 p-t-5">
+                        <input type="checkbox" name="remember" id="remember" class="filled-in chk-col-blue">
+                        <label for="remember">Remember Me</label>
+                    </div>
+                    <div class="col-xs-4">
+                        <button class="btn btn-block bg-blue waves-effect">SIGN IN</button>
+                    </div>
+                </div>
+                <div class="row m-t-15 m-b--20">
+                    <!-- <div class="col-xs-6">
+                                    <a href="sign-up.html">Register Now!</a>
+                                </div>
+                                <div class="col-xs-6 align-right">
+                                    <a href="forgot-password.html">Forgot Password?</a>
+                                </div> -->
+                </div>
+            </form>
+        </div>
     </div>
-  </div>
+</div>
 
-  <!-- Jquery Core Js -->
-  <script src="assets/plugins/jquery/jquery.min.js"></script>
+<!-- Jquery Core Js -->
+<script src="assets/plugins/jquery/jquery.min.js"></script>
 
-  <!-- Bootstrap Core Js -->
-  <script src="assets/plugins/bootstrap/js/bootstrap.js"></script>
+<!-- Bootstrap Core Js -->
+<script src="assets/plugins/bootstrap/js/bootstrap.js"></script>
 
-  <!-- Waves Effect Plugin Js -->
-  <script src="assets/plugins/node-waves/waves.js"></script>
+<!-- Waves Effect Plugin Js -->
+<script src="assets/plugins/node-waves/waves.js"></script>
 
-  <!-- Validation Plugin Js -->
-  <script src="assets/plugins/jquery-validation/jquery.validate.js"></script>
+<!-- Validation Plugin Js -->
+<script src="assets/plugins/jquery-validation/jquery.validate.js"></script>
 
-  <!-- Custom Js -->
-  <script src="assets/js/admin.js"></script>
+<!-- Custom Js -->
+<script src="assets/js/admin.js"></script>
 
-  <!-- page reletaed script -->
-  <script src="assets/js/pages/login/sign-in.js"></script>
+<!-- page reletaed script -->
+<script src="assets/js/pages/login/sign-in.js"></script>
 
-  <!-- Angular JS -->
-  <script type="application/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>
-  <script type="application/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-resource.min.js"></script>
-  <script type="application/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-route.min.js"></script>
-  <script type="application/javascript" src="js/app.js"></script>
-  <script type="application/javascript" src="js/controllers/login-controller.js"></script>
+<!-- Angular JS -->
+<script type="application/javascript"
+        src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>
+<script type="application/javascript"
+        src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-resource.min.js"></script>
+<script type="application/javascript"
+        src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-route.min.js"></script>
+<script type="application/javascript" src="js/app.js"></script>
+<script type="application/javascript" src="js/controllers/login-controller.js"></script>
 
 </body>
 

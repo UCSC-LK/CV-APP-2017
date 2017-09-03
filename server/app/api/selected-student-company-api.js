@@ -1,12 +1,12 @@
 var express = require('express'),
-  router = express.Router(),
-  SelectedStudentCompanyController = require('../controller/selected-student-company-controller');
+    router = express.Router(),
+    SelectedStudentCompanyController = require('../controller/selected-student-company-controller');
 
 var jwt = require('express-jwt');
 var config = require('../config/conf');
 var auth = jwt({
-  secret: config.secret,
-  userProperty: 'payload'
+    secret: config.secret,
+    userProperty: 'payload'
 });
 
 
