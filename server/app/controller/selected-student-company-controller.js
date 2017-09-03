@@ -203,3 +203,13 @@ module.exports.deleteSelectedStudentCompany = function (req, res) {
         res.json(jsend.fromArguments(err, result));
     });
 };
+
+module.exports.getSelectedStudentsCountByCompany = function (req, res) {
+    console.log("count");
+    SelectedStudentCompany.find({
+        'company': req.query.company
+    }, function (err, result) {
+        console.log(result);
+        res.json(jsend.fromArguments(err, result));
+    });
+};

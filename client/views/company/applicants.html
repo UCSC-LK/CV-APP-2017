@@ -1,10 +1,17 @@
 <div class="row clearfix">
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
         <div class="card">
             <div class="body">
                 <ul class="nav nav-tabs tab-nav-right" id="navdiv" role="tablist">
                     <!-- position tabs goes here -->
                 </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="body">
+                4 Applicants shortlisted
             </div>
         </div>
     </div>
@@ -40,7 +47,7 @@
         <div class="card">
             <div class="header">
                 <h2>
-                    Short Listed Applicants
+                    Shortlisted Applicants
                 </h2>
             </div>
             <div class="body">
@@ -212,6 +219,21 @@
                 '</table>';
         }
 
+        applicantTable.on("click", "." + ajaxSelect, function () {
+            var rowData = applicantTable.row($(this).parents('tr')).data();
+            var url = "http://localhost:3000/selected_student_company";
+            var thisRow = $(this).parents('tr');
+            var para = '&company=' + companyObject._id + '&student=' + rowData['userID'] + '&position=' + position;
+            // console.log(url + para);
+            ajaxSend("POST", para, "ajaxSelect", thisRow, url);
+        });
+
+        // Open CV pdf in new tab
+        applicantTable.on("click", "." + ajaxView, function () {
+            var rowData = applicantTable.row($(this).parents('tr')).data();
+            var win = window.open('http://localhost:3000/uploads/' + rowData.cv);
+        });
+
         var shortListedTable = $('#shortListedTable').DataTable({
             dom: 'Bfrtip',
             responsive: true,
@@ -246,19 +268,10 @@
             ajaxSend("DELETE", para, "ajaxRemove", thisRow, url);
         });
 
-        applicantTable.on("click", "." + ajaxSelect, function () {
-            var rowData = applicantTable.row($(this).parents('tr')).data();
-            var url = "http://localhost:3000/selected_student_company";
-            var thisRow = $(this).parents('tr');
-            var para = '&company=' + companyObject._id + '&student=' + rowData['userID'] + '&position=' + position;
-            // console.log(url + para);
-            ajaxSend("POST", para, "ajaxSelect", thisRow, url);
-        });
-
-        // Open CV pdf in new tab
-        applicantTable.on("click", "." + ajaxView, function () {
-            var rowData = applicantTable.row($(this).parents('tr')).data();
-            var win = window.open('http://localhost:3000/uploads/' + rowData.cv);
+        shortListedTable.on( 'draw', function () {
+            var para = {company:companyObject._id};
+            var url = "http://localhost:3000/selected_student_company/students/count";
+            console.log(ajaxSend("GET", para, "", null, url));
         });
 
         function ajaxSend(type, params, action, clickRow, url) {
@@ -290,6 +303,9 @@
                                 console.log(response);
                             }
                             break;
+
+                        default:
+                            return response;
                     }
                 },
                 error: function (xhr, status, error) {
@@ -302,22 +318,6 @@
 
         function showErrorMessage(msg) {
             swal(msg + "!", '', "error");
-        }
-
-        function showAjaxLoaderMessage() {
-            swal({
-                title: "Do you really want to select this company ?",
-                text: "Submit to run ajax request",
-                type: "info",
-                showCancelButton: true,
-                closeOnConfirm: false,
-                showLoaderOnConfirm: true
-            }, function () {
-                console.log("Hello World");
-                setTimeout(function () {
-                    swal("Ajax request finished!");
-                }, 2000);
-            });
         }
 
         //Changing position

@@ -3,7 +3,7 @@ var app = angular.module('cvApp', ['ngResource']);
 // app.config(function($routeProvider) {
 //     $routeProvider
 //         .when('/student/details', {
-//             templateUrl: 'views/student-data-form.html'
+//             templateUrl: 'views/student-details.html'
 //         })
 // .when('/login', {
 //     templateUrl: 'views/login.html',

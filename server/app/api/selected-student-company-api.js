@@ -1,3 +1,5 @@
+// selected_student_company
+
 var express = require('express'),
     router = express.Router(),
     SelectedStudentCompanyController = require('../controller/selected-student-company-controller');
@@ -14,6 +16,7 @@ var auth = jwt({
 router.get('/companies/:query', SelectedStudentCompanyController.getCompaniesBySelectedStudent);
 router.get('/students/:query', SelectedStudentCompanyController.getSelectedStudentsByCompany);
 router.get('/students', SelectedStudentCompanyController.getSelectedStudentsByCompanyPosition);
+router.get('/students/count', SelectedStudentCompanyController.getSelectedStudentsCountByCompany);
 router.post('/', SelectedStudentCompanyController.addSelectedStudentCompany);
 router.delete('/:query', SelectedStudentCompanyController.deleteSelectedStudentCompany);
 
