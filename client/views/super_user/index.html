@@ -9,20 +9,21 @@
     <link rel="icon" href="../../assets/favicon.ico" type="image/x-icon">
 
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet"
+          type="text/css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
 
     <!-- Bootstrap Core Css -->
     <link href="../../assets/plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
 
     <!-- Waves Effect Css -->
-    <link href="../../assets/plugins/node-waves/waves.css" rel="stylesheet" />
+    <link href="../../assets/plugins/node-waves/waves.css" rel="stylesheet"/>
 
     <!-- Animation Css -->
-    <link href="../../assets/plugins/animate-css/animate.css" rel="stylesheet" />
+    <link href="../../assets/plugins/animate-css/animate.css" rel="stylesheet"/>
 
     <!-- Sweet Alert Css -->
-    <link href="../../assets/plugins/sweetalert/sweetalert.css" rel="stylesheet" />
+    <link href="../../assets/plugins/sweetalert/sweetalert.css" rel="stylesheet"/>
 
     <!-- JQuery DataTable Css -->
     <link href="../../assets/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css" rel="stylesheet">
@@ -31,7 +32,7 @@
     <link href="../../assets/css/style.css" rel="stylesheet">
 
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
-    <link href="../../assets/css/themes/all-themes.css" rel="stylesheet" />
+    <link href="../../assets/css/themes/all-themes.css" rel="stylesheet"/>
 </head>
 
 <body class="theme-blue">
@@ -50,7 +51,8 @@
         </div>
         <p>Please wait...</p>
     </div>
-</div>s
+</div>
+s
 <!-- #END# Page Loader -->
 <!-- Overlay For Sidebars -->
 <div class="overlay"></div>
@@ -60,7 +62,8 @@
 <nav class="navbar">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
+            <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse"
+               data-target="#navbar-collapse" aria-expanded="false"></a>
             <a href="javascript:void(0);" class="bars"></a>
             <a class="navbar-brand" href="../../index.html">Welcome to UCSC CV App 2017</a>
         </div>
@@ -72,7 +75,8 @@
                         <i class="material-icons">keyboard_arrow_down</i>
                     </a>
                     <ul class="dropdown-menu pull-right">
-                        <li><a href="profile.html" class = "ajax-pg"><i class="material-icons">lock</i>Change Password</a></li>
+                        <li><a href="profile.html" class="ajax-pg"><i class="material-icons">lock</i>Change Password</a>
+                        </li>
                         <li role="seperator" class="divider"></li>
                         <li><a id="logoutButton"> <i class="material-icons">input</i>Sign Out</a></li>
                     </ul>
@@ -89,7 +93,7 @@
         <!-- User Info -->
         <div class="user-info">
             <div class="image">
-                <img src="../../assets/images/user.png" width="48" height="48" alt="User" />
+                <img src="../../assets/images/user.png" width="48" height="48" alt="User"/>
             </div>
             <div class="info-container">
                 <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">John Doe</div>
@@ -133,7 +137,7 @@
 <!-- <div id="page-wrapper"></div> -->
 <section class="content">
     <div class="container-fluid">
-        <div id="page-wrapper" >
+        <div id="page-wrapper">
             <div class="block-header">
                 <h2>BLANK PAGE</h2>
                 <!-- Ajax load here -->
@@ -191,7 +195,7 @@
 <script>
     $(document).ready(function() {
         var pageWrapper = $("#page-wrapper");
-        $("a.ajax-pg").on("click", function(e) {
+        $("a.ajax-pg").on("click", function (e) {
             e.preventDefault();
             pageWrapper.empty();
             // pageWrapper.prepend('<div class="loader"><div class="preloader"><div class="spinner-layer pl-blue"><div class="circle-clipper left"><div class="circle"></div></div><div class="circle-clipper right"><div class="circle"></div></div></div></div><p>Please wait...</p></div>');
@@ -212,10 +216,10 @@
         $.ajax({
             type: "POST",
             url: "http://localhost:3000/logout",
-            data : '',
+            data: '',
             dataType: "json",
-            success: function(response){
-                if (response.success == true){
+            success: function (response) {
+                if (response.success == true) {
                     window.location.replace(response.path);
                     sessionStorage.removeItem('token');
                     console.log(response);
@@ -224,9 +228,9 @@
                 }
 //                console.log(response);
             },
-            error: function(xhr, status, error){
+            error: function (xhr, status, error) {
                 console.log(xhr);
-                console.log(status,error);
+                console.log(status, error);
             }
         });
     });

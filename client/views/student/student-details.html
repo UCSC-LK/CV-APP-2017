@@ -1,0 +1,168 @@
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>Setup Your Details</h2>
+            </div>
+            <div class="body">
+                <form name="studentForm" id="form_validation">
+                    <div class="form-group form-float">
+                        <div class="form-line">
+                            <input type="text" class="form-control" name="name" required ng-model="studentName">
+                            <label class="form-label">Name</label>
+                        </div>
+                    </div>
+                    <div class="form-group form-float">
+                        <div class="form-line">
+                            <input type="tel" title="Ten digit contact number" class="form-control"
+                                   name="phone" required ng-model="studentPhone">
+                            <label class="form-label">Phone</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-line">
+                            <input type="radio" name="year" id="4thyear" class="with-gap" value="4th Year" required
+                                   ng-model="studentYear">
+                            <label for="4thyear">4th year</label>
+
+                            <input type="radio" name="year" id="3rdyear" class="with-gap" value="3rd Year" required
+                                   ng-model="studentYear">
+                            <label for="3rdyear" class="m-l-20">3rd year</label>
+
+                            <input type="radio" name="year" id="passedout" class="with-gap" value="Passed Out" required
+                                   ng-model="studentYear">
+                            <label for="passedout" class="m-l-20">Passed Out</label>
+                        </div>
+                    </div>
+                    <div class="form-group form-float">
+                        <div class="form-line">
+                            <input type="email" class="form-control" name="email" required ng-model="studentEmail">
+                            <label class="form-label">Email</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-line">
+                            <input type="radio" name="stream" id="cs" class="with-gap" value="CS" required
+                                   ng-model="studentStream">
+                            <label for="cs">Computer Science</label>
+
+                            <input type="radio" name="stream" id="is" class="with-gap" value="IS" required
+                                   ng-model="studentStream">
+                            <label for="is" class="m-l-20">Information Systems</label>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary waves-effect" type="submit" id="submit-btn">SAVE</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    // Setting student data in the form if already filled up
+    $(document).ready(function () {
+        // Getting data
+        $(function () {
+            $.ajax({
+                type: "GET",
+                url: domain + "student",
+                data: {
+                    userID: userID
+                },
+                dataType: "json",
+                success: function (response) {
+                    if (response.success == true) {
+                        if (response.data.length > 0) {
+                            var student = response.data[0];
+                            setStudentDetails(student);
+                        }
+                    } else {
+                        showErrorMessage("Something went wrong");
+                        console.log(response);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log(xhr);
+                    console.log(status, error);
+                }
+            });
+        });
+
+        $('#form_validation').submit(function () {
+            if ($(this).valid()) {
+                saveStudentDetails();
+            }
+            return false;
+        });
+    });
+
+    // Set details in student data form
+    function setStudentDetails(student) {
+        $("input[name=name]").val(student.name);
+        $("input[name=name]").parent().addClass('focused');
+        $("input[name=phone]").val(student.phone);
+        $("input[name=phone]").parent().addClass('focused');
+        $("input[name=year][value='" + student.year + "']").attr('checked', 'checked');
+        $("input[name=email]").val(student.email);
+        $("input[name=email]").parent().addClass('focused');
+        $("input[name=stream][value='" + student.stream + "']").attr('checked', 'checked');
+
+        $('#submit-btn').text('UPDATE');
+    }
+
+    // Save new student detail or update existing
+    function saveStudentDetails() {
+        var student = {};
+        student.name = $("input[name=name]").val();
+        student.phone = $("input[name=phone]").val();
+        student.year = $('input[name=year]:checked').val();
+        student.email = $("input[name=email]").val();
+        student.stream = $("input[name=stream]:checked").val();
+        student.userID = userID;
+
+        $.ajax({
+            type: "POST",
+            url: domain + "student",
+            data: student,
+            dataType: "json",
+            success: function (response) {
+                if (response.success == true) {
+                    showSuccessMessage(response.msg);
+                    setStudentName(student.name);
+                } else {
+                    showErrorMessage("Something went wrong");
+                    console.log(response);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.log(xhr);
+                console.log(status, error);
+            }
+        });
+    }
+</script>
+
+
+<script>
+    $(function () {
+        $('#form_validation').validate({
+            highlight: function (input) {
+                console.log(input);
+                $(input).parents('.form-line').addClass('error');
+            },
+            unhighlight: function (input) {
+                $(input).parents('.form-line').removeClass('error');
+            },
+            errorPlacement: function (error, element) {
+                $(element).parents('.input-group').append(error);
+                $(element).parents('.form-group').append(error);
+            }
+        });
+    });
+
+    $(function () {
+        $.AdminBSB.input.activate();
+        $.AdminBSB.select.activate();
+    });
+</script>

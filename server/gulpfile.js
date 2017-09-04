@@ -6,7 +6,7 @@ var gulp = require('gulp'),
     useref = require('gulp-useref');
 
 // run server
-gulp.task('server:start', function() {
+gulp.task('server:start', function () {
     server.listen({
         path: './server.js'
     });
@@ -14,7 +14,7 @@ gulp.task('server:start', function() {
 
 
 // restart server if any changed
-gulp.task('server:restart', function() {
+gulp.task('server:restart', function () {
     gulp.watch(['./server.js'], server.restart);
     gulp.watch(['./routes/*.js'], server.restart);
     gulp.watch(['../client/js/controllers/*.js'], server.restart);
@@ -23,7 +23,7 @@ gulp.task('server:restart', function() {
     gulp.watch(['./app/controller/*.js'], server.restart);
 });
 
-gulp.task('useref', function() {
+gulp.task('useref', function () {
     return gulp.src('../web/index.html')
         .pipe(useref())
         // Minifies only if it's a JavaScript file
@@ -33,11 +33,10 @@ gulp.task('useref', function() {
         .pipe(gulp.dest('../dist'));
 });
 
-gulp.task('copy', function() {
+gulp.task('copy', function () {
     return gulp.src('../web/**/*')
         .pipe(gulp.dest('../dist'));
 });
-
 
 
 gulp.task('default', ['server:start', 'server:restart']);

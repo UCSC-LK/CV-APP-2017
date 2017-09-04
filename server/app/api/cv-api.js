@@ -7,7 +7,7 @@ var express = require('express'),
 
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, './assets/uploads/')
+        cb(null, './assets/uploads/');
     },
     filename: function (req, file, cb) {
         crypto.pseudoRandomBytes(16, function (err, raw) {
@@ -16,8 +16,8 @@ var storage = multer.diskStorage({
     }
 });
 var upload = multer({
-                storage: storage
-            }).any();
+    storage: storage
+}).any();
 
 router.get('/', cvController.getCvDetails);
 
@@ -26,7 +26,11 @@ router.post('/upload', function (req, res) {
     upload(req, res, function (err) {
         if (err) {
             console.log("Uploading file failed!");
-            res.json({success: false, msg: 'Some thing went wrong. Please contact site admin.', error: err});
+            res.json({
+                success: false,
+                msg: 'Some thing went wrong. Please contact site admin.',
+                error: err
+            });
             return;
         }
         console.log("Uploading file complete.");

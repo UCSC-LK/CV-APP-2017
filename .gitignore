@@ -18,6 +18,7 @@ coverage
 node_modules
 npm-debug.log
 bower_components
+access.log
 
 # uploads folder
 server/assets/*

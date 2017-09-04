@@ -9,7 +9,7 @@
             <div class="body">
                 <div class="form-line">
                     <div id="cv-pdf-view">
-                    <!-- pdf appear here -->
+                        <!-- pdf appear here -->
                     </div>
                 </div>
                 <form name="cvForm" enctype="multipart/form-data" id="form_validation">
@@ -32,115 +32,115 @@
 </div>
 
 
-    <!-- Custom Js -->
-    <!-- <script src="../../assets/js/admin.js"></script> -->
-    <!-- <script src="../../assets/js/pages/forms/form-validation.js"></script> -->
-    <!-- Demo Js -->
-    <!-- <script src="../../assets/js/demo.js"></script> -->
+<!-- Custom Js -->
+<!-- <script src="../../assets/js/admin.js"></script> -->
+<!-- <script src="../../assets/js/pages/forms/form-validation.js"></script> -->
+<!-- Demo Js -->
+<!-- <script src="../../assets/js/demo.js"></script> -->
 
-    <script>
-
-        $(document).ready(function() {
-            // Getting cv details
-            $.ajax({
-                type: "GET",
-                url: "http://localhost:3000/cv",
-                data : {userID: userID},
-                dataType: "json",
-                success: function(response){
-                    if (response.success == true){
-                        if (response.data.length > 0) {
-                            setPdfView(response.data[0].filename);
-                        }
-                    } else {
-                        showErrorMessage("Something went wrong");
-                        console.log(response);
+<script>
+    $(document).ready(function () {
+        // Getting cv details
+        $.ajax({
+            type: "GET",
+            url: domain + "cv",
+            data: {
+                userID: userID
+            },
+            dataType: "json",
+            success: function (response) {
+                if (response.success == true) {
+                    if (response.data.length > 0) {
+                        setPdfView(response.data[0].filename);
                     }
-//                    console.log(response);
-                },
-                error: function(xhr, status, error){
+                } else {
                     showErrorMessage("Something went wrong");
-                    console.log(xhr);
-                    console.log(status,error);
+                    console.log(response);
                 }
-            });
+                //                    console.log(response);
+            },
+            error: function (xhr, status, error) {
+                showErrorMessage("Something went wrong");
+                console.log(xhr);
+                console.log(status, error);
+            }
+        });
 
-            // Uploading new cv
-            $('#form_validation').submit(function (e) {
-                if($(this).valid()) {
-                    e.preventDefault();
-                    // check file type
-                    var ext = $('input[name=file]').val().split('.').pop().toLowerCase();
-                    if($.inArray(ext, ['pdf']) == -1) {
-                        showErrorMessage('We accept only PDF formatted file!', 'Error');
-                    } else {
-                        var formData = new FormData(this);
-                        formData.append('userID', userID);
-                        $.ajax({
-                            type: "POST",
-                            url: "/cv/upload",
-                            data: formData,
-                            processData: false,
-                            contentType: false,
-                            success: function (response) {
-                                if (response.success == true){
-                                    showSuccessMessage(response.msg);
-                                    setPdfView(response.data.filename);
-                                } else {
-                                    showErrorMessage(response.msg);
-                                    console.log(response);
-                                }
-                            },
-                            error: function(xhr, status, error){
-                                console.log(xhr);
-                                console.log(status,error);
+        // Uploading new cv
+        $('#form_validation').submit(function (e) {
+            if ($(this).valid()) {
+                e.preventDefault();
+                // check file type
+                var ext = $('input[name=file]').val().split('.').pop().toLowerCase();
+                if ($.inArray(ext, ['pdf']) == -1) {
+                    showErrorMessage('We accept only PDF formatted file!', 'Error');
+                } else {
+                    var formData = new FormData(this);
+                    formData.append('userID', userID);
+                    $.ajax({
+                        type: "POST",
+                        url: "/cv/upload",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function (response) {
+                            if (response.success == true) {
+                                showSuccessMessage(response.msg);
+                                setPdfView(response.data.filename);
+                            } else {
+                                showErrorMessage(response.msg);
+                                console.log(response);
                             }
-                        });
-                    }
+                        },
+                        error: function (xhr, status, error) {
+                            console.log(xhr);
+                            console.log(status, error);
+                        }
+                    });
                 }
-                return false;
-            });
+            }
+            return false;
         });
+    });
 
-        function setPdfView(filename) {
-            // clear input feild
-            $('input[name=file]').val('');
+    function setPdfView(filename) {
+        // clear input feild
+        $('input[name=file]').val('');
 
-            // clear pdf embed if exists
-            $('#cv-pdf-view').empty();
+        // clear pdf embed if exists
+        $('#cv-pdf-view').empty();
 
-            var pdfEmbed = document.createElement("embed");
-            pdfEmbed.setAttribute("src", "/uploads/" + filename);
-            pdfEmbed.setAttribute("width", "100%");
-            pdfEmbed.setAttribute("height", "700px");
-            pdfEmbed.setAttribute("type", "application/pdf");
-            $('#cv-pdf-view').append(pdfEmbed);
+        var pdfEmbed = document.createElement("embed");
+        pdfEmbed.setAttribute("src", "/uploads/" + filename);
+        pdfEmbed.setAttribute("width", "100%");
+        pdfEmbed.setAttribute("height", "700px");
+        pdfEmbed.setAttribute("type", "application/pdf");
+        $('#cv-pdf-view').append(pdfEmbed);
 
-            $('#submit-btn').text('UPDATE');
-            $('#page-header').text('Your CV');
-        }
+        $('#submit-btn').text('UPDATE');
+        $('#page-header').text('Your CV');
+    }
+</script>
 
-    </script>
-
-    <script>
-        $(function () {
-            $('#form_validation').validate({
-                highlight: function (input) {
-                    console.log(input);
-                    $(input).parents('.form-line').addClass('error');
-                },
-                unhighlight: function (input) {
-                    $(input).parents('.form-line').removeClass('error');
-                },
-                errorPlacement: function (error, element) {
-                    $(element).parents('.input-group').append(error);
-                    $(element).parents('.form-group').append(error);
-                }
-            });
+<script>
+    $(function () {
+        $('#form_validation').validate({
+            highlight: function (input) {
+                console.log(input);
+                $(input).parents('.form-line').addClass('error');
+            },
+            unhighlight: function (input) {
+                $(input).parents('.form-line').removeClass('error');
+            },
+            errorPlacement: function (error, element) {
+                $(element).parents('.input-group').append(error);
+                $(element).parents('.form-group').append(error);
+            }
         });
+    });
 
-        $(function () {
-            $.AdminBSB.input.activate();
-            $.AdminBSB.select.activate();
-        });
-    </script>
+    $(function () {
+        $.AdminBSB.input.activate();
+        $.AdminBSB.select.activate();
+    });
+</script>

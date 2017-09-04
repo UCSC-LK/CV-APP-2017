@@ -1,119 +1,122 @@
 <!-- Exportable Table -->
 <div class="row clearfix">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-      <div class="card">
-          <div class="body">
-              <form id="change_password" method="POST">
-                  <div class="msg">Change Password</div>
+        <div class="card">
+            <div class="body">
+                <form id="change_password" method="POST">
+                    <div class="msg">Change Password</div>
 
-                  <div class="input-group">
+                    <div class="input-group">
                       <span class="input-group-addon">
                           <i class="material-icons">lock</i>
                       </span>
-                      <div class="form-line">
-                          <input type="password" class="form-control" name="oldpassword" minlength="6" placeholder="Current Password" required>
-                      </div>
-                  </div>
+                        <div class="form-line">
+                            <input type="password" class="form-control" name="oldpassword" minlength="6"
+                                   placeholder="Current Password" required>
+                        </div>
+                    </div>
 
-                  <div class="input-group">
+                    <div class="input-group">
                       <span class="input-group-addon">
                           <i class="material-icons">lock</i>
                       </span>
-                      <div class="form-line">
-                          <input type="password" class="form-control" name="password" minlength="6" placeholder="New Password" required>
-                      </div>
-                  </div>
+                        <div class="form-line">
+                            <input type="password" class="form-control" name="password" minlength="6"
+                                   placeholder="New Password" required>
+                        </div>
+                    </div>
 
-                  <div class="input-group">
+                    <div class="input-group">
                       <span class="input-group-addon">
                           <i class="material-icons">lock</i>
                       </span>
-                      <div class="form-line">
-                          <input type="password" class="form-control" name="confirm" minlength="6" placeholder="Confirm Password" required>
-                      </div>
-                  </div>
+                        <div class="form-line">
+                            <input type="password" class="form-control" name="confirm" minlength="6"
+                                   placeholder="Confirm Password" required>
+                        </div>
+                    </div>
 
-                  <button id= "changeButton" class="btn btn-block btn-lg bg-blue waves-effect" type="submit">Change</button>
-              </form>
-          </div>
-      </div>
+                    <button id="changeButton" class="btn btn-block btn-lg bg-blue waves-effect" type="submit">Change
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
+</div>
 </div>
 <!-- #END# Exportable Table -->
 
 
-
 <script>
-$(function () {
-    $('#change_password').validate({
-        rules: {
-            'confirm': {
-                equalTo: '[name="password"]'
+    $(function () {
+        $('#change_password').validate({
+            rules: {
+                'confirm': {
+                    equalTo: '[name="password"]'
+                }
+            },
+            highlight: function (input) {
+                console.log(input);
+                $(input).parents('.form-line').addClass('error');
+            },
+            unhighlight: function (input) {
+                $(input).parents('.form-line').removeClass('error');
+            },
+            errorPlacement: function (error, element) {
+                $(element).parents('.input-group').append(error);
+                $(element).parents('.form-group').append(error);
             }
-        },
-        highlight: function (input) {
-            console.log(input);
-            $(input).parents('.form-line').addClass('error');
-        },
-        unhighlight: function (input) {
-            $(input).parents('.form-line').removeClass('error');
-        },
-        errorPlacement: function (error, element) {
-            $(element).parents('.input-group').append(error);
-            $(element).parents('.form-group').append(error);
-        }
+        });
     });
-});
 
 
-$(function () {
-    $.AdminBSB.input.activate();
-    $.AdminBSB.select.activate();
-});
+    $(function () {
+        $.AdminBSB.input.activate();
+        $.AdminBSB.select.activate();
+    });
 
 </script>
 
 
 <script>
-var change_pass_form = $("#change_password");
+    var change_pass_form = $("#change_password");
 
-$('#changeButton').click(function(e){
-  if (change_pass_form.valid()){
-    e.preventDefault();
-    var change_data = change_pass_form.serialize();
-    console.log(change_data);
-    $.ajax({
-        type: "POST",
-        url: "http://localhost:3000/changepass",
-        // data : change_data+ &username="+ashan3@gmail.com",
-        data : change_data+"&username="+"ashan3@gmail.com",
-        dataType: "json",
-        success: function(response){
-              if(response.success == true){
-                  document.getElementById("change_password").reset();
-                  // alert(response.msg);
-                  showSuccessMessage();
-              }else{
-                // alert(response.msg);
-                showErrorMessage(response.msg);
-              }
-        },
-        error: function(xhr, status, error){
-            console.log(xhr);
-            console.log(status,error);
+    $('#changeButton').click(function (e) {
+        if (change_pass_form.valid()) {
+            e.preventDefault();
+            var change_data = change_pass_form.serialize();
+            console.log(change_data);
+            $.ajax({
+                type: "POST",
+                url: "http://localhost:3000/changepass",
+                // data : change_data+ &username="+ashan3@gmail.com",
+                data: change_data + "&username=" + "ashan3@gmail.com",
+                dataType: "json",
+                success: function (response) {
+                    if (response.success == true) {
+                        document.getElementById("change_password").reset();
+                        // alert(response.msg);
+                        showSuccessMessage();
+                    } else {
+                        // alert(response.msg);
+                        showErrorMessage(response.msg);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log(xhr);
+                    console.log(status, error);
+                }
+            });
         }
     });
-  }
-});
 
 
-function showSuccessMessage() {
-    swal("Successfuly password updated!",'', "success");
-}
+    function showSuccessMessage() {
+        swal("Successfuly password updated!", '', "success");
+    }
 
-function showErrorMessage(msg) {
-    swal(msg+"!",'', "error");
-}
+    function showErrorMessage(msg) {
+        swal(msg + "!", '', "error");
+    }
 
 </script>

@@ -6,7 +6,9 @@ module.exports.getStudents = function (req, res) {
         if (err) {
             res.send(err);
         } else {
-            var temp = {"result":result};
+            var temp = {
+                "result": result
+            };
             res.json(temp);
         }
     });
@@ -14,11 +16,20 @@ module.exports.getStudents = function (req, res) {
 
 // Return student by userid
 module.exports.getStudent = function (req, res) {
-    Student.find({userID: req.query.userID}, function (err, result) {
+    // console.log('Sending student info...');
+    Student.find({
+        userID: req.query.userID
+    }, function (err, result) {
         if (err) {
-            return res.json({success: false, error: err});
+            return res.json({
+                success: false,
+                error: err
+            });
         }
-        res.json({success: true, data:result});
+        res.json({
+            success: true,
+            data: result
+        });
     });
 };
 
@@ -26,7 +37,9 @@ module.exports.getStudent = function (req, res) {
 module.exports.addStudent = function (req, res) {
     var student = new Student(req.body);
     // Check if student exists
-    Student.findOne({userID:student.userID}, function (err, result) {
+    Student.findOne({
+        userID: student.userID
+    }, function (err, result) {
         if (result) {
             console.log("Updating student info"); // update info
             result.name = student.name;
@@ -36,17 +49,31 @@ module.exports.addStudent = function (req, res) {
             result.stream = student.stream;
             result.save(function (err) {
                 if (err) {
-                    return res.json({success: false, msg: 'Some thing went wrong.Try again', error: err});
+                    return res.json({
+                        success: false,
+                        msg: 'Some thing went wrong.Try again',
+                        error: err
+                    });
                 }
-                res.json({success: true, msg: 'Your details updated successfully'});
+                res.json({
+                    success: true,
+                    msg: 'Your details updated successfully'
+                });
             });
         } else {
             console.log("Adding student info"); // add new
             student.save(function (err) {
                 if (err) {
-                    return res.json({success: false, msg: 'Some thing went wrong.Try again', error: err});
+                    return res.json({
+                        success: false,
+                        msg: 'Some thing went wrong.Try again',
+                        error: err
+                    });
                 }
-                return res.json({success: true, msg: 'Your details added successfully'});
+                return res.json({
+                    success: true,
+                    msg: 'Your details added successfully'
+                });
             });
         }
     });
