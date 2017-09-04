@@ -205,11 +205,9 @@ module.exports.deleteSelectedStudentCompany = function (req, res) {
 };
 
 module.exports.getSelectedStudentsCountByCompany = function (req, res) {
-    console.log("count");
-    SelectedStudentCompany.find({
+    SelectedStudentCompany.count({
         'company': req.query.company
     }, function (err, result) {
-        console.log(result);
         res.json(jsend.fromArguments(err, result));
     });
 };

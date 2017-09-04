@@ -10,8 +10,11 @@
     </div>
     <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
         <div class="card">
-            <div class="body">
-                4 Applicants shortlisted
+            <div class="body" style="padding: 20px 10px;">
+                <div style="height: 41px">
+                    <div class="col-xs-4" id="student-count" style="padding: 0; font-size: 30px; margin-right: 8px; text-align: center;">4</div>
+                    <div class="col-xs-7" style="padding: 0;">Slots reserved</div>
+                </div>
             </div>
         </div>
     </div>
@@ -67,33 +70,9 @@
 
 
 <script>
-    var companyObject;
 
     $(document).ready(function () {
-        $.ajax({
-            type: "GET",
-            url: domain + "company",
-            data: {
-                userID: userID
-            },
-            dataType: "json",
-            success: function (response) {
-                if (response.success == true) {
-                    companyObject = response.data[0];
-                    init();
-                } else {
-                    showErrorMessage("Something went wrong");
-                    console.log(response);
-                }
-            },
-            error: function (xhr, status, error) {
-                console.log(xhr);
-                console.log(status, error);
-            }
-        });
-    });
 
-    function init() {
         var selectButton = '<a class="btn btn-success btn-sm  waves-effect ajaxSelect" style = "margin-right:10px;" title="Select"> <i class="material-icons">drafts</i> </a>';
         var viewButton = '<a class="btn btn-info btn-sm  waves-effect ajaxView" style = "margin-right:10px;" title="View CV"> <i class="material-icons">drafts</i> </a>';
         var removeButton = '<a class="btn btn-danger btn-sm waves-effect  ajaxRemove"> Remove</a>';
@@ -270,8 +249,8 @@
 
         shortListedTable.on( 'draw', function () {
             var para = {company:companyObject._id};
-            var url = domain + "selected_student_company/students/count";
-            console.log(ajaxSend("GET", para, "", null, url));
+            var url = domain + "selected_student_company/student_count";
+            ajaxSend("GET", para, "ajaxCount", null, url);
         });
 
         function ajaxSend(type, params, action, clickRow, url) {
@@ -304,8 +283,14 @@
                             }
                             break;
 
-                        default:
-                            return response;
+                        case "ajaxCount":
+                            if (response.status == 'success') {
+                                $('#student-count').text(response.data);
+                            } else {
+                                showErrorMessage("Unexpected error #2, Please try again");
+                                console.log(response);
+                            }
+                            break;
                     }
                 },
                 error: function (xhr, status, error) {
@@ -326,5 +311,5 @@
             applicantTable.ajax.reload();
             shortListedTable.ajax.reload();
         });
-    }
+    });
 </script>
