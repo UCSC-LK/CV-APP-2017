@@ -199,8 +199,10 @@ s
 
 </html>
 <script>
-    //Global userID
+    // Global userID
     var userID;
+    // Global company object
+    var companyObject;
 
     var domain = "http://localhost:3000/";
 
@@ -277,6 +279,29 @@ s
         }
     }
 
+    function setCompanyObject() {
+        $.ajax({
+            type: "GET",
+            url: domain + "company",
+            data: {
+                userID: userID
+            },
+            dataType: "json",
+            success: function (response) {
+                if (response.success == true) {
+                    companyObject = response.data[0];
+                } else {
+                    showErrorMessage("Something went wrong");
+                    console.log(response);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.log(xhr);
+                console.log(status, error);
+            }
+        });
+    }
+
     if (isLoggedIn()) {
         user_info = currentUser();
         // check if logged in user is a company
@@ -284,6 +309,7 @@ s
             window.location.replace('../../index.html');
         }
         userID = user_info._id;
+        setCompanyObject();
         //        console.log(user_info);
         //        console.log("Setting user id : " + userID);
         $('#username').html(user_info.name);
