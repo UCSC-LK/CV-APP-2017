@@ -93,7 +93,7 @@ s
         <!-- User Info -->
         <div class="user-info">
             <div class="image">
-                <img src="../../assets/images/user.png" width="48" height="48" alt="User"/>
+                <img src="../../assets/images/user.png" id="company-logo" height="48" alt="User"/>
             </div>
             <div class="info-container">
                 <div class="name" data-toggle="dropdown" aria-haspopup="true" id="username" aria-expanded="false">John
@@ -290,6 +290,8 @@ s
             success: function (response) {
                 if (response.success == true) {
                     companyObject = response.data[0];
+                    console.log(companyObject);
+                    $('#company-logo').attr("src", domain + 'assets/images/company-logos/' + companyObject.logo);
                 } else {
                     showErrorMessage("Something went wrong");
                     console.log(response);
