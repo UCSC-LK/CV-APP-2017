@@ -227,7 +227,6 @@ s
             var filename = path[path.length - 1]
 
             var url = "";
-            var msg = "";
 
             if (filename == 'cv-view.html') {
                 url = domain + "validation/validstudent/" + userID
@@ -258,14 +257,14 @@ s
                             var newNav = jQuery.extend(true, {}, thisNav);
                             if (filename == 'cv-view.html') {
                                 newNav.href = "student-details.html";
-                                showErrorMessage("You have to fill student details first");
+                                showErrorMessage("Please submit your details first!");
                             } else if (filename == 'company-select.html') {
                                 if (response.isValidStudent == true) {
                                     newNav.href = "cv-view.html";
-                                    showErrorMessage("You have to upload CV");
+                                    showErrorMessage("Please upload your CV!");
                                 } else {
                                     newNav.href = "student-details.html";
-                                    showErrorMessage("You have to insert student details & upload CV");
+                                    showErrorMessage("Please submit your details & upload CV!");
                                 }
                             }
                             updatepage(newNav);
@@ -283,6 +282,7 @@ s
         }
 
         function updatepage(thisNav) {
+            console.log(thisNav);
             pageWrapper.empty();
             pageWrapper.load(thisNav.href);
             $('.ml-menu li.active').removeClass('active');
