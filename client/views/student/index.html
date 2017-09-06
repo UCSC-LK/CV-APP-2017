@@ -189,6 +189,11 @@ s
 <!-- Demo Js -->
 <script src="../../assets/js/demo.js"></script>
 
+<!-- Bootstrap Notify Plugin Js -->
+<script src="../../assets/plugins/bootstrap-notify/bootstrap-notify.js"></script>
+<!-- Notification Js -->
+<script src="../../assets/js/pages/ui/notifications.js"></script>
+
 <!-- Jquery DataTable Plugin Js -->
 <script src="../../assets/plugins/jquery-datatable/jquery.dataTables.js"></script>
 <script src="../../assets/plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js"></script>
@@ -237,7 +242,7 @@ s
             } else {
                 updatepage(thisNav);
             }
-            console.log(filename);
+            // console.log(filename);
         }
 
         function remoteValidation(url, thisNav, filename) {
@@ -282,7 +287,6 @@ s
         }
 
         function updatepage(thisNav) {
-            console.log(thisNav);
             pageWrapper.empty();
             pageWrapper.load(thisNav.href);
             $('.ml-menu li.active').removeClass('active');

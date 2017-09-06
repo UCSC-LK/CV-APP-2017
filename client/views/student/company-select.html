@@ -206,7 +206,7 @@
                     switch (action) {
                         case "ajaxRemove":
                             if (response.status == 'success') {
-                                showRemoveSuccessMessage();
+                                showSuccessNotification("Company removed successfully!");
                                 chosedTable.row(clickRow).remove().draw();
                                 companyTable.ajax.reload(null, false)
                             } else {
@@ -218,7 +218,7 @@
                         case "ajaxSave":
                             if (response.status == 'success') {
                                 positionModal.modal('toggle');
-                                showSelectSuccessMessage();
+                                showSuccessNotification("Company selected successfully!");
                                 companyTable.row(clickRow).remove().draw();
                                 chosedTable.ajax.reload(null, false);
                                 reset_selection();
@@ -238,12 +238,8 @@
             });
         }
 
-        function showSelectSuccessMessage() {
-            swal("Company selection successfuly!", '', "success");
-        }
-
-        function showRemoveSuccessMessage() {
-            swal("Company remove successfuly!", '', "success");
+        function showSuccessNotification(msg) {
+            showNotification('alert-success', msg, 'top', 'right', null, null, 1500);
         }
 
         function showErrorMessage(msg) {

@@ -265,7 +265,7 @@
                     switch (action) {
                         case "ajaxRemove":
                             if (response.status == 'success') {
-                                showSuccessMessage("Student removed successfully!");
+                                showSuccessNotification("Student removed successfully!");
                                 shortListedTable.row(clickRow).remove().draw();
                                 applicantTable.ajax.reload(null, false);
                             } else {
@@ -276,7 +276,7 @@
 
                         case "ajaxSelect":
                             if (response.status == 'success') {
-                                showSuccessMessage("Student short listed successfully!");
+                                showSuccessNotification("Student short listed successfully!");
                                 applicantTable.row(clickRow).remove().draw();
                                 shortListedTable.ajax.reload(null, false);
                             } else {
@@ -305,6 +305,10 @@
 
         function showErrorMessage(msg) {
             swal(msg + "!", '', "error");
+        }
+
+        function showSuccessNotification(msg) {
+            showNotification('alert-success', msg, 'top', 'right', null, null, 2000);
         }
 
         //Changing position
