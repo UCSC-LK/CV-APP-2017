@@ -26,7 +26,7 @@
         <div class="card">
             <div class="header">
                 <h2>
-                    Company List
+                    Selected Companies
                 </h2>
             </div>
             <div class="body">
@@ -53,8 +53,8 @@
                 <table id = "scheduleTable" class="table table-bordered table-striped table-hover" cellspacing="0" width="100%">
                     <thead>
                     <tr>
+                        <th width="20%">Time Slot</th>
                         <th>Company</th>
-                        <th>Action</th>
                     </tr>
                     </thead>
                 </table>
@@ -87,7 +87,7 @@ $(document).ready(function() {
       ]
     });
 
-   /* var companyTable = $('#companyTable').DataTable({
+    /*var companyTable = $('#companyTable').DataTable({
         dom: 'Bfrtip',
         responsive: true,
         buttons: [
@@ -116,10 +116,8 @@ $(document).ready(function() {
             dataSrc: 'result'
         },
         "columns": [
-            { "data": "student" },
-            {   "data": null,
-                "defaultContent": "Hi"
-            }
+            { "data": "slot" },
+            { "data": "company" }
         ]
     });
 });

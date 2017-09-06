@@ -5,15 +5,18 @@ var StudentSchedule = require('../model/student-schedule');
 module.exports.getSchedule = function (req, res) {
     StudentSchedule.find({
         'student': req.params.query
-    }, function (err, result) {
+    }, { schedule: 1}, function (err, result) {
         if (err) {
             return res.json({
                 success: false,
                 error: err
             });
         }
+        var res1 = result[0]['schedule'];
+        console.log(res1);
+
         var temp = {
-            "result": result
+            "result": res1
         };
         res.json(temp);
     });

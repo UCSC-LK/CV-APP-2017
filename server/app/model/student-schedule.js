@@ -6,7 +6,7 @@ var studentScheduleSchema = mongoose.Schema({
         required: true
     },
     schedule: {
-        type: String,
+        type: [{ slot: Number, company: String }],
         required: false
     }
 });
