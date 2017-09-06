@@ -77,26 +77,36 @@
                 } else {
                     var formData = new FormData(this);
                     formData.append('userID', userID);
-                    $.ajax({
-                        type: "POST",
-                        url: "/cv/upload",
-                        data: formData,
-                        processData: false,
-                        contentType: false,
-                        success: function (response) {
-                            if (response.success == true) {
-                                showSuccessMessage(response.msg);
-                                setPdfView(response.data.filename);
-                            } else {
-                                showErrorMessage(response.msg);
-                                console.log(response);
+                    swal({
+                        title: "Please confirm your upload.",
+                        text: "Submit to upload your CV",
+                        type: "info",
+                        showCancelButton: true,
+                        closeOnConfirm: false,
+                        showLoaderOnConfirm: true
+                    }, function () {
+                        $.ajax({
+                            type: "POST",
+                            url: "/cv/upload",
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            success: function (response) {
+                                if (response.success == true) {
+                                    showSuccessMessage(response.msg);
+                                    setPdfView(response.data.filename);
+                                } else {
+                                    showErrorMessage(response.msg);
+                                    console.log(response);
+                                }
+                            },
+                            error: function (xhr, status, error) {
+                                console.log(xhr);
+                                console.log(status, error);
                             }
-                        },
-                        error: function (xhr, status, error) {
-                            console.log(xhr);
-                            console.log(status, error);
-                        }
+                        });
                     });
+
                 }
             }
             return false;

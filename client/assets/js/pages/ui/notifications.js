@@ -6,11 +6,11 @@ $(function () {
         var animateExit = $(this).data('animate-exit');
         var colorName = $(this).data('color-name');
 
-        showNotification(colorName, null, placementFrom, placementAlign, animateEnter, animateExit);
+        showNotification(colorName, null, placementFrom, placementAlign, animateEnter, animateExit, 1000);
     });
 });
 
-function showNotification(colorName, text, placementFrom, placementAlign, animateEnter, animateExit) {
+function showNotification(colorName, text, placementFrom, placementAlign, animateEnter, animateExit, delay) {
     if (colorName === null || colorName === '') { colorName = 'bg-black'; }
     if (text === null || text === '') { text = 'Turning standard Bootstrap alerts'; }
     if (animateEnter === null || animateEnter === '') { animateEnter = 'animated fadeInDown'; }
@@ -24,6 +24,8 @@ function showNotification(colorName, text, placementFrom, placementAlign, animat
             type: colorName,
             allow_dismiss: allowDismiss,
             newest_on_top: true,
+            mouse_over: 'pause',
+            delay: delay,
             timer: 1000,
             placement: {
                 from: placementFrom,

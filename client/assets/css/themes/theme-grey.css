@@ -1,8 +1,8 @@
 ﻿.theme-grey .navbar {
-  background-color: #9E9E9E; }
+  background-color: #1E1E1E; }
 
 .theme-grey .navbar-brand {
-  color: #fff; }
+  color: #ff661a; }
   .theme-grey .navbar-brand:hover {
     color: #fff; }
   .theme-grey .navbar-brand:active {
@@ -42,4 +42,3 @@
   background-color: #fff; }
   .theme-grey .sidebar .legal .copyright a {
     color: #9E9E9E !important; }
-
