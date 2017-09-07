@@ -13,7 +13,6 @@ module.exports.getSchedule = function (req, res) {
             });
         }
         var res1 = result[0]['schedule'];
-        console.log(res1);
 
         var temp = {
             "result": res1

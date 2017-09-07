@@ -105,6 +105,7 @@ $(document).ready(function() {
         ]
     });*/
 
+
     var scheduleTable = $('#scheduleTable').DataTable({
         dom: 'Bfrtip',
         responsive: true,
@@ -120,5 +121,24 @@ $(document).ready(function() {
             { "data": "company" }
         ]
     });
+
+    // Defines what happens on the button click on student table row
+    studentTable.on('click', 'tr', function () {
+        if ( $(this).hasClass('selected') ) {
+            $(this).removeClass('selected');
+        }
+        else {
+            studentTable.$('tr.selected').removeClass('selected');
+            $(this).addClass('selected');
+        }
+
+        var rowData = studentTable.row($(this)).data();
+        user_id = rowData['userID'];
+
+        // Reload datatable with the new user id
+        scheduleTable.ajax.url('http://localhost:3000/student_schedule/schedule/' + user_id).load();
+
+    });
+
 });
 </script>
