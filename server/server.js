@@ -7,6 +7,7 @@ var express = require('express'),
     company = require('./app/api/company-api'),
     studentCompany = require('./app/api/student-company-api'),
     selectedStudentCompany = require('./app/api/selected-student-company-api'),
+    studentSchedule = require('./app/api/student-schedule-api'),
     remoteValidation = require('./app/api/validation'),
     app = express(),
     mongoose = require('mongoose'),
@@ -77,6 +78,7 @@ app.use('/student_company', studentCompany);
 app.use('/selected_student_company', selectedStudentCompany);
 app.use('/student_company', studentCompany);
 app.use('/validation', remoteValidation);
+app.use('/student_schedule', studentSchedule);
 
 // error handlers
 // Catch unauthorised errors
