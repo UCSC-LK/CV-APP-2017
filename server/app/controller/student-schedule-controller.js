@@ -12,7 +12,14 @@ module.exports.getSchedule = function (req, res) {
                 error: err
             });
         }
-        var res1 = result[0]['schedule'];
+        var res1;
+        // if result is null make it empty array.to avoid DataTable error.
+        if (result.length === 0){
+            res1 = [];
+        }
+        else {
+            res1 = result[0]['schedule'];
+        }
 
         var temp = {
             "result": res1
