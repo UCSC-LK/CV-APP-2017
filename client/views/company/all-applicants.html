@@ -41,33 +41,9 @@
 
 
 <script>
-    var companyObject;
 
     $(document).ready(function () {
-        $.ajax({
-            type: "GET",
-            url: domain + "company",
-            data: {
-                userID: userID
-            },
-            dataType: "json",
-            success: function (response) {
-                if (response.success == true) {
-                    companyObject = response.data[0];
-                    init();
-                } else {
-                    showErrorMessage("Something went wrong");
-                    console.log(response);
-                }
-            },
-            error: function (xhr, status, error) {
-                console.log(xhr);
-                console.log(status, error);
-            }
-        });
-    });
 
-    function init() {
         var viewButton = '<a class="btn btn-info btn-sm  waves-effect ajaxView" style = "margin-right:10px;" title="View CV"> <i class="material-icons">drafts</i> </a>';
 
         var ajaxView = "ajaxView";
@@ -113,7 +89,7 @@
                 },
                 {
                     "data": "stream",
-                    "width": "10%"
+                    "width": "12%"
                 },
                 {
                     "width": "10%",
@@ -161,5 +137,6 @@
             position = $(this).text();
             applicantTable.ajax.reload();
         });
-    }
+    });
+
 </script>

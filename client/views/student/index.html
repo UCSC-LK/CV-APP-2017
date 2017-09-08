@@ -189,6 +189,11 @@ s
 <!-- Demo Js -->
 <script src="../../assets/js/demo.js"></script>
 
+<!-- Bootstrap Notify Plugin Js -->
+<script src="../../assets/plugins/bootstrap-notify/bootstrap-notify.js"></script>
+<!-- Notification Js -->
+<script src="../../assets/js/pages/ui/notifications.js"></script>
+
 <!-- Jquery DataTable Plugin Js -->
 <script src="../../assets/plugins/jquery-datatable/jquery.dataTables.js"></script>
 <script src="../../assets/plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js"></script>
@@ -227,7 +232,6 @@ s
             var filename = path[path.length - 1]
 
             var url = "";
-            var msg = "";
 
             if (filename == 'cv-view.html') {
                 url = domain + "validation/validstudent/" + userID
@@ -238,7 +242,7 @@ s
             } else {
                 updatepage(thisNav);
             }
-            console.log(filename);
+            // console.log(filename);
         }
 
         function remoteValidation(url, thisNav, filename) {
@@ -258,14 +262,14 @@ s
                             var newNav = jQuery.extend(true, {}, thisNav);
                             if (filename == 'cv-view.html') {
                                 newNav.href = "student-details.html";
-                                showErrorMessage("You have to fill student details first");
+                                showErrorMessage("Please submit your details first!");
                             } else if (filename == 'company-select.html') {
                                 if (response.isValidStudent == true) {
                                     newNav.href = "cv-view.html";
-                                    showErrorMessage("You have to upload CV");
+                                    showErrorMessage("Please upload your CV!");
                                 } else {
                                     newNav.href = "student-details.html";
-                                    showErrorMessage("You have to insert student details & upload CV");
+                                    showErrorMessage("Please submit your details & upload CV!");
                                 }
                             }
                             updatepage(newNav);

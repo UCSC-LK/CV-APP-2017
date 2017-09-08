@@ -34,7 +34,7 @@
     <link href="../../assets/css/themes/all-themes.css" rel="stylesheet"/>
 </head>
 
-<body class="theme-blue">
+<body class="theme-grey">
 <!-- Page Loader -->
 <div class="page-loader-wrapper">
     <div class="loader">
@@ -91,16 +91,16 @@ s
     <!-- Left Sidebar -->
     <aside id="leftsidebar" class="sidebar custom-width">
         <!-- User Info -->
-        <div class="user-info">
-            <div class="image">
-                <img src="../../assets/images/user.png" width="48" height="48" alt="User"/>
-            </div>
-            <div class="info-container">
-                <div class="name" data-toggle="dropdown" aria-haspopup="true" id="username" aria-expanded="false">John
-                    Doe
-                </div>
+        <div class="user-info" id="company-logo">
+            <!--<div class="image">-->
+                <!--<img src="../../assets/images/user.png" id="company-logo" height="48" alt="User"/>-->
+            <!--</div>-->
+            <!--<div class="info-container">-->
+                <!--<div class="name" data-toggle="dropdown" aria-haspopup="true" id="username" aria-expanded="false">-->
+                    <!--John Doe-->
+                <!--</div>-->
                 <!-- <div class="email">john.doe@example.com</div> -->
-            </div>
+            <!--</div>-->
         </div>
         <!-- #User Info -->
         <!-- Menu -->
@@ -184,6 +184,11 @@ s
 <!-- Demo Js -->
 <script src="../../assets/js/demo.js"></script>
 
+<!-- Bootstrap Notify Plugin Js -->
+<script src="../../assets/plugins/bootstrap-notify/bootstrap-notify.js"></script>
+<!-- Notification Js -->
+<script src="../../assets/js/pages/ui/notifications.js"></script>
+
 <!-- Jquery DataTable Plugin Js -->
 <script src="../../assets/plugins/jquery-datatable/jquery.dataTables.js"></script>
 <script src="../../assets/plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js"></script>
@@ -199,8 +204,10 @@ s
 
 </html>
 <script>
-    //Global userID
+    // Global userID
     var userID;
+    // Global company object
+    var companyObject;
 
     var domain = "http://localhost:3000/";
 
@@ -277,6 +284,31 @@ s
         }
     }
 
+    function setCompanyObject() {
+        $.ajax({
+            type: "GET",
+            url: domain + "company",
+            data: {
+                userID: userID
+            },
+            dataType: "json",
+            success: function (response) {
+                if (response.success == true) {
+                    companyObject = response.data[0];
+                    console.log(companyObject);
+                    $('#company-logo').css("background", 'url(' + domain + 'assets/images/company-logos/' + companyObject.logo + ')');
+                } else {
+                    showErrorMessage("Something went wrong");
+                    console.log(response);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.log(xhr);
+                console.log(status, error);
+            }
+        });
+    }
+
     if (isLoggedIn()) {
         user_info = currentUser();
         // check if logged in user is a company
@@ -284,9 +316,10 @@ s
             window.location.replace('../../index.html');
         }
         userID = user_info._id;
-        //        console.log(user_info);
-        //        console.log("Setting user id : " + userID);
-        $('#username').html(user_info.name);
+        setCompanyObject();
+        // console.log(user_info);
+        // console.log("Setting user id : " + userID);
+        // $('#username').html(user_info.name);
     } else {
         window.location.replace('../../index.html');
     }
