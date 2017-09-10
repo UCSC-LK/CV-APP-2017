@@ -98,8 +98,19 @@
         var applicantTable = $('#apllicantTable').DataTable({
             dom: 'Bfrtip',
             responsive: true,
+            // buttons: [
+            //     'pdf', 'print'
+            // ],
             buttons: [
-                'pdf', 'print'
+             {
+                extend: 'pdfHtml5',
+                message: 'Applicants',
+                title: 'UCSC Career Fair 2017',
+                filename: 'Applicants',
+                exportOptions: {
+                    columns: [ 1, 2, 3]
+                }
+              }
             ],
             ajax: {
                 url: domain + 'student_company/students',
@@ -136,12 +147,13 @@
             "order": [
                 [1, 'asc']
             ],
+            // $(column.footer()).empty()
             initComplete: function () {
                 this.api().columns().every(function () {
                     if (this[0] == 2 || this[0] == 3) {
                         var column = this;
                         var select = $('<select><option value=""></option></select>')
-                            .appendTo($(column.header()))
+                            .appendTo($(column.header()).append('</br> '))
                             .on('change', function () {
                                 var val = $.fn.dataTable.util.escapeRegex(
                                     $(this).val()
@@ -218,8 +230,19 @@
         var shortListedTable = $('#shortListedTable').DataTable({
             dom: 'Bfrtip',
             responsive: true,
+            // buttons: [
+            //     'pdf', 'print'
+            // ],
             buttons: [
-                'pdf', 'print'
+             {
+                extend: 'pdfHtml5',
+                message: 'Shortlisted Applicants',
+                title: 'UCSC Career Fair 2017',
+                filename: 'Shortlisted Applicants',
+                exportOptions: {
+                    columns: [ 0]
+                }
+              }
             ],
             ajax: {
                 url: domain + 'selected_student_company/students',

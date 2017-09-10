@@ -64,7 +64,15 @@
             dom: 'Bfrtip',
             responsive: true,
             buttons: [
-                'pdf', 'print'
+             {
+                extend: 'pdfHtml5',
+                message: 'All Applicants',
+                title: 'UCSC Career Fair 2017',
+                filename: 'All Applicants',
+                exportOptions: {
+                    columns: [ 0, 1, 2, 3, 4]
+                }
+              }
             ],
             ajax: {
                 url: domain + 'student_company/students/all',
@@ -105,7 +113,7 @@
                     if (this[0] == 3 || this[0] == 4) {
                         var column = this;
                         var select = $('<select><option value=""></option></select>')
-                            .appendTo($(column.header()))
+                            .appendTo($(column.header()).append('</br> '))
                             .on('change', function () {
                                 var val = $.fn.dataTable.util.escapeRegex(
                                     $(this).val()
