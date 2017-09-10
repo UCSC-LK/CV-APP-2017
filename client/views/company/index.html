@@ -296,7 +296,7 @@ s
             success: function (response) {
                 if (response.success == true) {
                     companyObject = response.data[0];
-                    console.log(companyObject);
+                    // console.log(companyObject);
                     $('#company-logo').css("background", 'url(' + domain + 'assets/images/company-logos/' + companyObject.logo + ')');
                 } else {
                     showErrorMessage("Something went wrong");

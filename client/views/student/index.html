@@ -211,6 +211,8 @@ s
 <script>
     //Global userID
     var userID;
+    //Student Object
+    var studentObject;
 
     // var domain = "http://localhost:3000/";
     var domain = "../../";
@@ -296,32 +298,29 @@ s
 
     });
 
-
-    function setStudentName(name) {
-        if (name) {
-            $('#username').text(name);
-        } else {
-            $.ajax({
-                type: "GET",
-                url: domain + "student",
-                data: {
-                    userID: userID
-                },
-                dataType: "json",
-                success: function (response) {
-                    if (response.success == true) {
-                        $('#username').text(response.data[0].name);
-                    } else {
-                        showErrorMessage("Something went wrong");
-                        console.log(response);
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.log(xhr);
-                    console.log(status, error);
+    // get student info and set studentObject
+    function setStudentObject() {
+        $.ajax({
+            type: "GET",
+            url: domain + "student",
+            data: {
+                userID: userID
+            },
+            dataType: "json",
+            success: function (response) {
+                if (response.success == true) {
+                    studentObject = response.data[0];
+                    $('#username').text(response.data[0].name);
+                } else {
+                    showErrorMessage("Something went wrong");
+                    console.log(response);
                 }
-            });
-        }
+            },
+            error: function (xhr, status, error) {
+                console.log(xhr);
+                console.log(status, error);
+            }
+        });
     }
 
     // Logout btn action
@@ -389,10 +388,8 @@ s
             window.location.replace('../../index.html');
         }
         userID = user_info._id;
-        console.log(user_info);
-        // setStudentName();
-        //        console.log("Setting user id : " + userID);
-        $('#username').html(user_info.name);
+        setStudentObject();
+        // console.log(user_info);
     } else {
         window.location.replace('../../index.html');
     }

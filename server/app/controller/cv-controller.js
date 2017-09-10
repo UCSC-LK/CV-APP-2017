@@ -7,31 +7,44 @@ module.exports.saveCv = function (data, callback) {
     var cv = new Cv(data);
 
     // Check if cv exists
-    Cv.findOne({
-        userID: cv.userID
-    }, function (err, result) {
+    Cv.findOne({userID: cv.userID}, function (err, result) {
+        // set new file name using student name
+        var newFileName = data.studentName.split(" ").join("-") + ".pdf";
+        data.filename = newFileName;
+
         if (result) {
             console.log("Updating cv info..."); // update info
-            // delete old fil
+            // delete old file
             var filePath = path.join(__dirname, '..', '..', 'assets', 'uploads', result.filename);
-            console.log("Deleting old file " + filePath);
+            console.log("Deleting old file " + result.filename);
             fs.unlink(filePath, function (err) {
                 if (err) {
                     console.log("Deleting file failed!");
                     return;
                 }
             });
+
+            // rename new file to student name
+            var curPath = path.join(__dirname, '..', '..', 'assets', 'uploads', cv.filename);
+            var newPath = path.join(__dirname, '..', '..', 'assets', 'uploads', newFileName);
+            console.log("Renaming new file to " + newFileName);
+            fs.rename(curPath, newPath, function (err) {
+                if (err) {
+                    console.log("Renaming file failed!");
+                    return;
+                }
+            });
+
             // update db
-            result.filename = cv.filename;
+            result.filename = newFileName;
             result.type = cv.type;
             result.path = cv.path;
             result.save(function (err) {
                 if (err) {
                     callback({
                         success: false,
-                        msg: 'Some thing went wrong. Try again',
-                        error: err,
-                        data: data
+                        msg: 'Something went wrong. Please try again',
+                        error: err
                     });
                 }
                 callback({
@@ -41,12 +54,25 @@ module.exports.saveCv = function (data, callback) {
                 });
             });
         } else {
-            console.log("Adding new cv..."); // add new
+            // rename new file to student name
+            var curPath = path.join(__dirname, '..', '..', 'assets', 'uploads', cv.filename);
+            var newFileName = data.studentName.split(" ").join("-") + ".pdf";
+            var newPath = path.join(__dirname, '..', '..', 'assets', 'uploads', newFileName);
+            console.log("Renaming new file to " + newFileName);
+            fs.rename(curPath, newPath, function (err) {
+                if (err) {
+                    console.log("Renaming file failed!");
+                    return;
+                }
+            });
+
+            console.log("Adding new cv info..."); // add new
+            cv.filename = newFileName;
             cv.save(function (err) {
                 if (err) {
                     callback({
                         success: false,
-                        msg: 'Some thing went wrong. Try again',
+                        msg: 'Something went wrong. Please try again',
                         error: err
                     });
                 }

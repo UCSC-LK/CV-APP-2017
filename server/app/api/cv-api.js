@@ -5,6 +5,7 @@ var express = require('express'),
     mime = require('mime'),
     cvController = require('../controller/cv-controller');
 
+// Init multer storage object
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, './assets/uploads/');
@@ -22,6 +23,7 @@ var upload = multer({
 router.get('/', cvController.getCvDetails);
 
 router.post('/upload', function (req, res) {
+    // Begin upload
     console.log("Uploading file...");
     upload(req, res, function (err) {
         if (err) {
@@ -36,6 +38,7 @@ router.post('/upload', function (req, res) {
         console.log("Uploading file complete.");
         var data = {
             userID: req.body.userID,
+            studentName: req.body.studentName,
             filename: req.files[0].filename,
             type: req.files[0].mimetype,
             path: req.files[0].path
