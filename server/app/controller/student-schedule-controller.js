@@ -12,11 +12,13 @@ module.exports.getSchedule = function (req, res) {
                 error: err
             });
         }
-        var res1 = result[0]['schedule'];
+        if (result.length > 0) {
+            var res1 = result[0]['schedule'];
 
-        var temp = {
-            "result": res1
-        };
-        res.json(temp);
+            var temp = {
+                "result": res1
+            };
+            res.json(temp);
+        }
     });
 };

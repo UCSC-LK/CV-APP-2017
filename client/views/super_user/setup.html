@@ -1,0 +1,196 @@
+<!-- Exportable Table -->
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>
+                    System Setup
+                </h2>
+            </div>
+            <div class="body">
+
+                    <button class="btn btn-primary waves-effect" id="setup-std-logins">Setup student logins</button>
+                    <button class="btn btn-primary waves-effect" id="setup-cmp-logins">Setup company logins</button>
+                    <button class="btn btn-primary waves-effect" id="setup-cmp-details">Setup company details</button>
+
+                <div class="log" id="log"></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- #END# Exportable Table -->
+
+<style type="text/css">
+    p {
+        margin: 0;
+    }
+    .log {
+        font-size: 13px;
+        height: 350px;
+        overflow: auto;
+        margin-top: 10px;
+        border: solid 1px;
+        padding: 7px;
+        font-family: "Lucida Console", Monaco, monospace;
+    }
+</style>
+
+<script type="application/javascript">
+
+    var domain = "../../";
+
+    var studentUsernames = [13000022,
+        13000063,
+        13000098,
+        13000128,
+        13000162,
+        13000187,
+        13000241,
+        13000314,
+        13000322,
+        13000349,
+        13000446,
+        13000497,
+        13000535,
+        13000561,
+        13000616,
+        13000632,
+        13000642,
+        13000645,
+        13000659,
+        13000675,
+        13000683,
+        13000764,
+        13000845,
+        13000901,
+        13000918,
+        13000952,
+        13000985,
+        13000993,
+        13001043,
+        13001051,
+        13001061,
+        13001078,
+        13001086,
+        13001132,
+        13001159,
+        13001221,
+        13001264,
+        13001272,
+        13001329,
+        13020056,
+        13020102,
+        13020112,
+        13020188,
+        13020196,
+        13020201,
+        13020218,
+        13020234,
+        13020242,
+        13020252,
+        13020307,
+        13020315,
+        13020341,
+        13020366,
+        13020439,
+        13020455,
+        13020471,
+        13020579,
+        13020609,
+        13020651];
+
+    var companyUsernames = [
+        'ifs',
+        'sysco-labs',
+        'cambio',
+        'eyepax',
+        'geveo',
+        'wso2',
+        'inova-it',
+        'fortude',
+        'simcentric',
+        'virtusa',
+        'codegen',
+        'mobitel',
+        'synopsis',
+        'camms',
+        'zone-24x7'
+    ];
+
+    $('#setup-std-logins').click(function () {
+        for(var i=0; i<studentUsernames.length; i++) {
+            $.ajax({
+                type: "POST",
+                url: domain + "signup",
+                data: {
+                    username: studentUsernames[i],
+                    password: studentUsernames[i],
+                    usertype: 0
+                },
+                dataType: "json",
+                success: function (response) {
+                    if (response.success == true) {
+                        var para = document.createElement("p");
+                        var msg = "Added user " + response.data.username;
+                        var node = document.createTextNode(msg);
+                        para.appendChild(node);
+                        $('#log').append(para);
+                    } else {
+                        var para = document.createElement("p");
+                        var msg = "Error adding user " + response.data.username + " - " + response.msg;
+                        var node = document.createTextNode(msg);
+                        para.appendChild(node);
+                        $('#log').append(para);
+                        console.log(response);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    showErrorMessage("Something went wrong");
+                    console.log(xhr);
+                    console.log(status, error);
+                }
+            });
+            var log = document.getElementById("log");
+            log.scrollTop = log.scrollHeight;
+        }
+    });
+
+    $('#setup-cmp-logins').click(function () {
+        for(var i=0; i<companyUsernames.length; i++) {
+            $.ajax({
+                type: "POST",
+                url: domain + "signup",
+                data: {
+                    username: companyUsernames[i],
+                    password: companyUsernames[i],
+                    usertype: 1
+                },
+                dataType: "json",
+                success: function (response) {
+                    if (response.success == true) {
+                        var para = document.createElement("p");
+                        var msg = "Added user " + response.data.username + " - " + response.data._id;
+                        var node = document.createTextNode(msg);
+                        para.appendChild(node);
+                        $('#log').append(para);
+                    } else {
+                        var para = document.createElement("p");
+                        var msg = "Error adding user " + response.data.username + " - " + response.msg;
+                        var node = document.createTextNode(msg);
+                        para.appendChild(node);
+                        $('#log').append(para);
+                        console.log(response);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    showErrorMessage("Something went wrong");
+                    console.log(xhr);
+                    console.log(status, error);
+                }
+            });
+        }
+    });
+
+
+</script>
