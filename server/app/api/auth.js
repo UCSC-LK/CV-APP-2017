@@ -121,27 +121,33 @@ module.exports = function (app, passport) {
                 msg: 'Please pass username and password.'
             });
         } else {
-            var newUser = new User({
-                username: req.body.username,
-                password: req.body.password,
-                usertype: req.body.usertype,
-                isfirst: 1
-            });
-            // save the user
-            newUser.save(function (err, user) {
-                console.log(user);
-                if (err) {
+            //Check if username exists
+            User.findOne({username: req.body.username}, function (err, user) {
+                if (err) throw err;
+                if (!user) {
+                    var newUser = new User({
+                        username: req.body.username,
+                        password: req.body.password,
+                        usertype: req.body.usertype,
+                        isfirst: 1
+                    });
+                    // save the user
+                    newUser.save(function (err, user1) {
+                        if (err) throw err;
+                        res.json({
+                            success: true,
+                            msg: 'Successful created new user.',
+                            data: user1
+                        });
+                    });
+
+                } else {
                     return res.json({
                         success: false,
                         msg: 'Username already exists.',
                         data: {username: req.body.username}
                     });
                 }
-                res.json({
-                    success: true,
-                    msg: 'Successful created new user.',
-                    data: user
-                });
             });
         }
     });
@@ -154,12 +160,9 @@ module.exports = function (app, passport) {
                 msg: 'Please pass username , password & new password.'
             });
         } else {
-            User.findOne({
-                username: req.body.username
-            }, function (err, user) {
+            User.findOne({username: req.body.username}, function (err, user) {
                 if (err) throw err;
                 if (!user) {
-                    // res.status(401).send({success: false, msg: 'Authentication failed. User not found.'});
                     res.json({
                         success: false,
                         msg: 'Authentication failed. User not found.'

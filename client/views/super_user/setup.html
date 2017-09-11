@@ -10,8 +10,7 @@
             <div class="body">
 
                     <button class="btn btn-primary waves-effect" id="setup-std-logins">Setup student logins</button>
-                    <button class="btn btn-primary waves-effect" id="setup-cmp-logins">Setup company logins</button>
-                    <button class="btn btn-primary waves-effect" id="setup-cmp-details">Setup company details</button>
+                    <button class="btn btn-primary waves-effect" id="setup-cmp-logins">Setup companies</button>
 
                 <div class="log" id="log"></div>
             </div>
@@ -100,22 +99,135 @@
         13020609,
         13020651];
 
-    var companyUsernames = [
-        'ifs',
-        'sysco-labs',
-        'cambio',
-        'eyepax',
-        'geveo',
-        'wso2',
-        'inova-it',
-        'fortude',
-        'simcentric',
-        'virtusa',
-        'codegen',
-        'mobitel',
-        'synopsis',
-        'camms',
-        'zone-24x7'
+    var companyDetails = [
+        {
+            username: 'ifs',
+            userID:-1,
+            name: 'IFS',
+            logo: 'ifs.png',
+            panels: [],
+            positions: ['Software Engineer']
+        },
+        {
+            username: 'sysco-labs',
+            userID:-1,
+            name: 'Sysco Labs',
+            logo: 'sysco-labs.png',
+            panels: [],
+            positions: ['Software Engineer', 'Quality Assurance Engineer']
+        },
+        {
+            username: 'cambio',
+            userID:-1,
+            name: 'Cambio Health Care Systems',
+            logo: 'cambio.png',
+            panels: [],
+            positions: ['Software Engineer', 'Quality Assurance Engineer', 'Business Analyst']
+        },
+        {
+            username: 'eyepax',
+            userID:-1,
+            name: 'Eyepax',
+            logo: 'eyepax.png',
+            panels: [],
+            positions: ['Software Engineer', 'Business Analyst']
+        },
+        {
+            username: 'wso2',
+            userID:-1,
+            name: 'WSO2 Lanka (Pvt.) Ltd.',
+            logo: 'wso2.png',
+            panels: [],
+            positions: ['Software Engineer', 'Quality Assurance Engineer', 'Devops Engineer']
+        },
+        {
+            username: 'geveo',
+            userID:-1,
+            name: 'Geveo Australia',
+            logo: 'geveo.png',
+            panels: [],
+            positions: ['Software Engineer', 'Quality Assurance Engineer']
+        },
+        {
+            username: 'inova-it',
+            userID:-1,
+            name: 'Inova IT',
+            logo: 'inova-it.png',
+            panels: [],
+            positions: ['Software Engineer', 'Quality Assurance Engineer']
+        },
+        {
+            username: 'fortude',
+            userID:-1,
+            name: 'Brandix i3 - Fortude',
+            logo: 'fortude.png',
+            panels: [],
+            positions: ['Quality Assurance Engineer', 'Business Analyst']
+        },
+        {
+            username: 'simcentric',
+            userID:-1,
+            name: 'Simcentric Technologies',
+            logo: 'simcentric.png',
+            panels: [],
+            positions: ['Software Engineer']
+        },
+        {
+            username: 'virtusa',
+            userID:-1,
+            name: 'Virtusa',
+            logo: 'virtusa.png',
+            panels: [],
+            positions: ['Software Engineer']
+        },
+        {
+            username: 'codegen',
+            userID:-1,
+            name: 'Codegen',
+            logo: 'codegen.png',
+            panels: [],
+            positions: ['Software Engineer', 'Quality Assurance Engineer']
+        },
+        {
+            username: 'mobitel',
+            userID:-1,
+            name: 'Mobitel',
+            logo: 'mobitel.png',
+            panels: [],
+            positions: ['Quality Assurance Engineer', 'Business Analyst']
+        },
+        {
+            username: 'synopsis',
+            userID:-1,
+            name: 'Synopsis Lanka',
+            logo: 'synopsis.png',
+            panels: [],
+            positions: ['Software Engineer']
+        },
+        {
+            username: 'camms',
+            userID:-1,
+            name: 'Camms',
+            logo: 'camms.png',
+            panels: [],
+            positions: ['Software Engineer']
+        },
+        {
+            username: 'zone-24x7',
+            userID:-1,
+            name: 'Zone 24x7',
+            logo: 'zone-24x7.png',
+            panels: [],
+            positions: ['Software Engineer']
+        },
+        {
+            username: 'lsg-technologies',
+            userID:-1,
+            name: 'LSG Technologies',
+            logo: 'lsg-technologies.png',
+            panels: [],
+            positions: ['Engineer']
+        }
     ];
 
     $('#setup-std-logins').click(function () {
@@ -151,35 +263,27 @@
                     console.log(status, error);
                 }
             });
-            var log = document.getElementById("log");
-            log.scrollTop = log.scrollHeight;
         }
     });
 
     $('#setup-cmp-logins').click(function () {
-        for(var i=0; i<companyUsernames.length; i++) {
+        for(var i=0; i<companyDetails.length; i++) {
+            // Add user info
             $.ajax({
                 type: "POST",
                 url: domain + "signup",
                 data: {
-                    username: companyUsernames[i],
-                    password: companyUsernames[i],
+                    username: companyDetails[i].username,
+                    password: companyDetails[i].username,
                     usertype: 1
                 },
                 dataType: "json",
                 success: function (response) {
-                    if (response.success == true) {
-                        var para = document.createElement("p");
-                        var msg = "Added user " + response.data.username + " - " + response.data._id;
-                        var node = document.createTextNode(msg);
-                        para.appendChild(node);
-                        $('#log').append(para);
+                    if (response.success === true) {
+                        addLogMsg("User added " + response.data.username + " - " + response.data._id);
+                        saveCompanyInfo(response.data.username, response.data._id);
                     } else {
-                        var para = document.createElement("p");
-                        var msg = "Error adding user " + response.data.username + " - " + response.msg;
-                        var node = document.createTextNode(msg);
-                        para.appendChild(node);
-                        $('#log').append(para);
+                        addLogMsg("Error adding user " + response.data.username + " - " + response.msg);
                         console.log(response);
                     }
                 },
@@ -189,8 +293,49 @@
                     console.log(status, error);
                 }
             });
+
         }
     });
+
+    function saveCompanyInfo(username, userID) {
+        for(var i=0; i<companyDetails.length; i++) {
+            if (companyDetails[i].username == username){
+                $.ajax({
+                    type: "POST",
+                    url: domain + "company",
+                    data: {
+                        name: companyDetails[i].name,
+                        logo: companyDetails[i].logo,
+                        userID: userID,
+                        panels: companyDetails[i].panels,
+                        positions: companyDetails[i].positions
+                    },
+                    dataType: "json",
+                    success: function (response) {
+                        if (response.status === "success") {
+                            addLogMsg("Company info added " + response.data.name);
+                        } else {
+                            addLogMsg("Error adding company ");
+                            console.log(response);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        showErrorMessage("Something went wrong");
+                        console.log(xhr);
+                        console.log(status, error);
+                    }
+                });
+                break;
+            }
+        }
+    }
+
+    function addLogMsg(msg) {
+        var para = document.createElement("p");
+        var node = document.createTextNode(msg);
+        para.appendChild(node);
+        $('#log').append(para);
+    }
 
 
 </script>
