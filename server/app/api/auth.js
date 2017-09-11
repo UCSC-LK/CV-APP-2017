@@ -132,12 +132,14 @@ module.exports = function (app, passport) {
                 if (err) {
                     return res.json({
                         success: false,
-                        msg: 'Username already exists.'
+                        msg: 'Username already exists.',
+                        data: {username: req.body.username}
                     });
                 }
                 res.json({
                     success: true,
-                    msg: 'Successful created new user.'
+                    msg: 'Successful created new user.',
+                    data: {username: req.body.username}
                 });
             });
         }
