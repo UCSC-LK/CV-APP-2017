@@ -20,9 +20,19 @@ var morgan = require('morgan');
 var fs = require('fs');
 var path = require('path');
 
-mongoose.connect(config.database, {
-    useMongoClient: true
-});
+mongoose.connect(
+    config.database,
+    {
+        useMongoClient: true
+    },
+    function (error) {
+        if (error) {
+            console.log(error);
+        } else {
+            console.log("Connected to mongodb!");
+        }
+    }
+);
 
 // create a write stream (in append mode)
 var accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {
