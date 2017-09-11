@@ -128,7 +128,8 @@ module.exports = function (app, passport) {
                 isfirst: 1
             });
             // save the user
-            newUser.save(function (err) {
+            newUser.save(function (err, user) {
+                console.log(user);
                 if (err) {
                     return res.json({
                         success: false,
@@ -139,7 +140,7 @@ module.exports = function (app, passport) {
                 res.json({
                     success: true,
                     msg: 'Successful created new user.',
-                    data: {username: req.body.username}
+                    data: user
                 });
             });
         }

@@ -156,7 +156,8 @@
             success: function (response) {
                 if (response.success == true) {
                     showSuccessMessage(response.msg);
-                    setStudentName(student.name);
+                    studentObject = student;
+                    $('#username').text(studentObject.name);
                 } else {
                     showErrorMessage("Something went wrong");
                     console.log(response);
