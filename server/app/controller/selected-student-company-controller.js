@@ -35,6 +35,10 @@ module.exports.getCompaniesBySelectedStudent = function (req, res) {
                 });
             }
             console.log(result1);
+            // if result is null make it empty array.to avoid DataTable error.
+            if (!result1){
+              result1 = [];
+            }
             res.json({
                 success: true,
                 result: result1

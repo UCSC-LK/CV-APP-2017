@@ -189,6 +189,11 @@ s
 <!-- Demo Js -->
 <script src="../../assets/js/demo.js"></script>
 
+<!-- Bootstrap Notify Plugin Js -->
+<script src="../../assets/plugins/bootstrap-notify/bootstrap-notify.js"></script>
+<!-- Notification Js -->
+<script src="../../assets/js/pages/ui/notifications.js"></script>
+
 <!-- Jquery DataTable Plugin Js -->
 <script src="../../assets/plugins/jquery-datatable/jquery.dataTables.js"></script>
 <script src="../../assets/plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js"></script>
@@ -206,8 +211,11 @@ s
 <script>
     //Global userID
     var userID;
+    //Student Object
+    var studentObject;
 
-    var domain = "http://localhost:3000/";
+    // var domain = "http://localhost:3000/";
+    var domain = "../../";
 
     // Code to inject html code into index
     $(document).ready(function () {
@@ -227,7 +235,6 @@ s
             var filename = path[path.length - 1]
 
             var url = "";
-            var msg = "";
 
             if (filename == 'cv-view.html') {
                 url = domain + "validation/validstudent/" + userID
@@ -238,7 +245,7 @@ s
             } else {
                 updatepage(thisNav);
             }
-            console.log(filename);
+            // console.log(filename);
         }
 
         function remoteValidation(url, thisNav, filename) {
@@ -258,14 +265,14 @@ s
                             var newNav = jQuery.extend(true, {}, thisNav);
                             if (filename == 'cv-view.html') {
                                 newNav.href = "student-details.html";
-                                showErrorMessage("You have to fill student details first");
+                                showErrorMessage("Please submit your details first!");
                             } else if (filename == 'company-select.html') {
                                 if (response.isValidStudent == true) {
                                     newNav.href = "cv-view.html";
-                                    showErrorMessage("You have to upload CV");
+                                    showErrorMessage("Please upload your CV!");
                                 } else {
                                     newNav.href = "student-details.html";
-                                    showErrorMessage("You have to insert student details & upload CV");
+                                    showErrorMessage("Please submit your details & upload CV!");
                                 }
                             }
                             updatepage(newNav);
@@ -291,32 +298,29 @@ s
 
     });
 
-
-    function setStudentName(name) {
-        if (name) {
-            $('#username').text(name);
-        } else {
-            $.ajax({
-                type: "GET",
-                url: domain + "student",
-                data: {
-                    userID: userID
-                },
-                dataType: "json",
-                success: function (response) {
-                    if (response.success == true) {
-                        $('#username').text(response.data[0].name);
-                    } else {
-                        showErrorMessage("Something went wrong");
-                        console.log(response);
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.log(xhr);
-                    console.log(status, error);
+    // get student info and set studentObject
+    function setStudentObject() {
+        $.ajax({
+            type: "GET",
+            url: domain + "student",
+            data: {
+                userID: userID
+            },
+            dataType: "json",
+            success: function (response) {
+                if (response.success == true) {
+                    studentObject = response.data[0];
+                    $('#username').text(response.data[0].name);
+                } else {
+                    showErrorMessage("Something went wrong");
+                    console.log(response);
                 }
-            });
-        }
+            },
+            error: function (xhr, status, error) {
+                console.log(xhr);
+                console.log(status, error);
+            }
+        });
     }
 
     // Logout btn action
@@ -384,10 +388,8 @@ s
             window.location.replace('../../index.html');
         }
         userID = user_info._id;
-        console.log(user_info);
-        // setStudentName();
-        //        console.log("Setting user id : " + userID);
-        $('#username').html(user_info.name);
+        setStudentObject();
+        // console.log(user_info);
     } else {
         window.location.replace('../../index.html');
     }

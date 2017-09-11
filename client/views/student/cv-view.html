@@ -7,13 +7,8 @@
                 </h2>
             </div>
             <div class="body">
-                <div class="form-line">
-                    <div id="cv-pdf-view">
-                        <!-- pdf appear here -->
-                    </div>
-                </div>
+
                 <form name="cvForm" enctype="multipart/form-data" id="form_validation">
-                    <br>
                     <p>Upload New CV</p>
                     <div class="form-group">
                         <div class="form-line">
@@ -26,17 +21,17 @@
                         <button class="btn btn-primary waves-effect" type="submit" id="submit-btn">UPLOAD</button>
                     </div>
                 </form>
+
+                <div class="form-line">
+                    <div id="cv-pdf-view">
+                        <!-- pdf appear here -->
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
 </div>
-
-
-<!-- Custom Js -->
-<!-- <script src="../../assets/js/admin.js"></script> -->
-<!-- <script src="../../assets/js/pages/forms/form-validation.js"></script> -->
-<!-- Demo Js -->
-<!-- <script src="../../assets/js/demo.js"></script> -->
 
 <script>
     $(document).ready(function () {
@@ -77,26 +72,37 @@
                 } else {
                     var formData = new FormData(this);
                     formData.append('userID', userID);
-                    $.ajax({
-                        type: "POST",
-                        url: "/cv/upload",
-                        data: formData,
-                        processData: false,
-                        contentType: false,
-                        success: function (response) {
-                            if (response.success == true) {
-                                showSuccessMessage(response.msg);
-                                setPdfView(response.data.filename);
-                            } else {
-                                showErrorMessage(response.msg);
-                                console.log(response);
+                    formData.append('studentName', studentObject.name);
+                    swal({
+                        title: "Please confirm your upload.",
+                        text: "Submit to upload your CV",
+                        type: "info",
+                        showCancelButton: true,
+                        closeOnConfirm: false,
+                        showLoaderOnConfirm: true
+                    }, function () {
+                        $.ajax({
+                            type: "POST",
+                            url: "/cv/upload",
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            success: function (response) {
+                                if (response.success == true) {
+                                    showSuccessMessage(response.msg);
+                                    setPdfView(response.data.filename);
+                                } else {
+                                    showErrorMessage(response.msg);
+                                    console.log(response);
+                                }
+                            },
+                            error: function (xhr, status, error) {
+                                console.log(xhr);
+                                console.log(status, error);
                             }
-                        },
-                        error: function (xhr, status, error) {
-                            console.log(xhr);
-                            console.log(status, error);
-                        }
+                        });
                     });
+
                 }
             }
             return false;
@@ -113,7 +119,7 @@
         var pdfEmbed = document.createElement("embed");
         pdfEmbed.setAttribute("src", "/uploads/" + filename);
         pdfEmbed.setAttribute("width", "100%");
-        pdfEmbed.setAttribute("height", "700px");
+        pdfEmbed.setAttribute("height", "1000px");
         pdfEmbed.setAttribute("type", "application/pdf");
         $('#cv-pdf-view').append(pdfEmbed);
 

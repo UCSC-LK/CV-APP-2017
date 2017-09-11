@@ -20,5 +20,5 @@ npm-debug.log
 bower_components
 access.log
 
-# uploads folder
-server/assets/*
+# all pdf files
+*.pdf

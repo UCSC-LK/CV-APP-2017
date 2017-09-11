@@ -171,7 +171,7 @@ module.exports = function (app, passport) {
                                 if (err) {
                                     return res.json({
                                         success: false,
-                                        msg: 'Some thing went wrong.Try again'
+                                        msg: 'Something went wrong. Please try again'
                                     });
                                 }
                                 res.json({

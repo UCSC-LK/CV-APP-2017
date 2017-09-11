@@ -51,7 +51,7 @@ module.exports.addStudent = function (req, res) {
                 if (err) {
                     return res.json({
                         success: false,
-                        msg: 'Some thing went wrong.Try again',
+                        msg: 'Something went wrong. Please try again',
                         error: err
                     });
                 }
@@ -66,7 +66,7 @@ module.exports.addStudent = function (req, res) {
                 if (err) {
                     return res.json({
                         success: false,
-                        msg: 'Some thing went wrong.Try again',
+                        msg: 'Something went wrong. Please try again',
                         error: err
                     });
                 }

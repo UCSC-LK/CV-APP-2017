@@ -111,8 +111,8 @@ s
                         <span>My Account</span>
                     </a>
                     <ul class="ml-menu">
-                        <li>
-                            <a href="student-list.html" class="ajax-pg">Student List</a>
+                        <li class="active">
+                            <a href="student-list.html" class="ajax-pg toggled">Student List</a>
                         </li>
                     </ul>
                 </li>
@@ -193,8 +193,7 @@ s
 
 </html>
 <script>
-
-    $(document).ready(function () {
+    $(document).ready(function() {
         var pageWrapper = $("#page-wrapper");
         $("a.ajax-pg").on("click", function (e) {
             e.preventDefault();
@@ -202,15 +201,17 @@ s
             // pageWrapper.prepend('<div class="loader"><div class="preloader"><div class="spinner-layer pl-blue"><div class="circle-clipper left"><div class="circle"></div></div><div class="circle-clipper right"><div class="circle"></div></div></div></div><p>Please wait...</p></div>');
             pageWrapper.load(this.href);
             $('.ml-menu li.active').removeClass('active');
-            $(this).closest('li').addClass('active');
+            $(this).parent().addClass('active');
         });
         window.onload = pageWrapper.load('student-list.html');
     });
 </script>
 
 <script>
-    var logoutButton = $('#logoutButton');
-    logoutButton.click(function () {
+    var user_id = '59a50deea46e2a5c6f801812';
+    var logoutButton   = $('#logoutButton');
+
+    logoutButton.click(function(){
         // alert("Hello");
         $.ajax({
             type: "POST",
