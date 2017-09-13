@@ -2,7 +2,8 @@ app.controller('loginController', ['$scope', '$resource', function($scope, $reso
   var Login = $resource('/login');
 
   function getToken() {
-    return sessionStorage.getItem('jwt_token');
+    // return sessionStorage.getItem('jwt_token');
+    return localStorage.jwt_token;
   }
 
   function isLoggedIn() {
@@ -48,7 +49,8 @@ app.controller('loginController', ['$scope', '$resource', function($scope, $reso
       window.location.replace('./views/super_user');
     } else {
       alert("Invalid User");
-      sessionStorage.removeItem('jwt_token');
+      // sessionStorage.removeItem('jwt_token');
+      localStorage.removeItem("jwt_token");
     }
   }
 
@@ -70,9 +72,12 @@ app.controller('loginController', ['$scope', '$resource', function($scope, $reso
       login.username = $scope.username;
       login.password = $scope.password;
       login.$save(function(response) {
+        console.log(response);
         if (response.success == true) {
           document.getElementById("sign_in").reset();
-          sessionStorage.setItem('jwt_token', response.token);
+          // sessionStorage.setItem('jwt_token', response.token);
+          localStorage.jwt_token = response.token;
+
           // sessionStorage.setItem('user_id', response.id);
           // window.location.replace(response.path);
           homeRedirect();

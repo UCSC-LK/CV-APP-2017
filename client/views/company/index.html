@@ -240,8 +240,10 @@ s
             success: function (response) {
                 if (response.success == true) {
                     window.location.replace(response.path);
-                    sessionStorage.removeItem('jwt_token');
-                    sessionStorage.removeItem('user_id');
+                    // sessionStorage.removeItem('jwt_token');
+                    // sessionStorage.removeItem('user_id');
+                    localStorage.removeItem("jwt_token");
+
                     console.log(response);
                 } else {
                     alert("Something went wrong")
@@ -256,7 +258,8 @@ s
     });
 
     function getToken() {
-        return sessionStorage.getItem('jwt_token');
+        // return sessionStorage.getItem('jwt_token');
+        return sessionStorage.jwt_token
     }
 
     function isLoggedIn() {
