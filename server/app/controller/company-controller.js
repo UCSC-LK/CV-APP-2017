@@ -9,12 +9,7 @@ module.exports.getCompany = function (req, res) {
     Company.find({
         userID: req.query.userID
     }, function (err, result) {
-        if (err) {
-            return res.json({
-                success: false,
-                error: err
-            });
-        }
+        if (err) return next(err);
         res.json({
             success: true,
             data: result
@@ -22,8 +17,10 @@ module.exports.getCompany = function (req, res) {
     });
 };
 
+
 module.exports.getCompanies = function (req, res) {
     Company.find({}, function (err, result) {
+        if (err) return next(err);
         res.json(result);
     });
 };
@@ -60,7 +57,8 @@ module.exports.addCompany = function (req, res) {
         res.send(jsend.error('Bad Data'));
     } else {
         company1.save(function (err, data) {
-            res.send(jsend.fromArguments(err, data));
+          if (err) return next(err);
+          res.send(jsend.fromArguments(err, data));
         });
     }
 };

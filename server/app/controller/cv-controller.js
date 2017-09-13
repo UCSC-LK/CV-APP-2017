@@ -8,6 +8,7 @@ module.exports.saveCv = function (data, callback) {
 
     // Check if cv exists
     Cv.findOne({userID: cv.userID}, function (err, result) {
+      if (err) return next(err);
         // set new file name using student name
         var newFileName = data.studentName.split(" ").join("-") + ".pdf";
         data.filename = newFileName;
@@ -18,10 +19,7 @@ module.exports.saveCv = function (data, callback) {
             var filePath = path.join(__dirname, '..', '..', 'assets', 'uploads', result.filename);
             console.log("Deleting old file " + result.filename);
             fs.unlink(filePath, function (err) {
-                if (err) {
-                    console.log("Deleting file failed!");
-                    return;
-                }
+                if (err) return next(err);
             });
 
             // rename new file to student name
@@ -29,10 +27,7 @@ module.exports.saveCv = function (data, callback) {
             var newPath = path.join(__dirname, '..', '..', 'assets', 'uploads', newFileName);
             console.log("Renaming new file to " + newFileName);
             fs.rename(curPath, newPath, function (err) {
-                if (err) {
-                    console.log("Renaming file failed!");
-                    return;
-                }
+                if (err) return next(err);
             });
 
             // update db
@@ -60,10 +55,7 @@ module.exports.saveCv = function (data, callback) {
             var newPath = path.join(__dirname, '..', '..', 'assets', 'uploads', newFileName);
             console.log("Renaming new file to " + newFileName);
             fs.rename(curPath, newPath, function (err) {
-                if (err) {
-                    console.log("Renaming file failed!");
-                    return;
-                }
+                if (err) return next(err);
             });
 
             console.log("Adding new cv info..."); // add new
@@ -91,12 +83,7 @@ module.exports.getCvDetails = function (req, res) {
     Cv.find({
         userID: req.query.userID
     }, function (err, result) {
-        if (err) {
-            return res.json({
-                success: false,
-                error: err
-            });
-        }
+        if (err) return next(err);
         res.json({
             success: true,
             data: result

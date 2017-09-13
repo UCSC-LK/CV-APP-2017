@@ -25,9 +25,10 @@ mongoose.connect(
     {
         useMongoClient: true
     },
-    function (error) {
-        if (error) {
-            console.log(error);
+    function (err) {
+        if (err) {
+            console.log(err);
+            if (err) return next(err);
         } else {
             console.log("Connected to mongodb!");
         }
@@ -47,7 +48,7 @@ app.use(morgan('common', {
 // logger stdout
 app.use(morgan('dev'));
 
-///////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////
 //
 //Set Static Folder
 app.use(express.static(path.join(__dirname, '../client')));
@@ -96,18 +97,19 @@ app.use(function (err, req, res, next) {
     if (err.name === 'UnauthorizedError') {
         res.status(401);
         res.json({
-            "message : ": err.name + " : " + err.message
+            success: false,
+            error: err
         });
         console.log("Log - UnauthorizedError");
     } else {
         console.log("Log - Unhandlied");
         console.log("message" + err.name + ": " + err.message);
         res.json({
-            "message": err.name + ": " + err.message
+            success: false,
+            error: err
         });
     }
 });
-
 
 app.listen(port, function () {
     console.log('Server started on port : ' + port);

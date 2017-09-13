@@ -3,14 +3,11 @@ var Student = require('../model/student');
 // Return all students
 module.exports.getStudents = function (req, res) {
     Student.find({}, function (err, result) {
-        if (err) {
-            res.send(err);
-        } else {
-            var temp = {
-                "result": result
-            };
-            res.json(temp);
-        }
+      if (err) return next(err);
+      var temp = {
+          "result": result
+      };
+      res.json(temp);
     });
 };
 
@@ -20,12 +17,7 @@ module.exports.getStudent = function (req, res) {
     Student.find({
         userID: req.query.userID
     }, function (err, result) {
-        if (err) {
-            return res.json({
-                success: false,
-                error: err
-            });
-        }
+        if (err) return next(err);
         res.json({
             success: true,
             data: result

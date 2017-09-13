@@ -16,24 +16,13 @@ module.exports.getCompaniesBySelectedStudent = function (req, res) {
     SelectedStudentCompany.find({
         'student': req.params.query
     }, function (err, result) {
-        if (err) {
-            return res.json({
-                success: false,
-                error: err
-            });
-        }
-
+        if (err) return next(err);
         //Getting company data
         var companies = _.map(result, 'company');
         Company.findById({
             $in: companies
         }, function (err, result1) {
-            if (err) {
-                return res.json({
-                    success: false,
-                    error: err
-                });
-            }
+            if (err) return next(err);
             console.log(result1);
             // if result is null make it empty array.to avoid DataTable error.
             if (!result1){
@@ -52,13 +41,7 @@ module.exports.getSelectedStudentsByCompany = function (req, res) {
     SelectedStudentCompany.find({
         'company': req.params.query
     }, function (err, result1) {
-        if (err) {
-            return res.json({
-                success: false,
-                error: err
-            });
-        }
-
+        if (err) return next(err);
         //Getting student data
         var students = _.map(result1, 'student');
         Student.find({
@@ -66,12 +49,7 @@ module.exports.getSelectedStudentsByCompany = function (req, res) {
                 $in: students
             }
         }, function (err, result2) {
-            if (err) {
-                return res.json({
-                    success: false,
-                    error: err
-                });
-            }
+            if (err) return next(err);
             var arr2 = _.map(result2, keyVal);
 
             // Map selectedStudentCompany id with student name => [{selectedStudentCompany._id: student.name}]
@@ -102,12 +80,7 @@ module.exports.getSelectedStudentsByCompanyPosition = function (req, res) {
         'company': req.query.company,
         'position': req.query.position
     }, function (err, result1) {
-        if (err) {
-            return res.json({
-                success: false,
-                error: err
-            });
-        }
+        if (err) return next(err);
 
         //Getting student data
         var students = _.map(result1, 'student');
@@ -116,25 +89,14 @@ module.exports.getSelectedStudentsByCompanyPosition = function (req, res) {
                 $in: students
             }
         }, function (err, result2) {
-            if (err) {
-                return res.json({
-                    success: false,
-                    error: err
-                });
-            }
-
+            if (err) return next(err);
             // get cv data
             Cv.find({
                 'userID': {
                     $in: students
                 }
             }, "userID filename -_id", function (err, result3) {
-                if (err) {
-                    return res.json({
-                        success: false,
-                        error: err
-                    });
-                }
+                if (err) return next(err);
                 var arr = _.map(result3, function (n) {
                     return {
                         [n.userID]: n.filename
