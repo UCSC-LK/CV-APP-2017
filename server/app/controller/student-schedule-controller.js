@@ -6,12 +6,7 @@ module.exports.getSchedule = function (req, res) {
     StudentSchedule.find({
         'student': req.params.query
     }, { schedule: 1}, function (err, result) {
-        if (err) {
-            return res.json({
-                success: false,
-                error: err
-            });
-        }
+        if (err) return next(err);
         if (result.length > 0) {
             var res1 = result[0]['schedule'];
 
