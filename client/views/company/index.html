@@ -297,6 +297,9 @@ s
                 userID: userID
             },
             dataType: "json",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", getToken());
+            },
             success: function (response) {
                 if (response.success == true) {
                     companyObject = response.data[0];

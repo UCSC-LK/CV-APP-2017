@@ -118,6 +118,9 @@
                     d.company = companyObject._id;
                     d.position = position;
                 },
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", getToken());
+                },
                 dataSrc: 'result'
             },
             "columns": [{
@@ -250,6 +253,9 @@
                     d.company = companyObject._id;
                     d.position = position;
                 },
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", getToken());
+                },
                 dataSrc: 'result'
             },
             "columns": [{
@@ -284,6 +290,9 @@
                 url: url,
                 data: params,
                 dataType: "json",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", getToken());
+                },
                 success: function (response) {
                     switch (action) {
                         case "ajaxRemove":

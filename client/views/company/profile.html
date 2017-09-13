@@ -91,6 +91,9 @@
                 // data : change_data+ &username="+ashan3@gmail.com",
                 data: change_data + "&username=" + "ashan3@gmail.com",
                 dataType: "json",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", getToken());
+                },
                 success: function (response) {
                     if (response.success == true) {
                         document.getElementById("change_password").reset();

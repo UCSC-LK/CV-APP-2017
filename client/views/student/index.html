@@ -254,6 +254,9 @@ s
                 data: {
                     userID: userID
                 },
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", getToken());
+                },
                 dataType: "json",
                 success: function (response) {
                     if (response.success == true) {
@@ -306,6 +309,9 @@ s
                 userID: userID
             },
             dataType: "json",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", getToken());
+            },
             success: function (response) {
                 if (response.success == true) {
                     studentObject = response.data[0];
@@ -330,6 +336,9 @@ s
             url: domain + "logout",
             data: '',
             dataType: "json",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", getToken());
+            },
             success: function (response) {
                 if (response.success == true) {
                     window.location.replace(response.path);
@@ -396,4 +405,6 @@ s
     function showErrorMessage(msg) {
         swal(msg + "!", '', "error");
     }
+
+    console.log(getToken());
 </script>
