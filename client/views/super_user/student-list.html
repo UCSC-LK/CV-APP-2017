@@ -34,6 +34,7 @@
                     <thead>
                     <tr>
                         <th>Company</th>
+                        <th>Position</th>
                         <th>Action</th>
                     </tr>
                     </thead>
@@ -87,7 +88,7 @@ $(document).ready(function() {
       ]
     });
 
-    /*var companyTable = $('#companyTable').DataTable({
+    var companyTable = $('#companyTable').DataTable({
         dom: 'Bfrtip',
         responsive: true,
         buttons: [
@@ -99,11 +100,12 @@ $(document).ready(function() {
         },
         "columns": [
             { "data": "company" },
+            { "data": "position" },
             {   "data": null,
                 "defaultContent": selectButton
             }
         ]
-    });*/
+    });
 
 
     var scheduleTable = $('#scheduleTable').DataTable({

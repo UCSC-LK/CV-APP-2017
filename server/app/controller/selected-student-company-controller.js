@@ -24,9 +24,12 @@ module.exports.getCompaniesBySelectedStudent = function (req, res) {
         }
 
         //Getting company data
+        var temp = [];
         var companies = _.map(result, 'company');
-        Company.findById({
-            $in: companies
+        Company.find({
+            '_id': {
+                $in: companies
+            }
         }, function (err, result1) {
             if (err) {
                 return res.json({
@@ -34,16 +37,29 @@ module.exports.getCompaniesBySelectedStudent = function (req, res) {
                     error: err
                 });
             }
-            console.log(result1);
-            // if result is null make it empty array.to avoid DataTable error.
-            if (!result1){
-              result1 = [];
-            }
-            res.json({
-                success: true,
-                result: result1
+
+            // Loop through the two array results
+            _.forEach(result1, function (compObj) {
+                _.forEach(result, function (selectedCompObj) {
+                    // Check company ids and update company name in the returned object
+                    if(selectedCompObj.company == compObj._id){
+                        selectedCompObj.company = compObj.name;
+                        console.log(selectedCompObj);
+                    }
+                });
             });
+            console.log(result);
+
+            // if result is null make it empty array.to avoid DataTable error.
+            if (result1.length === 0){
+                result1 = [];
+            }
+            temp = {
+                "result": result
+            };
+            res.json(temp);
         });
+
     });
 };
 
