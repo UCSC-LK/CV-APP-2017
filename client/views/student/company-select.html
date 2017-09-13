@@ -118,7 +118,10 @@
             ],
             ajax: {
                 url: domain + 'student_company/companies/' + userID,
-                dataSrc: 'result'
+                dataSrc: 'result',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", getToken());
+                },
             },
             "columns": [{
                 "data": "company"
@@ -202,6 +205,9 @@
                 url: url,
                 data: params,
                 dataType: "json",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", getToken());
+                },
                 success: function (response) {
                     switch (action) {
                         case "ajaxRemove":

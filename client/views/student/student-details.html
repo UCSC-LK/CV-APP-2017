@@ -97,6 +97,9 @@
                 data: {
                     userID: userID
                 },
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", getToken());
+                },
                 dataType: "json",
                 success: function (response) {
                     if (response.success == true) {
