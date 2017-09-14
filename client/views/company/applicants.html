@@ -164,7 +164,7 @@
                     this.api().columns().every(function () {
                         if (this[0] == 2 || this[0] == 3) {
                             var column = this;
-                            var select = $('<select><option value=""></option></select>')
+                            var select = $('<select><option value="">All</option></select>')
                                 .appendTo($(column.header()).append('</br> '))
                                 .on('change', function () {
                                     var val = $.fn.dataTable.util.escapeRegex(
