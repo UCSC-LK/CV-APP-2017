@@ -14,40 +14,38 @@ module.exports.saveCv = function (data, callback) {
         data.filename = newFileName;
 
         if (result) {
-            console.log("Updating cv info..."); // update info
             // delete old file
             var filePath = path.join(__dirname, '..', '..', 'assets', 'uploads', result.filename);
             console.log("Deleting old file " + result.filename);
             fs.unlink(filePath, function (err) {
                 if (err) return next(err);
-            });
-
-            // rename new file to student name
-            var curPath = path.join(__dirname, '..', '..', 'assets', 'uploads', cv.filename);
-            var newPath = path.join(__dirname, '..', '..', 'assets', 'uploads', newFileName);
-            console.log("Renaming new file to " + newFileName);
-            fs.rename(curPath, newPath, function (err) {
-                if (err) return next(err);
-            });
-
-            // update db
-            result.filename = newFileName;
-            result.type = cv.type;
-            result.path = cv.path;
-            result.save(function (err) {
-                if (err) {
-                    callback({
-                        success: false,
-                        msg: 'Something went wrong. Please try again',
-                        error: err
+                // rename new file to student name
+                var curPath = path.join(__dirname, '..', '..', 'assets', 'uploads', cv.filename);
+                var newPath = path.join(__dirname, '..', '..', 'assets', 'uploads', newFileName);
+                console.log("Renaming new file to " + newFileName);
+                fs.rename(curPath, newPath, function (err) {
+                    if (err) return next(err);
+                    console.log("Updating cv info..."); // update db
+                    result.filename = newFileName;
+                    result.type = cv.type;
+                    result.path = cv.path;
+                    result.save(function (err) {
+                        if (err) {
+                            callback({
+                                success: false,
+                                msg: 'Something went wrong. Please try again',
+                                error: err
+                            });
+                        }
+                        callback({
+                            success: true,
+                            msg: 'Your cv updated successfully',
+                            data: data
+                        });
                     });
-                }
-                callback({
-                    success: true,
-                    msg: 'Your cv updated successfully',
-                    data: data
                 });
             });
+
         } else {
             // rename new file to student name
             var curPath = path.join(__dirname, '..', '..', 'assets', 'uploads', cv.filename);
@@ -56,22 +54,21 @@ module.exports.saveCv = function (data, callback) {
             console.log("Renaming new file to " + newFileName);
             fs.rename(curPath, newPath, function (err) {
                 if (err) return next(err);
-            });
-
-            console.log("Adding new cv info..."); // add new
-            cv.filename = newFileName;
-            cv.save(function (err) {
-                if (err) {
+                console.log("Adding new cv info..."); // add new cv
+                cv.filename = newFileName;
+                cv.save(function (err) {
+                    if (err) {
+                        callback({
+                            success: false,
+                            msg: 'Something went wrong. Please try again',
+                            error: err
+                        });
+                    }
                     callback({
-                        success: false,
-                        msg: 'Something went wrong. Please try again',
-                        error: err
+                        success: true,
+                        msg: 'Your cv uploaded successfully',
+                        data: data
                     });
-                }
-                callback({
-                    success: true,
-                    msg: 'Your cv uploaded successfully',
-                    data: data
                 });
             });
         }

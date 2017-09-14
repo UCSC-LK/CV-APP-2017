@@ -1,3 +1,9 @@
+<script type="text/javascript">
+    if (typeof userID == 'undefined') {
+        window.location.replace('./');
+    }
+</script>
+
 <div class="row clearfix">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="card">
@@ -39,115 +45,119 @@
 
 </div>
 
+<script type="text/javascript">
 
-<script>
+    if (typeof userID == 'undefined') {
+        window.location.replace('./');
+    } else {
 
-    $(document).ready(function () {
+        $(document).ready(function () {
 
-        var viewButton = '<a class="btn btn-info btn-sm  waves-effect ajaxView" style = "margin-right:10px;" title="View CV"> <i class="material-icons">drafts</i> </a>';
+            var viewButton = '<a class="btn btn-info btn-sm  waves-effect ajaxView" style = "margin-right:10px;" title="View CV"> <i class="material-icons">description</i> </a>';
 
-        var ajaxView = "ajaxView";
+            var ajaxView = "ajaxView";
 
-        // Set position tabs
-        companyObject.positions.forEach(function (t) {
-            var navtab = "<li role='presentation'><a class='positionTab' href='#tablediv' data-toggle='tab'>" + t + "</a></li>"
-            $("#navdiv").append(navtab);
-        });
+            // Set position tabs
+            companyObject.positions.forEach(function (t) {
+                var navtab = "<li role='presentation'><a class='positionTab' href='#tablediv' data-toggle='tab'>" + t + "</a></li>"
+                $("#navdiv").append(navtab);
+            });
 
-        // Set active default position tab
-        var positionTabs = $("#navdiv").children()[0];
-        $(positionTabs).addClass('active');
+            // Set active default position tab
+            var positionTabs = $("#navdiv").children()[0];
+            $(positionTabs).addClass('active');
 
-        var position = companyObject.positions[0];
+            var position = companyObject.positions[0];
 
-        var applicantTable = $('#apllicantTable').DataTable({
-            dom: 'Bfrtip',
-            responsive: true,
-            buttons: [
-             {
-                extend: 'pdfHtml5',
-                message: 'All Applicants',
-                title: 'UCSC Career Fair 2017',
-                filename: 'All Applicants',
-                exportOptions: {
-                    columns: [ 0, 1, 2, 3, 4]
-                }
-              }
-            ],
-            ajax: {
-                url: domain + 'student_company/students/all',
-                data: function (d) {
-                    d.company = companyObject._id;
-                    d.position = position;
-                },
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader("Authorization", getToken());
-                },
-                dataSrc: 'result'
-            },
-            "columns": [{
-                "data": "name"
-            },
-                {
-                    "data": "email"
-                },
-                {
-                    "data": "phone"
-                },
-                {
-                    "data": "year",
-                    "width": "15%"
-                },
-                {
-                    "data": "stream",
-                    "width": "12%"
-                },
-                {
-                    "width": "10%",
-                    "data": null,
-                    "defaultContent": viewButton
-                }
-            ],
-            "order": [
-                [1, 'asc']
-            ],
-            initComplete: function () {
-                this.api().columns().every(function () {
-                    if (this[0] == 3 || this[0] == 4) {
-                        var column = this;
-                        var select = $('<select><option value=""></option></select>')
-                            .appendTo($(column.header()).append('</br> '))
-                            .on('change', function () {
-                                var val = $.fn.dataTable.util.escapeRegex(
-                                    $(this).val()
-                                );
-                                column
-                                    .search(val ? '^' + val + '$' : '', true, false)
-                                    .draw();
-                            });
-                        column.data().unique().sort().each(function (d, j) {
-                            select.append('<option value="' + d + '">' + d + '</option>')
-                        });
+            var applicantTable = $('#apllicantTable').DataTable({
+                dom: 'Bfrtip',
+                responsive: true,
+                buttons: [
+                    {
+                        extend: 'pdfHtml5',
+                        message: 'All Applicants',
+                        title: 'UCSC Career Fair 2017',
+                        filename: 'All Applicants',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4]
+                        }
                     }
-                });
+                ],
+                ajax: {
+                    url: domain + 'student_company/students/all',
+                    data: function (d) {
+                        d.company = companyObject._id;
+                        d.position = position;
+                    },
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("Authorization", getToken());
+                    },
+                    dataSrc: 'result'
+                },
+                "columns": [{
+                    "data": "name"
+                },
+                    {
+                        "data": "email"
+                    },
+                    {
+                        "data": "phone"
+                    },
+                    {
+                        "data": "year",
+                        "width": "15%"
+                    },
+                    {
+                        "data": "stream",
+                        "width": "12%"
+                    },
+                    {
+                        "width": "10%",
+                        "data": null,
+                        "defaultContent": viewButton
+                    }
+                ],
+                "order": [
+                    [1, 'asc']
+                ],
+                initComplete: function () {
+                    this.api().columns().every(function () {
+                        if (this[0] == 3 || this[0] == 4) {
+                            var column = this;
+                            var select = $('<select><option value=""></option></select>')
+                                .appendTo($(column.header()).append('</br> '))
+                                .on('change', function () {
+                                    var val = $.fn.dataTable.util.escapeRegex(
+                                        $(this).val()
+                                    );
+                                    column
+                                        .search(val ? '^' + val + '$' : '', true, false)
+                                        .draw();
+                                });
+                            column.data().unique().sort().each(function (d, j) {
+                                select.append('<option value="' + d + '">' + d + '</option>')
+                            });
+                        }
+                    });
+                }
+            });
+
+            // Open CV pdf in new tab
+            applicantTable.on("click", "." + ajaxView, function () {
+                var rowData = applicantTable.row($(this).parents('tr')).data();
+                var win = window.open(domain + 'uploads/' + rowData.cv);
+            });
+
+            function showErrorMessage(msg) {
+                swal(msg + "!", '', "error");
             }
-        });
 
-        // Open CV pdf in new tab
-        applicantTable.on("click", "." + ajaxView, function () {
-            var rowData = applicantTable.row($(this).parents('tr')).data();
-            var win = window.open(domain + 'uploads/' + rowData.cv);
+            //Changing position
+            $('.positionTab').click(function () {
+                position = $(this).text();
+                applicantTable.ajax.reload();
+            });
         });
-
-        function showErrorMessage(msg) {
-            swal(msg + "!", '', "error");
-        }
-
-        //Changing position
-        $('.positionTab').click(function () {
-            position = $(this).text();
-            applicantTable.ajax.reload();
-        });
-    });
+    }
 
 </script>

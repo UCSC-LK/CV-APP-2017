@@ -51,7 +51,7 @@ function showErrorMessage(msg, title) {
     if (title) {
         swal(title, msg, "error");
     } else {
-        swal("Oops!", msg, "error");
+        swal("Sorry!", msg, "error");
     }
 }
 
