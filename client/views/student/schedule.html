@@ -1,4 +1,9 @@
-<!-- Exportable Table -->
+<script type="text/javascript">
+    if (typeof userID == 'undefined') {
+        window.location.replace('./');
+    }
+</script>
+
 <div class="row clearfix">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="card">
@@ -21,32 +26,35 @@
         </div>
     </div>
 </div>
-<!-- #END# Exportable Table -->
 
-<script>
-    $(document).ready(function () {
-        var schduleTable = $('#schduleTable').DataTable({
-            dom: 'Bfrtip',
-            responsive: true,
-            buttons: [
-                'pdf', 'print'
-            ],
-            ajax: {
-                url: domain + 'selected_student_company/companies/' + userID,
-                dataSrc: 'result',
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader("Authorization", getToken());
+<script type="text/javascript">
+    if (typeof userID == 'undefined') {
+        window.location.replace('./');
+    } else {
+        $(document).ready(function () {
+            var schduleTable = $('#schduleTable').DataTable({
+                dom: 'Bfrtip',
+                responsive: true,
+                buttons: [
+                    'pdf', 'print'
+                ],
+                ajax: {
+                    url: domain + 'selected_student_company/companies/' + userID,
+                    dataSrc: 'result',
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("Authorization", getToken());
+                    },
                 },
-            },
-            "columns": [{
-                "data": "_id"
-            },
-                {
-                    "data": "name"
-                }
-            ]
-        });
+                "columns": [{
+                    "data": "_id"
+                },
+                    {
+                        "data": "name"
+                    }
+                ]
+            });
 
-        schduleTable.ajax.reload();
-    });
+            schduleTable.ajax.reload();
+        });
+    }
 </script>

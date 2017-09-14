@@ -1,3 +1,9 @@
+<script type="text/javascript">
+    if (typeof userID == 'undefined') {
+        window.location.replace('./');
+    }
+</script>
+
 <div class="row clearfix">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="card">
@@ -34,123 +40,127 @@
 </div>
 
 <script>
-    $(document).ready(function () {
-        // Getting cv details
-        $.ajax({
-            type: "GET",
-            url: domain + "cv",
-            data: {
-                userID: userID
-            },
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader("Authorization", getToken());
-            },
-            dataType: "json",
-            success: function (response) {
-                if (response.success == true) {
-                    if (response.data.length > 0) {
-                        setPdfView(response.data[0].filename);
+    if (typeof userID == 'undefined') {
+        window.location.replace('./');
+    } else {
+        $(document).ready(function () {
+            // Getting cv details
+            $.ajax({
+                type: "GET",
+                url: domain + "cv",
+                data: {
+                    userID: userID
+                },
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", getToken());
+                },
+                dataType: "json",
+                success: function (response) {
+                    if (response.success == true) {
+                        if (response.data.length > 0) {
+                            setPdfView(response.data[0].filename);
+                        }
+                    } else {
+                        showErrorMessage("Something went wrong");
+                        console.log(response);
                     }
-                } else {
+                    //                    console.log(response);
+                },
+                error: function (xhr, status, error) {
                     showErrorMessage("Something went wrong");
-                    console.log(response);
+                    console.log(xhr);
+                    console.log(status, error);
                 }
-                //                    console.log(response);
-            },
-            error: function (xhr, status, error) {
-                showErrorMessage("Something went wrong");
-                console.log(xhr);
-                console.log(status, error);
-            }
-        });
+            });
 
-        // Uploading new cv
-        $('#form_validation').submit(function (e) {
-            if ($(this).valid()) {
-                e.preventDefault();
-                // check file type
-                var ext = $('input[name=file]').val().split('.').pop().toLowerCase();
-                if ($.inArray(ext, ['pdf']) == -1) {
-                    showErrorMessage('We accept only PDF formatted file!', 'Error');
-                } else {
-                    var formData = new FormData(this);
-                    formData.append('userID', userID);
-                    formData.append('studentName', studentObject.name);
-                    swal({
-                        title: "Please confirm your upload.",
-                        text: "Submit to upload your CV",
-                        type: "info",
-                        showCancelButton: true,
-                        closeOnConfirm: false,
-                        showLoaderOnConfirm: true
-                    }, function () {
-                        $.ajax({
-                            type: "POST",
-                            url: "/cv/upload",
-                            data: formData,
-                            processData: false,
-                            contentType: false,
-                            beforeSend: function (xhr) {
-                                xhr.setRequestHeader("Authorization", getToken());
-                            },
-                            success: function (response) {
-                                if (response.success == true) {
-                                    showSuccessMessage(response.msg);
-                                    setPdfView(response.data.filename);
-                                } else {
-                                    showErrorMessage(response.msg);
-                                    console.log(response);
+            // Uploading new cv
+            $('#form_validation').submit(function (e) {
+                if ($(this).valid()) {
+                    e.preventDefault();
+                    // check file type
+                    var ext = $('input[name=file]').val().split('.').pop().toLowerCase();
+                    if ($.inArray(ext, ['pdf']) == -1) {
+                        showErrorMessage('We accept only PDF formatted file!', 'Error');
+                    } else {
+                        var formData = new FormData(this);
+                        formData.append('userID', userID);
+                        formData.append('studentName', studentObject.name);
+                        swal({
+                            title: "Please confirm your upload.",
+                            text: "Submit to upload your CV",
+                            type: "info",
+                            showCancelButton: true,
+                            closeOnConfirm: false,
+                            showLoaderOnConfirm: true
+                        }, function () {
+                            $.ajax({
+                                type: "POST",
+                                url: "/cv/upload",
+                                data: formData,
+                                processData: false,
+                                contentType: false,
+                                beforeSend: function (xhr) {
+                                    xhr.setRequestHeader("Authorization", getToken());
+                                },
+                                success: function (response) {
+                                    if (response.success == true) {
+                                        showSuccessMessage(response.msg);
+                                        setPdfView(response.data.filename);
+                                    } else {
+                                        showErrorMessage(response.msg);
+                                        console.log(response);
+                                    }
+                                },
+                                error: function (xhr, status, error) {
+                                    console.log(xhr);
+                                    console.log(status, error);
                                 }
-                            },
-                            error: function (xhr, status, error) {
-                                console.log(xhr);
-                                console.log(status, error);
-                            }
+                            });
                         });
-                    });
 
+                    }
                 }
-            }
-            return false;
+                return false;
+            });
         });
-    });
 
-    function setPdfView(filename) {
-        // clear input feild
-        $('input[name=file]').val('');
+        function setPdfView(filename) {
+            // clear input feild
+            $('input[name=file]').val('');
 
-        // clear pdf embed if exists
-        $('#cv-pdf-view').empty();
+            // clear pdf embed if exists
+            $('#cv-pdf-view').empty();
 
-        var pdfEmbed = document.createElement("embed");
-        pdfEmbed.setAttribute("src", "/uploads/" + filename);
-        pdfEmbed.setAttribute("width", "100%");
-        pdfEmbed.setAttribute("height", "1000px");
-        pdfEmbed.setAttribute("type", "application/pdf");
-        $('#cv-pdf-view').append(pdfEmbed);
+            var pdfEmbed = document.createElement("embed");
+            pdfEmbed.setAttribute("src", "/uploads/" + filename);
+            pdfEmbed.setAttribute("width", "100%");
+            pdfEmbed.setAttribute("height", "1000px");
+            pdfEmbed.setAttribute("type", "application/pdf");
+            $('#cv-pdf-view').append(pdfEmbed);
 
-        $('#submit-btn').text('UPDATE');
-        $('#page-header').text('Your CV');
+            $('#submit-btn').text('UPDATE');
+            $('#page-header').text('Your CV');
+        }
+
+        $(function () {
+            $('#form_validation').validate({
+                highlight: function (input) {
+                    console.log(input);
+                    $(input).parents('.form-line').addClass('error');
+                },
+                unhighlight: function (input) {
+                    $(input).parents('.form-line').removeClass('error');
+                },
+                errorPlacement: function (error, element) {
+                    $(element).parents('.input-group').append(error);
+                    $(element).parents('.form-group').append(error);
+                }
+            });
+        });
+
+        $(function () {
+            $.AdminBSB.input.activate();
+            $.AdminBSB.select.activate();
+        });
     }
-
-    $(function () {
-        $('#form_validation').validate({
-            highlight: function (input) {
-                console.log(input);
-                $(input).parents('.form-line').addClass('error');
-            },
-            unhighlight: function (input) {
-                $(input).parents('.form-line').removeClass('error');
-            },
-            errorPlacement: function (error, element) {
-                $(element).parents('.input-group').append(error);
-                $(element).parents('.form-group').append(error);
-            }
-        });
-    });
-
-    $(function () {
-        $.AdminBSB.input.activate();
-        $.AdminBSB.select.activate();
-    });
 </script>
