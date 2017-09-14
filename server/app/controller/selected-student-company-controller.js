@@ -12,7 +12,7 @@ function keyVal(n) {
     };
 }
 
-module.exports.getCompaniesBySelectedStudent = function (req, res) {
+module.exports.getCompaniesBySelectedStudent = function (req, res, next) {
     SelectedStudentCompany.find({
         'student': req.params.query
     }, function (err, result) {
@@ -37,7 +37,7 @@ module.exports.getCompaniesBySelectedStudent = function (req, res) {
 };
 
 // Return all student details that are short listed to a company
-module.exports.getSelectedStudentsByCompany = function (req, res) {
+module.exports.getSelectedStudentsByCompany = function (req, res, next) {
     SelectedStudentCompany.find({
         'company': req.params.query
     }, function (err, result1) {
@@ -75,7 +75,7 @@ module.exports.getSelectedStudentsByCompany = function (req, res) {
 };
 
 // Return student details that are short listed to a company for a specific position
-module.exports.getSelectedStudentsByCompanyPosition = function (req, res) {
+module.exports.getSelectedStudentsByCompanyPosition = function (req, res, next) {
     SelectedStudentCompany.find({
         'company': req.query.company,
         'position': req.query.position

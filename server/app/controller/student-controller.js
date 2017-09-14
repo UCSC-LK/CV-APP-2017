@@ -1,7 +1,7 @@
 var Student = require('../model/student');
 
 // Return all students
-module.exports.getStudents = function (req, res) {
+module.exports.getStudents = function (req, res, next) {
     Student.find({}, function (err, result) {
       if (err) return next(err);
       var temp = {
@@ -12,7 +12,7 @@ module.exports.getStudents = function (req, res) {
 };
 
 // Return student by userid
-module.exports.getStudent = function (req, res) {
+module.exports.getStudent = function (req, res, next) {
     // console.log('Sending student info...');
     Student.find({
         userID: req.query.userID
@@ -26,7 +26,7 @@ module.exports.getStudent = function (req, res) {
 };
 
 // Insert a student
-module.exports.addStudent = function (req, res) {
+module.exports.addStudent = function (req, res, next) {
     var student = new Student(req.body);
     // Check if student exists
     Student.findOne({

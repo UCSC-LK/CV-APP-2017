@@ -22,7 +22,7 @@ var upload = multer({
 
 router.get('/', cvController.getCvDetails);
 
-router.post('/upload', function (req, res) {
+router.post('/upload', function (req, res, next) {
     // Begin upload
     console.log("Uploading file...");
     upload(req, res, function (err) {
@@ -43,7 +43,7 @@ router.post('/upload', function (req, res) {
             type: req.files[0].mimetype,
             path: req.files[0].path
         };
-        cvController.saveCv(data, function (result) {
+        cvController.saveCv(data, next, function (result) {
             res.json(result);
         });
     });

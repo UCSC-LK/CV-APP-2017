@@ -4,7 +4,7 @@ var Cv = require('../model/cv');
 var Student = require('../model/student');
 
 
-router.get('/validStudent/:query', function (req, res) {
+router.get('/validStudent/:query', function (req, res,next) {
     Student.find({
         userID: req.params.query
     }, function (err, result) {
@@ -23,7 +23,7 @@ router.get('/validStudent/:query', function (req, res) {
     });
 });
 
-router.get('/validCv/:query', function (req, res) {
+router.get('/validCv/:query', function (req, res, next) {
     var isValid = false;
     var isValidStudent = false;
     Cv.find({

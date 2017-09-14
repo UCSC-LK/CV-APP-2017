@@ -4,7 +4,7 @@ var jsend = require('jsend');
 var StudentCompany = require('../model/student-company');
 
 // Return company by userid
-module.exports.getCompany = function (req, res) {
+module.exports.getCompany = function (req, res, next) {
     // console.log('Sending company info...');
     Company.find({
         userID: req.query.userID
@@ -18,7 +18,7 @@ module.exports.getCompany = function (req, res) {
 };
 
 
-module.exports.getCompanies = function (req, res) {
+module.exports.getCompanies = function (req, res, next) {
     Company.find({}, function (err, result) {
         if (err) return next(err);
         res.json(result);
@@ -50,7 +50,7 @@ module.exports.getCompaniesWithoutSelected = function (req, res, next) {
     });
 };
 
-module.exports.addCompany = function (req, res) {
+module.exports.addCompany = function (req, res, next) {
     var comp = req.body;
     var company1 = new Company(comp);
     if (_.isEmpty(comp)) {
