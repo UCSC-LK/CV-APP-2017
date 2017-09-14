@@ -1,15 +1,16 @@
 <!-- Exportable Table -->
 <div class="row clearfix">
-    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="card">
+            <div class="header">
+                <h2>Change Password</h2>
+            </div>
             <div class="body">
                 <form id="change_password" method="POST">
-                    <div class="msg">Change Password</div>
-
                     <div class="input-group">
-            <span class="input-group-addon">
-                          <i class="material-icons">lock</i>
-                      </span>
+                        <span class="input-group-addon">
+                            <i class="material-icons">lock</i>
+                        </span>
                         <div class="form-line">
                             <input type="password" class="form-control" name="oldpassword" minlength="6"
                                    placeholder="Current Password" required>
@@ -17,9 +18,9 @@
                     </div>
 
                     <div class="input-group">
-            <span class="input-group-addon">
-                          <i class="material-icons">lock</i>
-                      </span>
+                        <span class="input-group-addon">
+                            <i class="material-icons">lock</i>
+                        </span>
                         <div class="form-line">
                             <input type="password" class="form-control" name="password" minlength="6"
                                    placeholder="New Password" required>
@@ -27,25 +28,22 @@
                     </div>
 
                     <div class="input-group">
-            <span class="input-group-addon">
-                          <i class="material-icons">lock</i>
-                      </span>
+                        <span class="input-group-addon">
+                            <i class="material-icons">lock</i>
+                        </span>
                         <div class="form-line">
                             <input type="password" class="form-control" name="confirm" minlength="6"
                                    placeholder="Confirm Password" required>
                         </div>
                     </div>
 
-                    <button id="submit-btn" class="btn btn-lg bg-blue waves-effect" type="submit">CHANGE
+                    <button id="submit-btn" class="btn btn-primary waves-effect" type="submit">CHANGE
                     </button>
                 </form>
             </div>
         </div>
     </div>
 </div>
-</div>
-<!-- #END# Exportable Table -->
-
 
 <script>
     $(function () {
@@ -56,7 +54,6 @@
                 }
             },
             highlight: function (input) {
-                console.log(input);
                 $(input).parents('.form-line').addClass('error');
             },
             unhighlight: function (input) {
@@ -69,27 +66,23 @@
         });
     });
 
-
     $(function () {
         $.AdminBSB.input.activate();
         $.AdminBSB.select.activate();
     });
-</script>
 
-
-<script>
     var change_pass_form = $("#change_password");
 
     $('#submit-btn').click(function (e) {
         if (change_pass_form.valid()) {
             e.preventDefault();
             var change_data = change_pass_form.serialize();
-            console.log(change_data);
+            var user_info = currentUser();
+            // console.log(change_data);
             $.ajax({
                 type: "POST",
                 url: domain + "changepass",
-                // data : change_data+ &username="+ashan3@gmail.com",
-                data: change_data + "&username=" + "ashan3@gmail.com",
+                data: change_data + "&username=" + user_info.name,
                 dataType: "json",
                 beforeSend: function (xhr) {
                     xhr.setRequestHeader("Authorization", getToken());
@@ -97,10 +90,8 @@
                 success: function (response) {
                     if (response.success == true) {
                         document.getElementById("change_password").reset();
-                        // alert(response.msg);
-                        showSuccessMessage();
+                        showSuccessMessage("Password updated successfully!");
                     } else {
-                        // alert(response.msg);
                         showErrorMessage(response.msg);
                     }
                 },
@@ -112,12 +103,4 @@
         }
     });
 
-
-    function showSuccessMessage() {
-        swal("Password updated successfuly!", '', "success");
-    }
-
-    function showErrorMessage(msg) {
-        swal(msg + "!", '', "error");
-    }
 </script>
