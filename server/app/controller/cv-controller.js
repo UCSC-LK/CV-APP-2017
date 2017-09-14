@@ -3,7 +3,7 @@ var Cv = require('../model/cv'),
     path = require('path');
 
 // Add entry to cv collection
-module.exports.saveCv = function (data, callback) {
+module.exports.saveCv = function (data, next, callback) {
     var cv = new Cv(data);
 
     // Check if cv exists
@@ -76,7 +76,7 @@ module.exports.saveCv = function (data, callback) {
 };
 
 // Return cv by userid
-module.exports.getCvDetails = function (req, res) {
+module.exports.getCvDetails = function (req, res, next) {
     Cv.find({
         userID: req.query.userID
     }, function (err, result) {

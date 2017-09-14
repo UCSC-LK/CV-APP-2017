@@ -56,7 +56,7 @@ module.exports.getCompaniesByStudent = function (req, res, next) {
 };
 
 //http://localhost:3000/student_company/students => data : {company, position}
-module.exports.getStudentsByCompanyPosition = function (req, res) {
+module.exports.getStudentsByCompanyPosition = function (req, res, next) {
     StudentCompany.find({
         'company': req.query.company,
         'position': req.query.position
@@ -134,7 +134,7 @@ module.exports.getStudentsByCompanyPosition = function (req, res) {
 };
 
 //http://localhost:3000/student_company/students/company
-module.exports.getAllStudentsByCompanyPosition = function (req, res) {
+module.exports.getAllStudentsByCompanyPosition = function (req, res, next) {
     StudentCompany.find({
         'company': req.query.company,
         'position': req.query.position
@@ -195,7 +195,7 @@ module.exports.getAllStudentsByCompanyPosition = function (req, res) {
     });
 };
 
-module.exports.addStudentCompany = function (req, res) {
+module.exports.addStudentCompany = function (req, res, next) {
     var positions = req.body.position.split(',');
     var errr, result;
     positions.forEach(function (position) {

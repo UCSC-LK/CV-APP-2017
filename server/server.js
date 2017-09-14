@@ -48,6 +48,21 @@ app.use(morgan('common', {
 // logger stdout
 app.use(morgan('dev'));
 
+
+// var myLogger = function (req, res, next) {
+//   console.log('LOGGED');
+//   next();
+// };
+//
+// app.use(myLogger);
+
+// check if the request is https
+// app.use(function (req, res, next) {
+//   console.log(req.secure);
+//   next();
+//
+// });
+
 /////////////////////////////////////////////////////////////
 //
 //Set Static Folder
@@ -81,6 +96,8 @@ app.use(bodyParser.urlencoded({
 // Load our routes and pass in our app and fully configured passport
 require('./app/api/auth.js')(app, passport);
 
+
+
 // app.use('/api2', api);
 app.use('/student', student);
 app.use('/cv', cv);
@@ -91,6 +108,7 @@ app.use('/student_company', studentCompany);
 app.use('/validation', remoteValidation);
 app.use('/student_schedule', studentSchedule);
 
+
 // error handlers
 // Catch unauthorised errors
 app.use(function (err, req, res, next) {
@@ -98,6 +116,7 @@ app.use(function (err, req, res, next) {
         res.status(401);
         res.json({
             success: false,
+            msg:err.message,
             error: err
         });
         console.log("Log - UnauthorizedError");
@@ -106,6 +125,7 @@ app.use(function (err, req, res, next) {
         console.log("message" + err.name + ": " + err.message);
         res.json({
             success: false,
+            msg:err.message,
             error: err
         });
     }
