@@ -226,7 +226,7 @@ s
             $('.ml-menu li.active').removeClass('active');
             $(this).parent().addClass('active');
         });
-        window.onload = pageWrapper.load('applicants.html');
+        // window.onload = pageWrapper.load('applicants.html');
     });
 
     var logoutButton = $('#logoutButton');
@@ -243,7 +243,6 @@ s
                     // sessionStorage.removeItem('jwt_token');
                     // sessionStorage.removeItem('user_id');
                     localStorage.removeItem("jwt_token");
-
                     console.log(response);
                 } else {
                     alert("Something went wrong")
@@ -259,7 +258,7 @@ s
 
     function getToken() {
         // return sessionStorage.getItem('jwt_token');
-        return sessionStorage.jwt_token
+        return localStorage.jwt_token
     }
 
     function isLoggedIn() {
@@ -319,13 +318,14 @@ s
             }
         });
     }
-
     if (isLoggedIn()) {
         user_info = currentUser();
         // check if logged in user is a company
         if (user_info.usertype != 1) {
             window.location.replace('../../index.html');
         }
+        console.log(user_info.usertype);
+
         userID = user_info._id;
         setCompanyObject();
         // console.log(user_info);
