@@ -34,7 +34,7 @@
     <link href="../../assets/css/themes/all-themes.css" rel="stylesheet"/>
 </head>
 
-<body class="theme-blue">
+<body class="theme-grey">
 <!-- Page Loader -->
 <div class="page-loader-wrapper">
     <div class="loader">
@@ -71,13 +71,20 @@ s
                 <!-- User Menu -->
                 <li class="dropdown">
                     <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button">
-                        <i class="material-icons">keyboard_arrow_down</i>
+                        <i class="material-icons">menu</i>
                     </a>
                     <ul class="dropdown-menu pull-right">
-                        <li><a href="profile.html" class="ajax-pg"><i class="material-icons">lock</i>Change Password</a>
+                        <li>
+                            <a href="profile.html" class="ajax-pg">
+                                <i class="material-icons">lock</i>Change Password
+                            </a>
                         </li>
                         <li role="seperator" class="divider"></li>
-                        <li><a id="logoutButton"> <i class="material-icons">input</i>Sign Out</a></li>
+                        <li>
+                            <a id="logoutButton">
+                                <i class="material-icons">input</i>Sign Out
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 <!-- #END# User Menu -->
@@ -222,29 +229,24 @@ s
         $("a.ajax-pg").on("click", function (e) {
             e.preventDefault();
             validation(this);
-            // pageWrapper.empty();
-            // pageWrapper.load(this.href);
-            // $('.ml-menu li.active').removeClass('active');
-            // $(this).parent().addClass('active');
         });
         window.onload = pageWrapper.load('schedule.html');
 
         function validation(thisNav) {
             var path = thisNav.href.split("/");
-            var filename = path[path.length - 1]
+            var filename = path[path.length - 1];
 
             var url = "";
 
             if (filename == 'cv-view.html') {
-                url = domain + "validation/validstudent/" + userID
+                url = domain + "validation/validstudent/" + userID;
                 remoteValidation(url, thisNav, filename);
             } else if (filename == 'company-select.html') {
-                url = domain + "validation/validCv/" + userID
+                url = domain + "validation/validCv/" + userID;
                 remoteValidation(url, thisNav, filename)
             } else {
                 updatepage(thisNav);
             }
-            // console.log(filename);
         }
 
         function remoteValidation(url, thisNav, filename) {
@@ -346,7 +348,6 @@ s
                     // sessionStorage.removeItem('user_id');
                     localStorage.removeItem("jwt_token");
 
-                    console.log(response);
                 } else {
                     showErrorMessage("Something went wrong");
                     console.log(response);
@@ -405,9 +406,5 @@ s
         window.location.replace('../../index.html');
     }
 
-    function showErrorMessage(msg) {
-        swal(msg + "!", '', "error");
-    }
-
-    console.log(getToken());
+    // console.log(getToken());
 </script>
