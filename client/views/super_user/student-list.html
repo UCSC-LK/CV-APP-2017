@@ -35,6 +35,7 @@
                     <tr>
                         <th>Company</th>
                         <th>Position</th>
+                        <th>Slot</th>
                         <th>Action</th>
                     </tr>
                     </thead>
@@ -67,6 +68,17 @@
 
 <script>
 $(document).ready(function() {
+    var slots = [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8"
+    ];
+
     var selectButton =  '<a class="btn btn-warning waves-effect btn-sm ajaxSelect"> </span> Select</a>';
 
     var studentTable = $('#studentTable').DataTable({
@@ -102,6 +114,25 @@ $(document).ready(function() {
         "columns": [
             { "data": "company" },
             { "data": "position" },
+            {
+                "render": function(d,t,r){
+                    var $select = $("<select></select>", {
+                        "id": r[0]+"start",
+                        "value": d
+                    });
+                    $.each(slots, function(k,v){
+                        var $option = $("<option></option>", {
+                            "text": v,
+                            "value": v
+                        });
+                        if(d === v){
+                            $option.attr("selected", "selected")
+                        }
+                        $select.append($option);
+                    });
+                    return $select.prop("outerHTML");
+                }
+            },
             {   "data": null,
                 "defaultContent": selectButton
             }
