@@ -89,6 +89,7 @@ $(document).ready(function() {
     });
 
     var companyTable = $('#companyTable').DataTable({
+        "order": [],
         dom: 'Bfrtip',
         responsive: true,
         buttons: [
@@ -137,7 +138,8 @@ $(document).ready(function() {
         var rowData = studentTable.row($(this)).data();
         user_id = rowData['userID'];
 
-        // Reload datatable with the new user id
+        // Reload datatables with the new user id
+        companyTable.ajax.url('http://localhost:3000/selected_student_company/companies/' + user_id).load();
         scheduleTable.ajax.url('http://localhost:3000/student_schedule/schedule/' + user_id).load();
 
     });

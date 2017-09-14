@@ -44,15 +44,14 @@ module.exports.getCompaniesBySelectedStudent = function (req, res) {
                     // Check company ids and update company name in the returned object
                     if(selectedCompObj.company == compObj._id){
                         selectedCompObj.company = compObj.name;
-                        console.log(selectedCompObj);
                     }
                 });
             });
-            console.log(result);
+            result.sort({timeStamp: -1});
 
             // if result is null make it empty array.to avoid DataTable error.
-            if (result1.length === 0){
-                result1 = [];
+            if (result.length === 0){
+                result = [];
             }
             temp = {
                 "result": result
