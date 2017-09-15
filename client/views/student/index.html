@@ -68,6 +68,8 @@ s
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
+
+
                 <!-- User Menu -->
                 <li class="dropdown">
                     <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button">
@@ -88,6 +90,7 @@ s
                     </ul>
                 </li>
                 <!-- #END# User Menu -->
+
             </ul>
         </div>
     </div>
@@ -106,6 +109,7 @@ s
                     John Doe
                 </div>
                 <!-- <div class="email">john.doe@example.com</div> -->
+
             </div>
         </div>
         <!-- #User Info -->
@@ -113,6 +117,7 @@ s
         <div class="menu">
             <ul class="list">
                 <li class="header">STUDENT SECTION</li>
+
                 <li class="active">
                     <a href="javascript:void(0);" class="menu-toggle">
                         <i class="material-icons">view_list</i>
@@ -120,7 +125,7 @@ s
                     </a>
                     <ul class="ml-menu">
                         <li class="active">
-                            <a href="schedule.html" class="ajax-pg toggled">Schedule</a>
+                            <a href="schedule.html" class="ajax-pg toggled disabled">Schedule</a>
                         </li>
                         <li>
                             <a href="student-details.html" class="ajax-pg toggled">My details</a>
@@ -131,6 +136,7 @@ s
                         <li>
                             <a href="company-select.html" class="ajax-pg toggled">My companies</a>
                         </li>
+                        <li><div class="navbar-brand" id="count-down"></div></li>
                     </ul>
                 </li>
             </ul>
@@ -211,6 +217,10 @@ s
 <script src="../../assets/plugins/jquery-datatable/extensions/export/vfs_fonts.js"></script>
 <script src="../../assets/plugins/jquery-datatable/extensions/export/buttons.html5.min.js"></script>
 <script src="../../assets/plugins/jquery-datatable/extensions/export/buttons.print.min.js"></script>
+
+<!-- Countdown Plugin Js -->
+<script src="../../assets/plugins/jquery.countdown-2.1.0/jquery.countdown.min.js"></script>
+
 
 </body>
 
@@ -405,6 +415,10 @@ s
     } else {
         window.location.replace('../../index.html');
     }
+
+    $('#count-down').countdown('2017/09/19', function(event) {
+      $(this).html(event.strftime('Deadline : %d days %H:%M:%S'));
+    });
 
     // console.log(getToken());
 </script>
