@@ -69,17 +69,19 @@
             var shortListedTable = $('#shortListedTable').DataTable({
                 dom: 'Bfrtip',
                 responsive: true,
-                // buttons: [
-                //     'pdf', 'print'
-                // ],
                 buttons: [
                     {
                         extend: 'pdfHtml5',
-                        message: 'Shortlisted Applicants',
+                        message: 'All shortlisted Applicants - ' + position,
                         title: 'UCSC Career Fair 2017',
-                        filename: 'Shortlisted Applicants',
+                        filename: 'All shortlisted Applicants - ' + position,
                         exportOptions: {
                             columns: [0, 1, 2, 3, 4]
+                        },
+                        init: function(dt, node, config) {
+                            $(".positionTab").on('click', function() {
+                                config.message = config.filename = 'All shortlisted applicants - ' + $(this).text();
+                            });
                         }
                     }
                 ],
