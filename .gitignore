@@ -20,5 +20,6 @@ npm-debug.log
 bower_components
 access.log
 
-# all pdf files
-*.pdf
+# ignore things in sever/assets/uploads files
+server/assets/uploads/*
+!server/assets/uploads/index.html

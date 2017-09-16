@@ -20,6 +20,7 @@
         <div class="card">
             <div class="header">
                 <h2 id="applicant-table-header">All Applicants</h2>
+                <button class="btn btn-primary waves-effect" id="download-all-btn">Download All CVs</button>
             </div>
             <div class="body">
                 <div class="tab-content">
@@ -139,6 +140,16 @@
                             });
                         }
                     });
+                },
+                fnDrawCallback: function () {
+                    // Hide download all button if no data found
+                    var rows = this.fnGetData();
+                    if ( rows.length === 0 ) {
+                        $('#download-all-btn').hide();
+                    } else {
+                        $('#download-all-btn').show();
+                        $('#download-all-btn').text("Download All " + position + " CVs");
+                    }
                 }
             });
 
@@ -148,14 +159,44 @@
                 var win = window.open(domain + 'uploads/' + rowData.cv);
             });
 
-            function showErrorMessage(msg) {
-                swal(msg + "!", '', "error");
-            }
-
             //Changing position
             $('.positionTab').click(function () {
                 position = $(this).text();
                 applicantTable.ajax.reload();
+            });
+
+            // Download all cvs
+            $('#download-all-btn').on('click', function () {
+                // gathering cv list
+                var cvs = [];
+                applicantTable.rows().every( function () {
+                    var data = this.data();
+                    cvs.push(data.cv);
+                });
+                $.ajax({
+                    type: "POST",
+                    url: domain + "cv/download",
+                    data: {
+                        cvs: cvs,
+                        position: position,
+                        company: companyObject.userID
+                    },
+                    dataType: "json",
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("Authorization", getToken());
+                    },
+                    success: function (response) {
+                        if (response.success === true) {
+                            window.open(domain + response.data);
+                        } else {
+                            showErrorMessage(response.msg);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.log(xhr);
+                        console.log(status, error);
+                    }
+                });
             });
         });
     }

@@ -1,6 +1,8 @@
 var Cv = require('../model/cv'),
     fs = require('fs'),
-    path = require('path');
+    path = require('path'),
+    archiver = require('archiver'),
+    _ = require('lodash');
 
 // Add entry to cv collection
 module.exports.saveCv = function (data, next, callback) {
@@ -86,4 +88,48 @@ module.exports.getCvDetails = function (req, res, next) {
             data: result
         });
     });
+};
+
+// Return a zip of CVs
+module.exports.getCVZip = function (req, res, next) {
+
+    var outputZipName = req.body.position.split(' ').join('-') + '-All-CVs.zip';
+
+    // create folder for the company
+    var dirPath = path.join(__dirname, '..', '..', 'assets', 'uploads', req.body.company);
+    if (!fs.existsSync(dirPath)){
+        fs.mkdirSync(dirPath);
+    }
+
+    // create a file to stream archive data to.
+    var output = fs.createWriteStream(path.join(dirPath, outputZipName));
+    var archive = archiver('zip');
+
+    // catching errors
+    archive.on('error', function(err) {
+        return next(err);
+    });
+
+    // listen for archive to finish
+    archive.on('end', function() {
+        console.log('Zipping finished: ' + archive.pointer() + ' total bytes');
+        res.json({
+            success: true,
+            data: 'uploads/' + req.body.company + '/' + outputZipName
+        });
+    });
+
+    // pipe archive data to the file
+    archive.pipe(output);
+
+    // iterate through all cvs and add them to the archive
+    _.forEach(req.body.cvs, function (cv) {
+        // console.log(cv);
+        var cvPath = path.join(__dirname, '..', '..', 'assets', 'uploads', cv);
+
+        // append a file
+        archive.file(cvPath, { name: cv });
+    });
+
+    archive.finalize();
 };
