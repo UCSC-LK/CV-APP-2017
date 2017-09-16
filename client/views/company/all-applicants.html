@@ -146,16 +146,6 @@
                         }
                     });
                 },
-                fnDrawCallback: function () {
-                    // Hide download all button if no data found
-                    var rows = this.fnGetData();
-                    if ( rows.length === 0 ) {
-                        $('#download-all-btn').hide();
-                    } else {
-                        $('#download-all-btn').show();
-                        $('#download-all-btn').text("Download All " + position + " CVs");
-                    }
-                },
                 "language": {
                     "emptyTable": "Sorry! No applicants available for this position."
                 }
@@ -165,6 +155,18 @@
             applicantTable.on("click", "." + ajaxView, function () {
                 var rowData = applicantTable.row($(this).parents('tr')).data();
                 var win = window.open(domain + 'uploads/' + rowData.cv);
+            });
+
+            // Event on table refresh - disable download and pdf buttons
+            applicantTable.on('draw.dt', function () {
+                if (applicantTable.data().length === 0) {
+                    $('#download-all-btn').prop('disabled', true);
+                    applicantTable.buttons().disable();
+                } else {
+                    $('#download-all-btn').prop('disabled', false);
+                    applicantTable.buttons().enable();
+                }
+                $('#download-all-btn').text("Download All " + position + " CVs");
             });
 
             //Changing position
