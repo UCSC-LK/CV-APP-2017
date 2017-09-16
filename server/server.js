@@ -1,7 +1,6 @@
 var express = require('express'),
     path = require('path'),
     bodyParser = require('body-parser'),
-    // api = require('./app/api2'),
     student = require('./app/api/student-api'),
     cv = require('./app/api/cv-api'),
     company = require('./app/api/company-api'),
