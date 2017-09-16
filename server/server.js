@@ -28,7 +28,6 @@ mongoose.connect(
     function (err) {
         if (err) {
             console.log(err);
-            if (err) return next(err);
         } else {
             console.log("Connected to mongodb!");
         }

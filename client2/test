@@ -1,0 +1,23 @@
+https://www.digitalocean.com/community/tutorials/how-to-install-and-secure-mongodb-on-ubuntu-16-04
+use admin
+db.createUser(
+  {
+    user: "cv2017",
+    pwd: "cvApp2017",
+    roles: [ { role: "userAdminAnyDatabase", db: "admin" } ]
+  }
+)
+
+
+1.
+root
+ucsc@123
+
+
+db.createUser(
+  {
+    user: "cvApp2017",
+    pwd: "xyz1234",
+    roles: [ { role: "readWrite", db: "ucsc-cvapp-2017" }]
+  }
+)
