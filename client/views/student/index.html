@@ -326,8 +326,12 @@ s
             },
             success: function (response) {
                 if (response.success == true) {
-                    studentObject = response.data[0];
-                    $('#username').text(response.data[0].name);
+                    if(response.data.length > 0) {
+                        studentObject = response.data[0];
+                        $('#username').text(response.data[0].name);
+                    } else {
+                        $('#username').text(currentUser().name);
+                    }
                 } else {
                     showErrorMessage("Something went wrong");
                     console.log(response);

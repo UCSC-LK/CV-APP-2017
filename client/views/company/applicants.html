@@ -107,17 +107,19 @@
             var applicantTable = $('#apllicantTable').DataTable({
                 dom: 'Bfrtip',
                 responsive: true,
-                // buttons: [
-                //     'pdf', 'print'
-                // ],
                 buttons: [
                     {
                         extend: 'pdfHtml5',
-                        message: 'Applicants',
+                        message: 'Not shortlisted applicants - ' + position,
                         title: 'UCSC Career Fair 2017',
-                        filename: 'Applicants',
+                        filename: 'Not shortlisted applicants - ' + position,
                         exportOptions: {
                             columns: [1, 2, 3]
+                        },
+                        init: function(dt, node, config) {
+                            $(".positionTab").on('click', function() {
+                                config.message = config.filename = 'Not shortlisted applicants - ' + $(this).text();
+                            });
                         }
                     }
                 ],
@@ -245,17 +247,19 @@
             var shortListedTable = $('#shortListedTable').DataTable({
                 dom: 'Bfrtip',
                 responsive: true,
-                // buttons: [
-                //     'pdf', 'print'
-                // ],
                 buttons: [
                     {
                         extend: 'pdfHtml5',
-                        message: 'Shortlisted Applicants',
+                        message: 'Shortlisted Applicants - ' + position,
                         title: 'UCSC Career Fair 2017',
-                        filename: 'Shortlisted Applicants',
+                        filename: 'Shortlisted Applicants - ' + position,
                         exportOptions: {
                             columns: [0]
+                        },
+                        init: function(dt, node, config) {
+                            $(".positionTab").on('click', function() {
+                                config.message = config.filename = 'Shortlisted applicants - ' + $(this).text();
+                            });
                         }
                     }
                 ],

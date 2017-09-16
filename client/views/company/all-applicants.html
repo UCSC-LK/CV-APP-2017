@@ -76,11 +76,16 @@
                 buttons: [
                     {
                         extend: 'pdfHtml5',
-                        message: 'All Applicants',
+                        message: 'All Applicants - ' + position,
                         title: 'UCSC Career Fair 2017',
-                        filename: 'All Applicants',
+                        filename: 'All Applicants - ' + position,
                         exportOptions: {
                             columns: [0, 1, 2, 3, 4]
+                        },
+                        init: function(dt, node, config) {
+                            $(".positionTab").on('click', function() {
+                                config.message = config.filename = 'All Applicants - ' + $(this).text();
+                            });
                         }
                     }
                 ],
