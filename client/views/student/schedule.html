@@ -36,14 +36,14 @@
                 dom: 'Bfrtip',
                 responsive: true,
                 buttons: [
-                    'pdf', 'print'
+                    'pdf'
                 ],
                 ajax: {
                     url: domain + 'selected_student_company/companies/' + userID,
                     dataSrc: 'result',
                     beforeSend: function (xhr) {
                         xhr.setRequestHeader("Authorization", getToken());
-                    },
+                    }
                 },
                 "columns": [{
                     "data": "_id"

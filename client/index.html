@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="cvApp">
+<html>
 
 <head>
     <meta charset="UTF-8">
@@ -33,27 +33,27 @@
         <a href="javascript:void(0);"><b>Career Fair</b> <span style="color:#ff661a">2017</span></a>
         <small>University of Colombo School of Computing</small>
     </div>
-    <div class="card" ng-controller="loginController">
+    <div class="card">
         <div class="body">
-            <form id="sign_in" name="loginForm" ng-submit="login(loginForm.$valid)">
+            <form id="sign_in">
                 <div class="msg">Sign in to start your session</div>
                 <div id="respond"></div>
                 <div class="input-group">
-            <span class="input-group-addon">
-                            <i class="material-icons">person</i>
-                        </span>
+                    <span class="input-group-addon">
+                        <i class="material-icons">person</i>
+                    </span>
                     <div class="form-line">
                         <input type="text" class="form-control" name="username" id="username" placeholder="Username"
-                               required autofocus ng-model="username">
+                               required autofocus>
                     </div>
                 </div>
                 <div class="input-group">
-            <span class="input-group-addon">
-                            <i class="material-icons">lock</i>
-                        </span>
+                    <span class="input-group-addon">
+                        <i class="material-icons">lock</i>
+                    </span>
                     <div class="form-line">
                         <input type="password" class="form-control" name="password" id="password" placeholder="Password"
-                               required ng-model="password">
+                               required>
                     </div>
                 </div>
                 <div class="row">
@@ -62,7 +62,7 @@
                         <label for="remember">Remember Me</label>
                     </div>
                     <div class="col-xs-4">
-                        <button class="btn btn-block bg-deep-orange waves-effect">SIGN IN</button>
+                        <button class="btn btn-block bg-deep-orange waves-effect" id="loginButton">SIGN IN</button>
                     </div>
                 </div>
                 <div class="row m-t-15 m-b--20">
@@ -90,16 +90,6 @@
 
 <!-- page reletaed script -->
 <script src="assets/js/pages/login/sign-in.js"></script>
-
-<!-- Angular JS -->
-<script type="application/javascript"
-        src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>
-<script type="application/javascript"
-        src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-resource.min.js"></script>
-<script type="application/javascript"
-        src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-route.min.js"></script>
-<script type="application/javascript" src="js/app.js"></script>
-<script type="application/javascript" src="js/controllers/login-controller.js"></script>
 
 </body>
 
