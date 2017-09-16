@@ -16,7 +16,7 @@ module.exports = function (app, passport) {
     // });
 
     // process the login form  -  //OK
-    app.post('/login', function (req, res) {
+    app.post('/login', function (req, res, next) {
         console.log("auth.login");
         User.findOne({
             username: req.body.username
@@ -58,7 +58,7 @@ module.exports = function (app, passport) {
     });
 
     // handle logout - Todo
-    app.post("/logout", function (req, res) {
+    app.post("/logout", function (req, res, next) {
         req.logOut();
         res.send({
             success: true,
@@ -72,7 +72,7 @@ module.exports = function (app, passport) {
     //   res.send(req.isAuthenticated() ? req.user : '0');
     // });
     // remove send
-    app.get("/loggedin", function (req, res) {
+    app.get("/loggedin", function (req, res, next) {
         if (req.isAuthenticated()) {
             res.send({
                 success: true,
@@ -114,7 +114,7 @@ module.exports = function (app, passport) {
     // });
 
     // OK
-    app.post('/signup', function (req, res) {
+    app.post('/signup', function (req, res, next) {
         if (!req.body.username || !req.body.password || !req.body.usertype) {
             res.json({
                 success: false,
@@ -153,7 +153,7 @@ module.exports = function (app, passport) {
     });
 
     //ok
-    app.post('/changepass', function (req, res) {
+    app.post('/changepass', function (req, res, next) {
         if (!req.body.username || !req.body.oldpassword || !req.body.password) {
             res.json({
                 success: false,
