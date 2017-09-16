@@ -20,11 +20,16 @@ var morgan = require('morgan');
 var fs = require('fs');
 var path = require('path');
 
+var options = {
+  useMongoClient: true,
+  user: 'myUserName',
+  pass: 'myPassword'
+};
+
+
 mongoose.connect(
     config.database,
-    {
-        useMongoClient: true
-    },
+    options,
     function (err) {
         if (err) {
             console.log(err);
