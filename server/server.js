@@ -46,6 +46,7 @@ app.use(morgan('common', {
 // logger stdout
 app.use(morgan('dev'));
 
+////
 
 // var myLogger = function (req, res, next) {
 //   console.log('LOGGED');
@@ -55,11 +56,7 @@ app.use(morgan('dev'));
 // app.use(myLogger);
 
 // check if the request is https
-// app.use(function (req, res, next) {
-//   console.log(req.secure);
-//   next();
-//
-// });
+
 
 /////////////////////////////////////////////////////////////
 //
@@ -94,7 +91,11 @@ app.use(bodyParser.urlencoded({
 // Load our routes and pass in our app and fully configured passport
 require('./app/api/auth.js')(app, passport);
 
-
+// app.use(function (req, res, next) {
+//   console.log(req.secure);
+//   console.log(req.isAuthenticated());
+//   next();
+// });
 
 // app.use('/api2', api);
 app.use('/student', student);
