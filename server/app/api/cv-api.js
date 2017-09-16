@@ -49,4 +49,6 @@ router.post('/upload', function (req, res, next) {
     });
 });
 
+router.post('/download', cvController.getCVZip);
+
 module.exports = router;
