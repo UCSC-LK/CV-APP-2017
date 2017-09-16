@@ -22,3 +22,5 @@ access.log
 
 # all pdf files
 *.pdf
+
+*conf.js
