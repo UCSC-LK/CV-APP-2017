@@ -28,7 +28,7 @@
         <div class="card">
             <div class="header">
                 <h2>
-                    Chosen Companies
+                    Selected Companies
                 </h2>
             </div>
             <div class="body">
@@ -91,9 +91,7 @@
             var companyTable = $('#companyTable').DataTable({
                 dom: 'Bfrtip',
                 responsive: true,
-                buttons: [
-                    //        'copy', 'csv', 'excel', 'pdf', 'print'
-                ],
+                buttons: [],
                 ajax: {
                     url: domain + 'company/withoutselected/' + userID,
                     dataSrc: 'result'
@@ -105,21 +103,22 @@
                         "data": null,
                         "defaultContent": selectButton
                     }
-                ]
+                ],
+                "language": {
+                    "emptyTable": "No companies available."
+                }
             });
 
             var chosedTable = $('#chosedTable').DataTable({
                 dom: 'Bfrtip',
                 responsive: true,
-                buttons: [
-                    //        'copy', 'csv', 'excel', 'pdf', 'print'
-                ],
+                buttons: [],
                 ajax: {
                     url: domain + 'student_company/companies/' + userID,
                     dataSrc: 'result',
                     beforeSend: function (xhr) {
                         xhr.setRequestHeader("Authorization", getToken());
-                    },
+                    }
                 },
                 "columns": [{
                     "data": "company"
@@ -131,7 +130,10 @@
                         "data": null,
                         "defaultContent": removeButton
                     }
-                ]
+                ],
+                "language": {
+                    "emptyTable": "You have not selected any companies."
+                }
             });
 
             chosedTable.on("click", "." + ajaxRemove, function () {

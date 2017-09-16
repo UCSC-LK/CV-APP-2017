@@ -179,6 +179,9 @@
                             });
                         }
                     });
+                },
+                "language": {
+                    "emptyTable": "Sorry! No applicants available for this position."
                 }
             });
 
@@ -275,7 +278,10 @@
                         "data": null,
                         "defaultContent": removeButton
                     }
-                ]
+                ],
+                "language": {
+                    "emptyTable": "No applicants shortlisted for this position."
+                }
             });
 
             shortListedTable.on("click", "." + ajaxRemove, function () {
