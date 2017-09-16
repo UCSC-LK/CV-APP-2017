@@ -7,3 +7,17 @@ db.createUser(
     roles: [ { role: "userAdminAnyDatabase", db: "admin" } ]
   }
 )
+
+
+1.
+root
+ucsc@123
+
+
+db.createUser(
+  {
+    user: "cvApp2017",
+    pwd: "xyz1234",
+    roles: [ { role: "readWrite", db: "ucsc-cvapp-2017" }]
+  }
+)
