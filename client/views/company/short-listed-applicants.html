@@ -153,6 +153,15 @@
                 var win = window.open(domain + 'uploads/' + rowData.cv);
             });
 
+            // Event on table refresh - disable pdf buttons
+            shortListedTable.on('draw.dt', function () {
+                if (shortListedTable.data().length === 0) {
+                    shortListedTable.buttons().disable();
+                } else {
+                    shortListedTable.buttons().enable();
+                }
+            });
+
             function showErrorMessage(msg) {
                 swal(msg + "!", '', "error");
             }

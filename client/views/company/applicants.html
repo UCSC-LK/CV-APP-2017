@@ -244,6 +244,15 @@
                 var win = window.open(domain + 'uploads/' + rowData.cv);
             });
 
+            // Event on table refresh - disable pdf buttons
+            applicantTable.on('draw.dt', function () {
+                if (applicantTable.data().length === 0) {
+                    applicantTable.buttons().disable();
+                } else {
+                    applicantTable.buttons().enable();
+                }
+            });
+
             var shortListedTable = $('#shortListedTable').DataTable({
                 dom: 'Bfrtip',
                 responsive: true,
@@ -297,10 +306,16 @@
                 ajaxSend("DELETE", para, "ajaxRemove", thisRow, url);
             });
 
+            // Event on table refresh - disable pdf buttons and set count and panels
             shortListedTable.on('draw', function () {
                 var para = {company: companyObject._id};
                 var url = domain + "selected_student_company/student_count";
                 ajaxSend("GET", para, "ajaxCount", null, url);
+                if (shortListedTable.data().length === 0) {
+                    shortListedTable.buttons().disable();
+                } else {
+                    shortListedTable.buttons().enable();
+                }
             });
 
             function ajaxSend(type, params, action, clickRow, url) {
