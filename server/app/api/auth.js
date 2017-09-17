@@ -2,6 +2,14 @@ var User = require('../model/user');
 var jwt = require('jsonwebtoken');
 var config = require('../config/conf');
 
+var jwt = require('express-jwt');
+var config = require('../config/conf');
+var auth = jwt({
+    secret: config.secret,
+    userProperty: 'payload'
+});
+
+
 module.exports = function (app, passport) {
     // process the login form  -  //OK
     app.post('/login', function (req, res, next) {
@@ -73,7 +81,7 @@ module.exports = function (app, passport) {
     });
 
     // OK
-    app.post('/signup', function (req, res, next) {
+    app.post('/signup', auth ,function (req, res, next) {
         if (!req.body.username || !req.body.password || !req.body.usertype) {
             res.json({
                 success: false,
@@ -112,7 +120,7 @@ module.exports = function (app, passport) {
     });
 
     //ok
-    app.post('/changepass', function (req, res, next) {
+    app.post('/changepass',auth ,function (req, res, next) {
         if (!req.body.username || !req.body.oldpassword || !req.body.password) {
             res.json({
                 success: false,
