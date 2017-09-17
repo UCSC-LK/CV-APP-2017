@@ -22,6 +22,7 @@
             <div class="header">
                 <h2>
                     All Short Listed Applicants
+                    <span id="shortlist-table-header-position" style="color: #9f9f9f; font-size: 80%"></span>
                 </h2>
             </div>
             <div class="body">
@@ -65,6 +66,7 @@
             $(positionTabs).addClass('active');
 
             var position = companyObject.positions[0];
+            $('#shortlist-table-header-position').text(position);
 
             var shortListedTable = $('#shortListedTable').DataTable({
                 dom: 'Bfrtip',
@@ -168,6 +170,7 @@
 
             //Changing position
             $('.positionTab').click(function () {
+                $('#shortlist-table-header-position').text($(this).text());
                 position = $(this).text();
                 shortListedTable.ajax.reload();
             });

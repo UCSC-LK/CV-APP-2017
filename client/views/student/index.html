@@ -235,6 +235,9 @@ s
 
     // Code to inject html code into index
     $(document).ready(function () {
+
+        $('html').removeClass('safari');
+
         var pageWrapper = $("#page-wrapper");
         $("a.ajax-pg").on("click", function (e) {
             e.preventDefault();
@@ -446,6 +449,7 @@ s
         window.location.replace('../../index.html');
     }
 
+    // Count down
     $('#count-down').countdown('2017/09/19 21:00:00', function(event) {
       $(this).html(event.strftime('Deadline : %d day(s) %H:%M:%S'));
     });

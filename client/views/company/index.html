@@ -205,6 +205,7 @@ s
     var domain = "../../";
 
     $(document).ready(function () {
+        $('html').removeClass('safari');
         // Code to inject html code into index
         var pageWrapper = $("#page-wrapper");
         $("a.ajax-pg").on("click", function (e) {
@@ -336,8 +337,6 @@ s
         if (user_info.usertype != 1) {
             window.location.replace('../../index.html');
         }
-        console.log(user_info.usertype);
-
         userID = user_info._id;
         setCompanyObject();
     } else {
