@@ -65,7 +65,7 @@ module.exports = function (app, passport) {
 
 
     // remove send
-    app.get("/loggedin",auth, function (req, res, next) {
+    app.get("/loggedin", function (req, res, next) {
         if (req.isAuthenticated()) {
             res.send({
                 success: true,
