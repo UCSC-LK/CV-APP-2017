@@ -32,7 +32,8 @@
     <div class="col-lg-8 col-md-7 col-sm-12 col-xs-12">
         <div class="card">
             <div class="header">
-                <h2 id="applicant-table-header">Applicants</h2>
+                <h2>Applicants</h2>
+                <small id="applicant-table-header-position"></small>
             </div>
             <div class="body">
                 <div class="tab-content">
@@ -58,9 +59,8 @@
     <div class="col-lg-4 col-md-5 col-sm-12 col-xs-12">
         <div class="card">
             <div class="header">
-                <h2>
-                    Shortlisted Applicants
-                </h2>
+                <h2>Shortlisted Applicants</h2>
+                <small id="shortlist-table-header-position"></small>
             </div>
             <div class="body">
                 <table id="shortListedTable" class="table table-bordered table-striped table-hover" cellspacing="0"
@@ -103,6 +103,8 @@
             $(positionTabs).addClass('active');
 
             var position = companyObject.positions[0];
+            $('#applicant-table-header-position').text(position);
+            $('#shortlist-table-header-position').text(position);
 
             var applicantTable = $('#apllicantTable').DataTable({
                 dom: 'Bfrtip',
@@ -380,6 +382,8 @@
 
             //Changing position
             $('.positionTab').click(function () {
+                $('#applicant-table-header-position').text($(this).text());
+                $('#shortlist-table-header-position').text($(this).text());
                 position = $(this).text();
                 applicantTable.ajax.reload();
                 shortListedTable.ajax.reload();
