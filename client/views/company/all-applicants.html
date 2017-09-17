@@ -46,6 +46,175 @@
 </div>
 
 <script type="text/javascript">
-"undefined"==typeof userID?window.location.replace("./"):$(document).ready(function(){function e(){var e=[];s.rows().every(function(){var t=this.data();e.push(t.cv)}),$.ajax({type:"POST",url:domain+"cv/download",data:{cvs:e,position:a,company:companyObject.userID},dataType:"json",beforeSend:function(e){e.setRequestHeader("Authorization",getToken())},success:function(e){!0===e.success?window.open(domain+e.data):showErrorMessage(e.msg)},error:function(e,t,o){console.log(e),console.log(t,o)}})}var t='<a class="btn btn-info btn-sm  waves-effect ajaxView" style = "margin-right:10px;" title="View CV"> <i class="material-icons">description</i> </a>',o="ajaxView";companyObject.positions.forEach(function(e){var t="<li role='presentation'><a class='positionTab' href='#tablediv' data-toggle='tab'>"+e+"</a></li>";$("#navdiv").append(t)});var n=$("#navdiv").children()[0];$(n).addClass("active");var a=companyObject.positions[0],s=$("#apllicantTable").DataTable({dom:"Bfrtip",responsive:!0,buttons:[{extend:"pdfHtml5",message:"All Applicants - "+a,title:"UCSC Career Fair 2017",filename:"All Applicants - "+a,exportOptions:{columns:[0,1,2,3,4]},init:function(e,t,o){$(".positionTab").on("click",function(){o.message=o.filename="All Applicants - "+$(this).text()})}},{text:"Download All "+a+" CVs",action:function(t,o,n,a){e()},className:"download-all"}],ajax:{url:domain+"student_company/students/all",data:function(e){e.company=companyObject._id,e.position=a},beforeSend:function(e){e.setRequestHeader("Authorization",getToken())},dataSrc:"result"},columns:[{data:"name"},{data:"email"},{data:"phone"},{data:"year",width:"15%"},{data:"stream",width:"12%"},{width:"10%",data:null,defaultContent:t}],order:[[1,"asc"]],initComplete:function(){this.api().columns().every(function(){if(3==this[0]||4==this[0]){var e=this,t=$('<select><option value="">All</option></select>').appendTo($(e.header()).append("</br> ")).on("change",function(){var t=$.fn.dataTable.util.escapeRegex($(this).val());e.search(t?"^"+t+"$":"",!0,!1).draw()});e.data().unique().sort().each(function(e,o){t.append('<option value="'+e+'">'+e+"</option>")})}})},language:{emptyTable:"Sorry! No applicants available for this position."}});s.on("click","."+o,function(){var e=s.row($(this).parents("tr")).data();window.open(domain+"uploads/"+e.cv)}),s.on("draw.dt",function(){0===s.data().length?s.buttons().disable():s.buttons().enable()}),$(".positionTab").click(function(){a=$(this).text(),s.ajax.reload(),$(".download-all")[0].children[0].innerText="Download All "+$(this).text()+" CVs"})});
+
+    if (typeof userID == 'undefined') {
+        window.location.replace('./');
+    } else {
+
+        $(document).ready(function () {
+
+            var viewButton = '<a class="btn btn-info btn-sm  waves-effect ajaxView" style = "margin-right:10px;" title="View CV"> <i class="material-icons">description</i> </a>';
+
+            var ajaxView = "ajaxView";
+
+            // Set position tabs
+            companyObject.positions.forEach(function (t) {
+                var navtab = "<li role='presentation'><a class='positionTab' href='#tablediv' data-toggle='tab'>" + t + "</a></li>"
+                $("#navdiv").append(navtab);
+            });
+
+            // Set active default position tab
+            var positionTabs = $("#navdiv").children()[0];
+            $(positionTabs).addClass('active');
+
+            var position = companyObject.positions[0];
+
+            var applicantTable = $('#apllicantTable').DataTable({
+                dom: 'Bfrtip',
+                responsive: true,
+                buttons: [
+                    {
+                        extend: 'pdfHtml5',
+                        message: 'All Applicants - ' + position,
+                        title: 'UCSC Career Fair 2017',
+                        filename: 'All Applicants - ' + position,
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4]
+                        },
+                        init: function(dt, node, config) {
+                            $(".positionTab").on('click', function() {
+                                config.message = config.filename = 'All Applicants - ' + $(this).text();
+                            });
+                        }
+                    },
+                    {
+                        text: 'Download All '+ position+ ' CVs',
+                        action: function ( e, dt, node, config ) {
+                            downloadAllCVs();
+                        },
+                        className: 'download-all'
+                    }
+                ],
+                ajax: {
+                    url: domain + 'student_company/students/all',
+                    data: function (d) {
+                        d.company = companyObject._id;
+                        d.position = position;
+                    },
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("Authorization", getToken());
+                    },
+                    dataSrc: 'result'
+                },
+                "columns": [
+                    {
+                        "data": "name"
+                    },
+                    {
+                        "data": "email"
+                    },
+                    {
+                        "data": "phone"
+                    },
+                    {
+                        "data": "year",
+                        "width": "15%"
+                    },
+                    {
+                        "data": "stream",
+                        "width": "12%"
+                    },
+                    {
+                        "width": "10%",
+                        "data": null,
+                        "defaultContent": viewButton
+                    }
+                ],
+                "order": [
+                    [1, 'asc']
+                ],
+                initComplete: function () {
+                    this.api().columns().every(function () {
+                        if (this[0] == 3 || this[0] == 4) {
+                            var column = this;
+                            var select = $('<select><option value="">All</option></select>')
+                                .appendTo($(column.header()).append('</br> '))
+                                .on('change', function () {
+                                    var val = $.fn.dataTable.util.escapeRegex(
+                                        $(this).val()
+                                    );
+                                    column
+                                        .search(val ? '^' + val + '$' : '', true, false)
+                                        .draw();
+                                });
+                            column.data().unique().sort().each(function (d, j) {
+                                select.append('<option value="' + d + '">' + d + '</option>')
+                            });
+                        }
+                    });
+                },
+                "language": {
+                    "emptyTable": "Sorry! No applicants available for this position."
+                }
+            });
+
+            // Open CV pdf in new tab
+            applicantTable.on("click", "." + ajaxView, function () {
+                var rowData = applicantTable.row($(this).parents('tr')).data();
+                var win = window.open(domain + 'uploads/' + rowData.cv);
+            });
+
+            // Event on table refresh - disable download and pdf buttons
+            applicantTable.on('draw.dt', function () {
+                if (applicantTable.data().length === 0) {
+                    applicantTable.buttons().disable();
+                } else {
+                    applicantTable.buttons().enable();
+                }
+            });
+
+            //event on changing position
+            $('.positionTab').click(function () {
+                position = $(this).text();
+                applicantTable.ajax.reload();
+                $('.download-all')[0].children[0].innerText = "Download All " + $(this).text() + " CVs";
+            });
+
+            // Download all cvs
+            function downloadAllCVs() {
+                // gathering cv list
+                var cvs = [];
+                applicantTable.rows().every( function () {
+                    var data = this.data();
+                    cvs.push(data.cv);
+                });
+                $.ajax({
+                    type: "POST",
+                    url: domain + "cv/download",
+                    data: {
+                        cvs: cvs,
+                        position: position,
+                        company: companyObject.userID
+                    },
+                    dataType: "json",
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("Authorization", getToken());
+                    },
+                    success: function (response) {
+                        if (response.success === true) {
+                            window.open(domain + response.data);
+                        } else {
+                            showErrorMessage(response.msg);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.log(xhr);
+                        console.log(status, error);
+                    }
+                });
+            }
+        });
+
+    }
 
 </script>

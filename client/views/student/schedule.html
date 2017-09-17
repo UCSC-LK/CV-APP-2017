@@ -28,5 +28,36 @@
 </div>
 
 <script type="text/javascript">
-  "undefined"==typeof userID?window.location.replace("./"):$(document).ready(function(){$("#schduleTable").DataTable({dom:"Bfrtip",responsive:!0,buttons:["pdf"],ajax:{url:domain+"selected_student_company/companies/"+userID,dataSrc:"result",beforeSend:function(e){e.setRequestHeader("Authorization",getToken())}},columns:[{data:"_id"},{data:"name"}],language:{emptyTable:"Sorry! No companies have shortlisted you yet."}}).ajax.reload()});
+    if (typeof userID == 'undefined') {
+        window.location.replace('./');
+    } else {
+        $(document).ready(function () {
+            var schduleTable = $('#schduleTable').DataTable({
+                dom: 'Bfrtip',
+                responsive: true,
+                buttons: [
+                    'pdf'
+                ],
+                ajax: {
+                    url: domain + 'selected_student_company/companies/' + userID,
+                    dataSrc: 'result',
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("Authorization", getToken());
+                    }
+                },
+                "columns": [{
+                    "data": "_id"
+                },
+                    {
+                        "data": "name"
+                    }
+                ],
+                "language": {
+                    "emptyTable": "Sorry! No companies have shortlisted you yet."
+                }
+            });
+
+            schduleTable.ajax.reload();
+        });
+    }
 </script>
