@@ -254,29 +254,53 @@ s
         var payload;
 
         if (token) {
-            payload = token.split('.')[1];
-            payload = window.atob(payload);
-            payload = JSON.parse(payload);
+            //check for token validity
+            $.ajax({
+                type: "GET",
+                url: domain + "loggedin",
+                data: {},
+                dataType: "json",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", token);
+                },
+                success: function (response) {
+                    if (response.success == true) {
+                        // check for token expiration
+                        payload = token.split('.')[1];
+                        payload = window.atob(payload);
+                        payload = JSON.parse(payload);
 
-            return payload.exp > Date.now() / 1000;
+                        if (!(payload.exp > Date.now() / 1000)) {
+                            localStorage.removeItem("jwt_token");
+                            window.location.replace('../../index.html');
+                        }
+                    } else {
+                        localStorage.removeItem("jwt_token");
+                        window.location.replace('../../index.html');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log(xhr);
+                    console.log(status, error);
+                }
+            });
+            return true;
         } else {
             return false;
         }
     }
 
     function currentUser() {
-        if (isLoggedIn()) {
-            var token = getToken();
-            var payload = token.split('.')[1];
-            payload = window.atob(payload);
-            payload = JSON.parse(payload);
-            return {
-                _id: payload._id,
-                isfirst: payload.isfirst,
-                usertype: payload.usertype,
-                name: payload.name
-            };
-        }
+        var token = getToken();
+        var payload = token.split('.')[1];
+        payload = window.atob(payload);
+        payload = JSON.parse(payload);
+        return {
+            _id: payload._id,
+            isfirst: payload.isfirst,
+            usertype: payload.usertype,
+            name: payload.name
+        };
     }
 
     function setCompanyObject() {
@@ -316,9 +340,6 @@ s
 
         userID = user_info._id;
         setCompanyObject();
-        // console.log(user_info);
-        // console.log("Setting user id : " + userID);
-        // $('#username').html(user_info.name);
     } else {
         window.location.replace('../../index.html');
     }
