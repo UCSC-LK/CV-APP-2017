@@ -1,17 +1,23 @@
-/**
- * Created by vibodha on 8/24/17.
- */
 
 var express = require('express'),
     router = express.Router(),
     companyController = require('../controller/company-controller');
 
-router.get('/withoutselected/:query', companyController.getCompaniesWithoutSelected);
 
-router.get('/', companyController.getCompany);
+var jwt = require('express-jwt');
+var config = require('../config/conf');
+var auth = jwt({
+    secret: config.secret,
+    userProperty: 'payload'
+});
 
-router.get('/all', companyController.getCompanies);
 
-router.post('/', companyController.addCompany);
+router.get('/withoutselected/:query', auth, companyController.getCompaniesWithoutSelected);
+
+router.get('/', auth, companyController.getCompany);
+
+router.get('/all', auth, companyController.getCompanies);
+
+router.post('/', auth, companyController.addCompany);
 
 module.exports = router;

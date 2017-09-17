@@ -3,18 +3,6 @@ var jwt = require('jsonwebtoken');
 var config = require('../config/conf');
 
 module.exports = function (app, passport) {
-    //Delete this
-    // process the login form
-    // app.post("/login", passport.authenticate('local-login',{failureFlash: true}), function(req, res) {
-    // 	// console.log(done);
-    //   res.json(req.user);
-    // });
-
-    // app.post("/login", passport.authenticate('local-login',{failureFlash: true}), function(req, res) {
-    // 	// console.log(done);
-    //   res.json(req.user);
-    // });
-
     // process the login form  -  //OK
     app.post('/login', function (req, res, next) {
         console.log("auth.login");
@@ -67,10 +55,7 @@ module.exports = function (app, passport) {
         });
     });
 
-    // // loggedin - Todo
-    // app.get("/loggedin", function(req, res) {
-    //   res.send(req.isAuthenticated() ? req.user : '0');
-    // });
+
     // remove send
     app.get("/loggedin", function (req, res, next) {
         if (req.isAuthenticated()) {
@@ -86,32 +71,6 @@ module.exports = function (app, passport) {
             });
         }
     });
-
-    // // signup
-    // app.post("/signup", function(req, res) {
-    //   User.findOne({
-    //     username: req.body.username
-    //   }, function(err, user) {
-    //     if (user) {
-    //       res.json(null);
-    //       return;
-    //     } else {
-    //       var newUser = new User();
-    //       newUser.username = req.body.username.toLowerCase();
-    //       // newUser.password = newUser.generateHash(req.body.password);
-    //       newUser.username = req.body.username.toLowerCase();
-    //       newUser.password = req.body.password;
-    //       newUser.save(function(err, user) {
-    //         req.login(user, function(err) {
-    //           if (err) {
-    //             return next(err);
-    //           }
-    //           res.json(user);
-    //         });
-    //       });
-    //     }
-    //   });
-    // });
 
     // OK
     app.post('/signup', function (req, res, next) {

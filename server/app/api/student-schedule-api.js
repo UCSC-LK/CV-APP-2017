@@ -9,7 +9,7 @@ var auth = jwt({
     userProperty: 'payload'
 });
 
-router.get('/schedule/:query', studentScheduleController.getSchedule);
+router.get('/schedule/:query',auth, studentScheduleController.getSchedule);
 
 
 module.exports = router;
