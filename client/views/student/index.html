@@ -235,6 +235,9 @@ s
 
     // Code to inject html code into index
     $(document).ready(function () {
+
+        $('html').removeClass('safari');
+
         var pageWrapper = $("#page-wrapper");
         $("a.ajax-pg").on("click", function (e) {
             e.preventDefault();
