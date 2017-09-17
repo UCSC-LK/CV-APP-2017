@@ -39,7 +39,8 @@
 
     var domain = "../../";
 
-    var studentUsernames = [13000022,
+    var studentUsernames = [
+        13000022,
         13000063,
         13000098,
         13000128,
@@ -97,7 +98,9 @@
         13020471,
         13020579,
         13020609,
-        13020651];
+        13020651,
+        13000454
+    ];
 
     var companyDetails = [
         {
@@ -230,6 +233,9 @@
         }
     ];
 
+    var studentCount = 0;
+    var companyCount = 0;
+
     $('#setup-std-logins').click(function () {
         for(var i=0; i<studentUsernames.length; i++) {
             $.ajax({
@@ -243,17 +249,10 @@
                 dataType: "json",
                 success: function (response) {
                     if (response.success == true) {
-                        var para = document.createElement("p");
-                        var msg = "Added user " + response.data.username;
-                        var node = document.createTextNode(msg);
-                        para.appendChild(node);
-                        $('#log').append(para);
+                        addLogMsg("Added user " + response.data.username);
+                        studentCount ++;
                     } else {
-                        var para = document.createElement("p");
-                        var msg = "Error adding user " + response.data.username + " - " + response.msg;
-                        var node = document.createTextNode(msg);
-                        para.appendChild(node);
-                        $('#log').append(para);
+                        addLogMsg("Error adding user " + response.data.username + " - " + response.msg);
                         console.log(response);
                     }
                 },
@@ -264,6 +263,8 @@
                 }
             });
         }
+        // alert(studentCount + " students inserted successfully");
+        studentCount = 0;
     });
 
     $('#setup-cmp-logins').click(function () {
@@ -282,6 +283,7 @@
                     if (response.success === true) {
                         addLogMsg("User added " + response.data.username + " - " + response.data._id);
                         saveCompanyInfo(response.data.username, response.data._id);
+                        companyCount ++;
                     } else {
                         addLogMsg("Error adding user " + response.data.username + " - " + response.msg);
                         console.log(response);
@@ -295,6 +297,8 @@
             });
 
         }
+        // alert(companyCount + " companies inserted successfully");
+        companyCount = 0;
     });
 
     function saveCompanyInfo(username, userID) {
