@@ -19,7 +19,7 @@
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="card">
             <div class="header">
-                <h2 id="applicant-table-header">All Applicants</h2>
+                <h2>All Applicants <span id="applicant-table-header-position" style="color: #9f9f9f; font-size: 80%"></span></h2>
             </div>
             <div class="body">
                 <div class="tab-content">
@@ -68,6 +68,7 @@
             $(positionTabs).addClass('active');
 
             var position = companyObject.positions[0];
+            $('#applicant-table-header-position').text(position);
 
             var applicantTable = $('#apllicantTable').DataTable({
                 dom: 'Bfrtip',
@@ -175,6 +176,7 @@
 
             //event on changing position
             $('.positionTab').click(function () {
+                $('#applicant-table-header-position').text($(this).text());
                 position = $(this).text();
                 applicantTable.ajax.reload();
                 $('.download-all')[0].children[0].innerText = "Download All " + $(this).text() + " CVs";
