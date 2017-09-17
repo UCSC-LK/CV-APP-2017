@@ -3,8 +3,14 @@ var router = express.Router();
 var Cv = require('../model/cv');
 var Student = require('../model/student');
 
+var jwt = require('express-jwt');
+var config = require('../config/conf');
+var auth = jwt({
+    secret: config.secret,
+    userProperty: 'payload'
+});
 
-router.get('/validStudent/:query', function (req, res,next) {
+router.get('/validStudent/:query',auth, function (req, res,next) {
     Student.find({
         userID: req.params.query
     }, function (err, result) {
@@ -23,7 +29,7 @@ router.get('/validStudent/:query', function (req, res,next) {
     });
 });
 
-router.get('/validCv/:query', function (req, res, next) {
+router.get('/validCv/:query',auth, function (req, res, next) {
     var isValid = false;
     var isValidStudent = false;
     Cv.find({

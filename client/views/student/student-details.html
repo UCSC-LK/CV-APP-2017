@@ -164,6 +164,9 @@
                 url: domain + "student",
                 data: student,
                 dataType: "json",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", getToken());
+                },
                 success: function (response) {
                     if (response.success == true) {
                         showSuccessMessage(response.msg);

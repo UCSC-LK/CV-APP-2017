@@ -94,7 +94,10 @@
                 buttons: [],
                 ajax: {
                     url: domain + 'company/withoutselected/' + userID,
-                    dataSrc: 'result'
+                    dataSrc: 'result',
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("Authorization", getToken());
+                    },
                 },
                 "columns": [{
                     "data": "name"
