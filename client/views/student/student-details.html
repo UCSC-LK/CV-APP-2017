@@ -65,5 +65,123 @@
 
 
 <script>
-function setStudentDetails(e){$("input[name=name]").val(e.name),$("input[name=phone]").val(e.phone),$("input[name=year][value='"+e.year+"']").attr("checked","checked"),$("input[name=email]").val(e.email),$("input[name=stream][value='"+e.stream+"']").attr("checked","checked"),$("#submit-btn").text("UPDATE")}function saveStudentDetails(){var e={};e.name=$("input[name=name]").val(),e.phone=$("input[name=phone]").val(),e.year=$("input[name=year]:checked").val(),e.email=$("input[name=email]").val(),e.stream=$("input[name=stream]:checked").val(),e.userID=userID,$.ajax({type:"POST",url:domain+"student",data:e,dataType:"json",beforeSend:function(e){e.setRequestHeader("Authorization",getToken())},success:function(t){1==t.success?(showSuccessMessage(t.msg),studentObject=e,$("#username").text(studentObject.name)):(showErrorMessage("Something went wrong"),console.log(t))},error:function(e,t,o){console.log(e),console.log(t,o)}})}"undefined"==typeof userID?window.location.replace("./"):($.validator.addMethod("regex",function(e,t,o){return o.test(e)},"Please enter a valid phone number. (07xxxxxxxx)"),$(function(){$("#form_validation").validate({rules:{phone:{regex:/^07[0-9]{8}$/}},highlight:function(e){$(e).parents(".form-line").addClass("error")},unhighlight:function(e){$(e).parents(".form-line").removeClass("error")},errorPlacement:function(e,t){$(t).parents(".input-group").append(e),$(t).parents(".form-group").append(e)}})}),$(function(){$.AdminBSB.input.activate(),$.AdminBSB.select.activate()}),$(document).ready(function(){$(function(){$.ajax({type:"GET",url:domain+"student",data:{userID:userID},beforeSend:function(e){e.setRequestHeader("Authorization",getToken())},dataType:"json",success:function(e){1==e.success?e.data.length>0&&setStudentDetails(e.data[0]):(showErrorMessage("Something went wrong"),console.log(e))},error:function(e,t,o){console.log(e),console.log(t,o)}})}),$("#form_validation").submit(function(){return $(this).valid()&&saveStudentDetails(),!1})}));
+
+    if (typeof userID == 'undefined') {
+        window.location.replace('./');
+    } else {
+        $.validator.addMethod("regex", function (value, element, regexpr) {
+            return regexpr.test(value);
+        }, "Please enter a valid phone number. (07xxxxxxxx)");
+
+        $(function () {
+            $('#form_validation').validate({
+                rules: {
+                    'phone': {
+                        regex: /^07[0-9]{8}$/
+                    }
+                },
+                highlight: function (input) {
+                    $(input).parents('.form-line').addClass('error');
+                },
+                unhighlight: function (input) {
+                    $(input).parents('.form-line').removeClass('error');
+                },
+                errorPlacement: function (error, element) {
+                    $(element).parents('.input-group').append(error);
+                    $(element).parents('.form-group').append(error);
+                }
+            });
+        });
+
+        $(function () {
+            $.AdminBSB.input.activate();
+            $.AdminBSB.select.activate();
+        });
+
+        // Setting student data in the form if already filled up
+        $(document).ready(function () {
+            // Getting data
+            $(function () {
+                $.ajax({
+                    type: "GET",
+                    url: domain + "student",
+                    data: {
+                        userID: userID
+                    },
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("Authorization", getToken());
+                    },
+                    dataType: "json",
+                    success: function (response) {
+                        if (response.success == true) {
+                            if (response.data.length > 0) {
+                                var student = response.data[0];
+                                setStudentDetails(student);
+                            }
+                        } else {
+                            showErrorMessage("Something went wrong");
+                            console.log(response);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.log(xhr);
+                        console.log(status, error);
+                    }
+                });
+            });
+
+            $('#form_validation').submit(function () {
+                if ($(this).valid()) {
+                    saveStudentDetails();
+                }
+                return false;
+            });
+        });
+
+        // Set details in student data form
+        function setStudentDetails(student) {
+            $("input[name=name]").val(student.name);
+            $("input[name=phone]").val(student.phone);
+            $("input[name=year][value='" + student.year + "']").attr('checked', 'checked');
+            $("input[name=email]").val(student.email);
+            $("input[name=stream][value='" + student.stream + "']").attr('checked', 'checked');
+
+            $('#submit-btn').text('UPDATE');
+        }
+
+        // Save new student detail or update existing
+        function saveStudentDetails() {
+            var student = {};
+            student.name = $("input[name=name]").val();
+            student.phone = $("input[name=phone]").val();
+            student.year = $('input[name=year]:checked').val();
+            student.email = $("input[name=email]").val();
+            student.stream = $("input[name=stream]:checked").val();
+            student.userID = userID;
+
+            $.ajax({
+                type: "POST",
+                url: domain + "student",
+                data: student,
+                dataType: "json",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", getToken());
+                },
+                success: function (response) {
+                    if (response.success == true) {
+                        showSuccessMessage(response.msg);
+                        studentObject = student;
+                        $('#username').text(studentObject.name);
+                    } else {
+                        showErrorMessage("Something went wrong");
+                        console.log(response);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log(xhr);
+                    console.log(status, error);
+                }
+            });
+        }
+    }
 </script>

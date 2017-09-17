@@ -196,5 +196,130 @@ s
 
 </html>
 <script>
-    function getToken(){return localStorage.jwt_token}function isLoggedIn(){var e,t=getToken();return!!t&&(e=t.split(".")[1],e=window.atob(e),(e=JSON.parse(e)).exp>Date.now()/1e3)}function currentUser(){if(isLoggedIn()){var e=getToken().split(".")[1];return e=window.atob(e),e=JSON.parse(e),{_id:e._id,isfirst:e.isfirst,usertype:e.usertype,name:e.name}}}function setCompanyObject(){$.ajax({type:"GET",url:domain+"company",data:{userID:userID},dataType:"json",beforeSend:function(e){e.setRequestHeader("Authorization",getToken())},success:function(e){1==e.success?(companyObject=e.data[0],$("#company-logo").css("background","url("+domain+"assets/images/company-logos/"+companyObject.logo+")")):(showErrorMessage("Something went wrong"),console.log(e))},error:function(e,t,o){console.log(e),console.log(t,o)}})}var userID,companyObject,domain="../../";$(document).ready(function(){var e=$("#page-wrapper");$("a.ajax-pg").on("click",function(t){t.preventDefault(),e.empty(),e.load(this.href),$(".ml-menu li.active").removeClass("active"),$(this).parent().addClass("active")}),window.onload=e.load("applicants.html")});var logoutButton=$("#logoutButton");logoutButton.click(function(){$.ajax({type:"POST",url:domain+"logout",data:"",dataType:"json",success:function(e){1==e.success?(window.location.replace(e.path),localStorage.removeItem("jwt_token"),console.log(e)):alert("Something went wrong"),console.log(e)},error:function(e,t,o){console.log(e),console.log(t,o)}})}),isLoggedIn()?(user_info=currentUser(),1!=user_info.usertype&&window.location.replace("../../index.html"),console.log(user_info.usertype),userID=user_info._id,setCompanyObject()):window.location.replace("../../index.html");
+    // Global userID
+    var userID;
+    // Global company object
+    var companyObject;
+
+    // var domain = "http://localhost:3000/";
+    var domain = "../../";
+
+    $(document).ready(function () {
+        // Code to inject html code into index
+        var pageWrapper = $("#page-wrapper");
+        $("a.ajax-pg").on("click", function (e) {
+            e.preventDefault();
+            pageWrapper.empty();
+            pageWrapper.load(this.href);
+            $('.ml-menu li.active').removeClass('active');
+            $(this).parent().addClass('active');
+        });
+        window.onload = pageWrapper.load('applicants.html');
+    });
+
+    var logoutButton = $('#logoutButton');
+    logoutButton.click(function () {
+        // alert("Hello");
+        $.ajax({
+            type: "POST",
+            url: domain + "logout",
+            data: '',
+            dataType: "json",
+            success: function (response) {
+                if (response.success == true) {
+                    window.location.replace(response.path);
+                    // sessionStorage.removeItem('jwt_token');
+                    // sessionStorage.removeItem('user_id');
+                    localStorage.removeItem("jwt_token");
+                    console.log(response);
+                } else {
+                    alert("Something went wrong")
+                }
+                console.log(response);
+            },
+            error: function (xhr, status, error) {
+                console.log(xhr);
+                console.log(status, error);
+            }
+        });
+    });
+
+    function getToken() {
+        // return sessionStorage.getItem('jwt_token');
+        return localStorage.jwt_token
+    }
+
+    function isLoggedIn() {
+        var token = getToken();
+        var payload;
+
+        if (token) {
+            payload = token.split('.')[1];
+            payload = window.atob(payload);
+            payload = JSON.parse(payload);
+
+            return payload.exp > Date.now() / 1000;
+        } else {
+            return false;
+        }
+    }
+
+    function currentUser() {
+        if (isLoggedIn()) {
+            var token = getToken();
+            var payload = token.split('.')[1];
+            payload = window.atob(payload);
+            payload = JSON.parse(payload);
+            return {
+                _id: payload._id,
+                isfirst: payload.isfirst,
+                usertype: payload.usertype,
+                name: payload.name
+            };
+        }
+    }
+
+    function setCompanyObject() {
+        $.ajax({
+            type: "GET",
+            url: domain + "company",
+            data: {
+                userID: userID
+            },
+            dataType: "json",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", getToken());
+            },
+            success: function (response) {
+                if (response.success == true) {
+                    companyObject = response.data[0];
+                    // console.log(companyObject);
+                    $('#company-logo').css("background", 'url(' + domain + 'assets/images/company-logos/' + companyObject.logo + ')');
+                } else {
+                    showErrorMessage("Something went wrong");
+                    console.log(response);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.log(xhr);
+                console.log(status, error);
+            }
+        });
+    }
+    if (isLoggedIn()) {
+        user_info = currentUser();
+        // check if logged in user is a company
+        if (user_info.usertype != 1) {
+            window.location.replace('../../index.html');
+        }
+        console.log(user_info.usertype);
+
+        userID = user_info._id;
+        setCompanyObject();
+        // console.log(user_info);
+        // console.log("Setting user id : " + userID);
+        // $('#username').html(user_info.name);
+    } else {
+        window.location.replace('../../index.html');
+    }
 </script>
