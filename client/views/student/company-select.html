@@ -220,7 +220,7 @@
                                     companyTable.ajax.reload(null, false)
                                 } else {
                                     showErrorMessage("Unexpected error #1, Please try again");
-                                    console.log(response);
+                                    // console.log(response);
                                 }
                                 break;
 
@@ -233,15 +233,15 @@
                                     reset_selection();
                                 } else {
                                     showErrorMessage("Unexpected error #2, Please try again");
-                                    console.log(response);
+                                    // console.log(response);
                                 }
                                 break;
                         }
                     },
                     error: function (xhr, status, error) {
-                        console.log(xhr);
+                        // console.log(xhr);
                         alert("Unexpected error");
-                        console.log(status, error);
+                        // console.log(status, error);
                         showErrorMessage(error);
                     }
                 });
@@ -264,7 +264,7 @@
                     'position[]': "You have to select at least one position",
                 },
                 highlight: function (input) {
-                    console.log(input);
+                    // console.log(input);
                     $(input).parents('.form-line').addClass('error');
                 },
                 unhighlight: function (input) {
@@ -273,7 +273,7 @@
                 errorPlacement: function (error, element) {
                     // $(element).parents('.form-group').append(error);
                     $("#position-form-group").append(error);
-                    console.log(error);
+                    // console.log(error);
                 }
             });
         });

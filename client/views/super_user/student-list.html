@@ -76,7 +76,10 @@ $(document).ready(function() {
     ],
       ajax: {
           url: 'http://localhost:3000/student/all',
-          dataSrc: 'result'
+          dataSrc: 'result',
+          beforeSend: function (xhr) {
+              xhr.setRequestHeader("Authorization", getToken());
+          },
       },
       "columns": [
           { "data": "name" },
@@ -106,39 +109,39 @@ $(document).ready(function() {
     });*/
 
 
-    var scheduleTable = $('#scheduleTable').DataTable({
-        dom: 'Bfrtip',
-        responsive: true,
-        buttons: [
-            'copy', 'csv', 'excel', 'pdf', 'print'
-        ],
-        ajax: {
-            url: 'http://localhost:3000/student_schedule/schedule/' + user_id,
-            dataSrc: 'result'
-        },
-        "columns": [
-            { "data": "slot" },
-            { "data": "company" }
-        ]
-    });
+    // var scheduleTable = $('#scheduleTable').DataTable({
+    //     dom: 'Bfrtip',
+    //     responsive: true,
+    //     buttons: [
+    //         'copy', 'csv', 'excel', 'pdf', 'print'
+    //     ],
+    //     ajax: {
+    //         url: 'http://localhost:3000/student_schedule/schedule/' + user_id,
+    //         dataSrc: 'result'
+    //     },
+    //     "columns": [
+    //         { "data": "slot" },
+    //         { "data": "company" }
+    //     ]
+    // });
 
     // Defines what happens on the button click on student table row
-    studentTable.on('click', 'tr', function () {
-        if ( $(this).hasClass('selected') ) {
-            $(this).removeClass('selected');
-        }
-        else {
-            studentTable.$('tr.selected').removeClass('selected');
-            $(this).addClass('selected');
-        }
-
-        var rowData = studentTable.row($(this)).data();
-        user_id = rowData['userID'];
-
-        // Reload datatable with the new user id
-        scheduleTable.ajax.url('http://localhost:3000/student_schedule/schedule/' + user_id).load();
-
-    });
+    // studentTable.on('click', 'tr', function () {
+    //     if ( $(this).hasClass('selected') ) {
+    //         $(this).removeClass('selected');
+    //     }
+    //     else {
+    //         studentTable.$('tr.selected').removeClass('selected');
+    //         $(this).addClass('selected');
+    //     }
+    //
+    //     var rowData = studentTable.row($(this)).data();
+    //     user_id = rowData['userID'];
+    //
+    //     // Reload datatable with the new user id
+    //     scheduleTable.ajax.url('http://localhost:3000/student_schedule/schedule/' + user_id).load();
+    //
+    // });
 
 });
 </script>

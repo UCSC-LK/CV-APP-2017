@@ -62,14 +62,14 @@
                         }
                     } else {
                         showErrorMessage("Something went wrong");
-                        console.log(response);
+                        // console.log(response);
                     }
                     //                    console.log(response);
                 },
                 error: function (xhr, status, error) {
                     showErrorMessage("Something went wrong");
-                    console.log(xhr);
-                    console.log(status, error);
+                    // console.log(xhr);
+                    // console.log(status, error);
                 }
             });
 
@@ -108,11 +108,11 @@
                                         setPdfView(response.data.filename);
                                     } else {
                                         showErrorMessage(response.msg);
-                                        console.log(response);
+                                        // console.log(response);
                                     }
                                 },
                                 error: function (xhr, status, error) {
-                                    console.log(xhr);
+                                    // console.log(xhr);
                                     console.log(status, error);
                                 }
                             });
@@ -145,7 +145,7 @@
         $(function () {
             $('#form_validation').validate({
                 highlight: function (input) {
-                    console.log(input);
+                    // console.log(input);
                     $(input).parents('.form-line').addClass('error');
                 },
                 unhighlight: function (input) {
