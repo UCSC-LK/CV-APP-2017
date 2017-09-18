@@ -80,6 +80,7 @@ $(document).ready(function() {
     ];
 
     var selectButton =  '<a class="btn btn-warning waves-effect btn-sm ajaxSelect"> </span> Select</a>';
+    var ajaxSelect = 'ajaxSelect';
 
     var studentTable = $('#studentTable').DataTable({
     dom: 'Bfrtip',
@@ -88,7 +89,7 @@ $(document).ready(function() {
         'copy', 'csv', 'excel', 'pdf', 'print'
     ],
       ajax: {
-          url: 'http://localhost:3000/student/all',
+          url: domain + 'student/all',
           dataSrc: 'result'
       },
       "columns": [
@@ -108,7 +109,7 @@ $(document).ready(function() {
             'copy', 'csv', 'excel', 'pdf', 'print'
         ],
         ajax: {
-            url: 'http://localhost:3000/selected_student_company/companies/' + user_id,
+            url: domain + 'selected_student_company/companies/' + user_id,
             dataSrc: 'result'
         },
         "columns": [
@@ -117,7 +118,7 @@ $(document).ready(function() {
             {
                 "render": function(d,t,r){
                     var $select = $("<select></select>", {
-                        "id": r[0]+"start",
+                        "id": "start",
                         "value": d
                     });
                     $.each(slots, function(k,v){
@@ -147,7 +148,7 @@ $(document).ready(function() {
             'copy', 'csv', 'excel', 'pdf', 'print'
         ],
         ajax: {
-            url: 'http://localhost:3000/student_schedule/schedule/' + user_id,
+            url: domain + 'student_schedule/schedule/' + user_id,
             dataSrc: 'result'
         },
         "columns": [
@@ -170,10 +171,57 @@ $(document).ready(function() {
         user_id = rowData['userID'];
 
         // Reload datatables with the new user id
-        companyTable.ajax.url('http://localhost:3000/selected_student_company/companies/' + user_id).load();
-        scheduleTable.ajax.url('http://localhost:3000/student_schedule/schedule/' + user_id).load();
+        companyTable.ajax.url(domain + 'selected_student_company/companies/' + user_id).load();
+        scheduleTable.ajax.url(domain + 'student_schedule/schedule/' + user_id).load();
 
     });
+
+    companyTable.on("click", "." + ajaxSelect, function () {
+
+        var rowData = companyTable.row($(this).parents('tr')).data();
+        var slot = 4;
+        var url = domain + 'student_schedule';
+        var para = '&company=' + rowData['company'] + '&student=' + rowData['student'] + '&slot=' + slot;
+        ajaxSend("POST", para, "ajaxSelect", null, url);
+    });
+
+    function ajaxSend(type, params, action, clickRow, url) {
+        $.ajax({
+            type: type,
+            url: url,
+            data: params,
+            dataType: "json",
+            success: function (response) {
+                switch (action) {
+                    case "ajaxSelect":
+                        if (response.success) {
+                            showSuccessNotification("Student schedule updated successfully!");
+                            //applicantTable.row(clickRow).remove().draw();
+                            scheduleTable.ajax.url(domain + 'student_schedule/schedule/' + user_id).load();
+                        } else {
+                            showErrorMessage("Unexpected error #2, Please try again");
+                            console.log(response);
+                        }
+                        break;
+
+
+                }
+            },
+            error: function (xhr, status, error) {
+                console.log(xhr);
+                showErrorMessage("Unexpected error");
+                console.log(status, error);
+            }
+        });
+    }
+
+    function showErrorMessage(msg) {
+        swal(msg + "!", '', "error");
+    }
+
+    function showSuccessNotification(msg) {
+        showNotification('alert-success', msg, 'top', 'right', null, null, 2000);
+    }
 
 });
 </script>

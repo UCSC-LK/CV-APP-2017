@@ -27,3 +27,41 @@ module.exports.getSchedule = function (req, res) {
         res.json(temp);
     });
 };
+
+// Update student schedule
+module.exports.updateSchedule = function (req, res) {
+
+    var record = new StudentSchedule(req.body);
+
+    // Check if schedule exists
+    StudentSchedule.findOne({
+        'student' : record['student']
+    }, function (err, result) {
+        if (result) {
+            console.log("Updating schedule info"); // update info
+            result.student = record.student;
+
+            // Updating the schedule slot
+            result.schedule[req.body.slot - 1].company = req.body.company;
+            result.save(function (err) {
+                if (err) {
+                    return res.json({
+                        success: false,
+                        msg: 'Something went wrong.Try again',
+                        error: err
+                    });
+                }
+                res.json({
+                    success: true,
+                    msg: 'Your schedule updated successfully'
+                });
+            });
+        } else {
+            return res.json({
+                success: true,
+                msg: 'Your do not have a schedule'
+            });
+
+        }
+    });
+};
