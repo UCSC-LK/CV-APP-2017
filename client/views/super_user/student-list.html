@@ -75,7 +75,7 @@ $(document).ready(function() {
         'copy', 'csv', 'excel', 'pdf', 'print'
     ],
       ajax: {
-          url: 'http://localhost:3000/student/all',
+          url: '../../student/all',
           dataSrc: 'result',
           beforeSend: function (xhr) {
               xhr.setRequestHeader("Authorization", getToken());
