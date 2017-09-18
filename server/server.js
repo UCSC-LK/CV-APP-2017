@@ -1,7 +1,6 @@
 var express = require('express'),
     path = require('path'),
     bodyParser = require('body-parser'),
-    // api = require('./app/api2'),
     student = require('./app/api/student-api'),
     cv = require('./app/api/cv-api'),
     company = require('./app/api/company-api'),
@@ -20,9 +19,19 @@ var morgan = require('morgan');
 var fs = require('fs');
 var path = require('path');
 
-mongoose.connect(config.database, {
-    useMongoClient: true
-});
+mongoose.connect(
+    config.database,
+    {
+        useMongoClient: true
+    },
+    function (err) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log("Connected to mongodb!");
+        }
+    }
+);
 
 // create a write stream (in append mode)
 var accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {
@@ -37,7 +46,19 @@ app.use(morgan('common', {
 // logger stdout
 app.use(morgan('dev'));
 
-///////////////////////////////////////////////////////////
+////
+
+// var myLogger = function (req, res, next) {
+//   console.log('LOGGED');
+//   next();
+// };
+//
+// app.use(myLogger);
+
+// check if the request is https
+
+
+/////////////////////////////////////////////////////////////
 //
 //Set Static Folder
 app.use(express.static(path.join(__dirname, '../client')));
@@ -70,6 +91,12 @@ app.use(bodyParser.urlencoded({
 // Load our routes and pass in our app and fully configured passport
 require('./app/api/auth.js')(app, passport);
 
+// app.use(function (req, res, next) {
+//   console.log(req.secure);
+//   console.log(req.isAuthenticated());
+//   next();
+// });
+
 // app.use('/api2', api);
 app.use('/student', student);
 app.use('/cv', cv);
@@ -80,24 +107,28 @@ app.use('/student_company', studentCompany);
 app.use('/validation', remoteValidation);
 app.use('/student_schedule', studentSchedule);
 
+
 // error handlers
 // Catch unauthorised errors
 app.use(function (err, req, res, next) {
     if (err.name === 'UnauthorizedError') {
         res.status(401);
         res.json({
-            "message : ": err.name + " : " + err.message
+            success: false,
+            msg:err.message,
+            error: err
         });
         console.log("Log - UnauthorizedError");
     } else {
         console.log("Log - Unhandlied");
         console.log("message" + err.name + ": " + err.message);
         res.json({
-            "message": err.name + ": " + err.message
+            success: false,
+            msg:err.message,
+            error: err
         });
     }
 });
-
 
 app.listen(port, function () {
     console.log('Server started on port : ' + port);

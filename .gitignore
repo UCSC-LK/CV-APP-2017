@@ -20,5 +20,9 @@ npm-debug.log
 bower_components
 access.log
 
-# uploads folder
-server/assets/*
+# ignore things in sever/assets/uploads files
+server/assets/uploads/*
+!server/assets/uploads/index.html
+
+# ignore conf file
+server/app/config/conf.js

@@ -1,3 +1,9 @@
+<script type="text/javascript">
+    if (typeof userID == 'undefined') {
+        window.location.replace('./');
+    }
+</script>
+
 <div class="row clearfix">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="card">
@@ -6,19 +12,20 @@
             </div>
             <div class="body">
                 <form name="studentForm" id="form_validation">
-                    <div class="form-group form-float">
+                    <div class="form-group">
+                        <label class="form-label">Name</label>
                         <div class="form-line">
-                            <input type="text" class="form-control" name="name" required>
-                            <label class="form-label">Name</label>
-                        </div>
-                    </div>
-                    <div class="form-group form-float">
-                        <div class="form-line">
-                            <input type="text" class="form-control" name="phone" required>
-                            <label class="form-label">Phone</label>
+                            <input type="text" class="form-control" name="name" placeholder="Enter your name" required>
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="form-label">Phone</label>
+                        <div class="form-line">
+                            <input type="text" class="form-control" name="phone" placeholder="Enter your contact number" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Year</label>
                         <div class="form-line">
                             <input type="radio" name="year" id="4thyear" class="with-gap" value="4th Year" required>
                             <label for="4thyear">4th year</label>
@@ -30,16 +37,20 @@
                             <label for="passedout" class="m-l-20">Passed Out</label>
                         </div>
                     </div>
-                    <div class="form-group form-float">
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
                         <div class="form-line">
-                            <input type="email" class="form-control" name="email" required>
-                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" name="email" placeholder="Enter your email address" required>
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="form-label">Degree</label>
                         <div class="form-line">
                             <input type="radio" name="stream" id="cs" class="with-gap" value="CS" required>
                             <label for="cs">Computer Science</label>
+
+                            <input type="radio" name="stream" id="se" class="with-gap" value="SE" required>
+                            <label for="se">Software Engineering</label>
 
                             <input type="radio" name="stream" id="is" class="with-gap" value="IS" required>
                             <label for="is" class="m-l-20">Information Systems</label>
@@ -55,52 +66,109 @@
 
 <script>
 
-    $.validator.addMethod("regex", function(value, element, regexpr) {
-        return regexpr.test(value);
-    }, "Please enter a valid phone number. (07xxxxxxxx)");
+    if (typeof userID == 'undefined') {
+        window.location.replace('./');
+    } else {
+        $.validator.addMethod("regex", function (value, element, regexpr) {
+            return regexpr.test(value);
+        }, "Please enter a valid phone number. (07xxxxxxxx)");
 
-    $(function () {
-        $('#form_validation').validate({
-            rules: {
-                'phone': {
-                    regex:/^07[0-9]{8}$/
-                }
-            },
-            highlight: function (input) {
-                $(input).parents('.form-line').addClass('error');
-            },
-            unhighlight: function (input) {
-                $(input).parents('.form-line').removeClass('error');
-            },
-            errorPlacement: function (error, element) {
-                $(element).parents('.input-group').append(error);
-                $(element).parents('.form-group').append(error);
-            }
-        });
-    });
-
-    $(function () {
-        $.AdminBSB.input.activate();
-        $.AdminBSB.select.activate();
-    });
-
-    // Setting student data in the form if already filled up
-    $(document).ready(function () {
-        // Getting data
         $(function () {
-            $.ajax({
-                type: "GET",
-                url: domain + "student",
-                data: {
-                    userID: userID
+            $('#form_validation').validate({
+                rules: {
+                    'phone': {
+                        regex: /^07[0-9]{8}$/
+                    }
                 },
+                highlight: function (input) {
+                    $(input).parents('.form-line').addClass('error');
+                },
+                unhighlight: function (input) {
+                    $(input).parents('.form-line').removeClass('error');
+                },
+                errorPlacement: function (error, element) {
+                    $(element).parents('.input-group').append(error);
+                    $(element).parents('.form-group').append(error);
+                }
+            });
+        });
+
+        $(function () {
+            $.AdminBSB.input.activate();
+            $.AdminBSB.select.activate();
+        });
+
+        // Setting student data in the form if already filled up
+        $(document).ready(function () {
+            // Getting data
+            $(function () {
+                $.ajax({
+                    type: "GET",
+                    url: domain + "student",
+                    data: {
+                        userID: userID
+                    },
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("Authorization", getToken());
+                    },
+                    dataType: "json",
+                    success: function (response) {
+                        if (response.success == true) {
+                            if (response.data.length > 0) {
+                                var student = response.data[0];
+                                setStudentDetails(student);
+                            }
+                        } else {
+                            showErrorMessage("Something went wrong");
+                            console.log(response);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.log(xhr);
+                        console.log(status, error);
+                    }
+                });
+            });
+
+            $('#form_validation').submit(function () {
+                if ($(this).valid()) {
+                    saveStudentDetails();
+                }
+                return false;
+            });
+        });
+
+        // Set details in student data form
+        function setStudentDetails(student) {
+            $("input[name=name]").val(student.name);
+            $("input[name=phone]").val(student.phone);
+            $("input[name=year][value='" + student.year + "']").attr('checked', 'checked');
+            $("input[name=email]").val(student.email);
+            $("input[name=stream][value='" + student.stream + "']").attr('checked', 'checked');
+
+            $('#submit-btn').text('UPDATE');
+        }
+
+        // Save new student detail or update existing
+        function saveStudentDetails() {
+            var student = {};
+            student.name = $("input[name=name]").val();
+            student.phone = $("input[name=phone]").val();
+            student.year = $('input[name=year]:checked').val();
+            student.email = $("input[name=email]").val();
+            student.stream = $("input[name=stream]:checked").val();
+            student.userID = userID;
+
+            $.ajax({
+                type: "POST",
+                url: domain + "student",
+                data: student,
                 dataType: "json",
                 success: function (response) {
                     if (response.success == true) {
-                        if (response.data.length > 0) {
-                            var student = response.data[0];
-                            setStudentDetails(student);
-                        }
+                        showSuccessMessage(response.msg);
+                        studentObject = student;
+                        $('#username').text(studentObject.name);
                     } else {
                         showErrorMessage("Something went wrong");
                         console.log(response);
@@ -111,59 +179,6 @@
                     console.log(status, error);
                 }
             });
-        });
-
-        $('#form_validation').submit(function () {
-            if ($(this).valid()) {
-                saveStudentDetails();
-            }
-            return false;
-        });
-    });
-
-    // Set details in student data form
-    function setStudentDetails(student) {
-        $("input[name=name]").val(student.name);
-        $("input[name=name]").parent().addClass('focused');
-        $("input[name=phone]").val(student.phone);
-        $("input[name=phone]").parent().addClass('focused');
-        $("input[name=year][value='" + student.year + "']").attr('checked', 'checked');
-        $("input[name=email]").val(student.email);
-        $("input[name=email]").parent().addClass('focused');
-        $("input[name=stream][value='" + student.stream + "']").attr('checked', 'checked');
-
-        $('#submit-btn').text('UPDATE');
+        }
     }
-
-    // Save new student detail or update existing
-    function saveStudentDetails() {
-        var student = {};
-        student.name = $("input[name=name]").val();
-        student.phone = $("input[name=phone]").val();
-        student.year = $('input[name=year]:checked').val();
-        student.email = $("input[name=email]").val();
-        student.stream = $("input[name=stream]:checked").val();
-        student.userID = userID;
-
-        $.ajax({
-            type: "POST",
-            url: domain + "student",
-            data: student,
-            dataType: "json",
-            success: function (response) {
-                if (response.success == true) {
-                    showSuccessMessage(response.msg);
-                    setStudentName(student.name);
-                } else {
-                    showErrorMessage("Something went wrong");
-                    console.log(response);
-                }
-            },
-            error: function (xhr, status, error) {
-                console.log(xhr);
-                console.log(status, error);
-            }
-        });
-    }
-
 </script>

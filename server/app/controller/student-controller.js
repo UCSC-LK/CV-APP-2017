@@ -1,31 +1,23 @@
 var Student = require('../model/student');
 
 // Return all students
-module.exports.getStudents = function (req, res) {
+module.exports.getStudents = function (req, res, next) {
     Student.find({}, function (err, result) {
-        if (err) {
-            res.send(err);
-        } else {
-            var temp = {
-                "result": result
-            };
-            res.json(temp);
-        }
+      if (err) return next(err);
+      var temp = {
+          "result": result
+      };
+      res.json(temp);
     });
 };
 
 // Return student by userid
-module.exports.getStudent = function (req, res) {
+module.exports.getStudent = function (req, res, next) {
     // console.log('Sending student info...');
     Student.find({
         userID: req.query.userID
     }, function (err, result) {
-        if (err) {
-            return res.json({
-                success: false,
-                error: err
-            });
-        }
+        if (err) return next(err);
         res.json({
             success: true,
             data: result
@@ -34,7 +26,7 @@ module.exports.getStudent = function (req, res) {
 };
 
 // Insert a student
-module.exports.addStudent = function (req, res) {
+module.exports.addStudent = function (req, res, next) {
     var student = new Student(req.body);
     // Check if student exists
     Student.findOne({
@@ -51,7 +43,7 @@ module.exports.addStudent = function (req, res) {
                 if (err) {
                     return res.json({
                         success: false,
-                        msg: 'Some thing went wrong.Try again',
+                        msg: 'Something went wrong. Please try again',
                         error: err
                     });
                 }
@@ -66,7 +58,7 @@ module.exports.addStudent = function (req, res) {
                 if (err) {
                     return res.json({
                         success: false,
-                        msg: 'Some thing went wrong.Try again',
+                        msg: 'Something went wrong. Please try again',
                         error: err
                     });
                 }

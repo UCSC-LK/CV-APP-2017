@@ -2,7 +2,7 @@ var StudentSchedule = require('../model/student-schedule');
 
 
 // Return student by schedule by student id
-module.exports.getSchedule = function (req, res) {
+module.exports.getSchedule = function (req, res, next) {
     StudentSchedule.find({
         'student': req.params.query
     }, { schedule: 1}, function (err, result) {
@@ -25,6 +25,7 @@ module.exports.getSchedule = function (req, res) {
             "result": res1
         };
         res.json(temp);
+
     });
 };
 

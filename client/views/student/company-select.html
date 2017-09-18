@@ -1,4 +1,9 @@
-<!-- Exportable Table -->
+<script type="text/javascript">
+    if (typeof userID == 'undefined') {
+        window.location.replace('./');
+    }
+</script>
+
 <div class="row clearfix">
     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
         <div class="card">
@@ -23,7 +28,7 @@
         <div class="card">
             <div class="header">
                 <h2>
-                    Chosen Companies
+                    Selected Companies
                 </h2>
             </div>
             <div class="body">
@@ -41,7 +46,6 @@
         </div>
     </div>
 </div>
-<!-- #END# Exportable Table -->
 
 <!-- Modal Dialogs ====================================================================================================================== -->
 <!-- Default Size -->
@@ -55,19 +59,11 @@
             <div id="positionModalBody" class="modal-body">
                 <form name="positionForm_" id="positionForm">
                     <div id="position-form-group" class="form-group">
-                        <!-- <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                      <input type="checkbox" id="md_checkbox_26" class="filled-in chk-col-blue" />
-                                      <label for="md_checkbox_26">Software Engineer</label>
-                                    </div> -->
-
-
-                        <!--dyanamically append data  -->
+                          <!--dyanamically append data  -->
                     </div>
-                    <!-- <button class="btn btn-primary waves-effect" type="submit" id="submit-btn">SAVE</button> -->
                 </form>
-                <!-- </br></br> -->
-
             </div>
+
             <div class="modal-footer ">
                 <button type="button" class="btn btn-warning waves-effect" data-dismiss="modal">CLOSE</button>
                 <button type="button" class="btn btn-info waves-effect saveButton">SAVE CHANGES</button>
@@ -76,223 +72,212 @@
     </div>
 </div>
 
+<script type="text/javascript">
+    if (typeof userID == 'undefined') {
+        window.location.replace('./');
+    } else {
+        $(document).ready(function () {
 
-<script>
-    $(document).ready(function () {
+            var selectButton = '<a class="btn btn-warning waves-effect btn-sm ajaxSelect"> Select</a>';
+            var removeButton = '<a class="btn btn-danger waves-effect btn-sm ajaxRemove"> Remove</a>';
+            var ajaxRemove = "ajaxRemove";
+            var ajaxSelect = "ajaxSelect";
+            var saveButton = "saveButton";
+            var positionModal = $('#positionModal');
+            var positionForm = $('#positionForm');
 
-        var selectButton = '<a class="btn btn-warning waves-effect btn-sm ajaxSelect"> Select</a>';
-        var removeButton = '<a class="btn btn-danger waves-effect btn-sm ajaxRemove"> Remove</a>';
-        var ajaxRemove = "ajaxRemove";
-        var ajaxSelect = "ajaxSelect";
-        var saveButton = "saveButton";
-        var positionModal = $('#positionModal');
-        var positionForm = $('#positionForm');
+            // <button type="button" class="btn btn-default waves-effect m-r-20" data-toggle="modal" data-target="#positionModal">MODAL - DEFAULT SIZE</button>
 
-        // <button type="button" class="btn btn-default waves-effect m-r-20" data-toggle="modal" data-target="#positionModal">MODAL - DEFAULT SIZE</button>
-
-        var companyTable = $('#companyTable').DataTable({
-            dom: 'Bfrtip',
-            responsive: true,
-            buttons: [
-                //        'copy', 'csv', 'excel', 'pdf', 'print'
-            ],
-            ajax: {
-                url: domain + 'company/withoutselected/' + userID,
-                dataSrc: 'result'
-            },
-            "columns": [{
-                "data": "name"
-            },
-                {
-                    "data": null,
-                    "defaultContent": selectButton
-                }
-            ]
-        });
-
-        var chosedTable = $('#chosedTable').DataTable({
-            dom: 'Bfrtip',
-            responsive: true,
-            buttons: [
-                //        'copy', 'csv', 'excel', 'pdf', 'print'
-            ],
-            ajax: {
-                url: domain + 'student_company/companies/' + userID,
-                dataSrc: 'result'
-            },
-            "columns": [{
-                "data": "company"
-            },
-                {
-                    "data": "position"
+            var companyTable = $('#companyTable').DataTable({
+                dom: 'Bfrtip',
+                responsive: true,
+                buttons: [],
+                ajax: {
+                    url: domain + 'company/withoutselected/' + userID,
+                    dataSrc: 'result'
                 },
-                {
-                    "data": null,
-                    "defaultContent": removeButton
-                }
-            ]
-        });
-
-        chosedTable.on("click", "." + ajaxRemove, function () {
-            var rowData = chosedTable.row($(this).parents('tr')).data();
-            var thisRow = $(this).parents('tr');
-            var para = '';
-            var url = domain + 'student_company/' + rowData['_id'];
-            //            console.log(url + para);nfirm: true,
-            ajaxSend("DELETE", para, "ajaxRemove", thisRow, url);
-        });
-
-        var rowData2 = "";
-        var para2 = "";
-        var thisRow2 = "";
-        companyTable.on("click", "." + ajaxSelect, function () {
-            rowData2 = companyTable.row($(this).parents('tr')).data();
-            thisRow2 = $(this).parents('tr');
-            para2 = '&student=' + userID + '&company=' + rowData2['_id'] + '&choice=' + rowData2['name'];
-            //            console.log(rowData2);
-            positionModal.modal('toggle');
-        });
-
-        positionModal.on('show.bs.modal', function (event) {
-            var modal = $(this);
-            modal.find('#positionModalLabel').html(rowData2["name"] + " - Positions");
-            // position-form-group
-            $.each(rowData2["positions"], function (index, value) {
-                //                console.log(index + ": " + value);
-                var checkbox_div = "<div class='form-group'>" +
-                    "<input type='checkbox' name='position[]' value = '" + value + "' id=" + index + " class='filled-in chk-col-blue'/>" +
-                    "<label for=" + index + ">" + value + "</label>" +
-                    "</div>";
-                $("#position-form-group").append(checkbox_div);
-            });
-        });
-
-        positionModal.on('hidden.bs.modal', function (e) {
-            $("#position-form-group").empty();
-        });
-
-        function getCheckedPositions() {
-            var temp = [];
-            $("input[name='position[]']").each(function () {
-                if ($(this).is(':checked')) {
-                    //  alert( $(this).val() );
-                    temp.push($(this).val());
+                "columns": [{
+                    "data": "name"
+                },
+                    {
+                        "data": null,
+                        "defaultContent": selectButton
+                    }
+                ],
+                "language": {
+                    "emptyTable": "No companies available."
                 }
             });
-            return temp;
-        }
 
-        positionModal.on("click", "." + saveButton, function () {
-            if (positionForm.valid()) {
-                var fullpara = para2 + '&position=' + getCheckedPositions();
-                var url = domain + "student_company";
-                ajaxSend("POST", fullpara, "ajaxSave", thisRow2, url);
-            }
-        });
+            var chosedTable = $('#chosedTable').DataTable({
+                dom: 'Bfrtip',
+                responsive: true,
+                buttons: [],
+                ajax: {
+                    url: domain + 'student_company/companies/' + userID,
+                    dataSrc: 'result',
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("Authorization", getToken());
+                    }
+                },
+                "columns": [{
+                    "data": "company"
+                },
+                    {
+                        "data": "position"
+                    },
+                    {
+                        "data": null,
+                        "defaultContent": removeButton
+                    }
+                ],
+                "language": {
+                    "emptyTable": "You have not selected any companies."
+                }
+            });
 
-        function reset_selection() {
+            chosedTable.on("click", "." + ajaxRemove, function () {
+                var rowData = chosedTable.row($(this).parents('tr')).data();
+                var thisRow = $(this).parents('tr');
+                var para = '';
+                var url = domain + 'student_company/' + rowData['_id'];
+                //            console.log(url + para);nfirm: true,
+                ajaxSend("DELETE", para, "ajaxRemove", thisRow, url);
+            });
+
             var rowData2 = "";
             var para2 = "";
             var thisRow2 = "";
-        }
+            companyTable.on("click", "." + ajaxSelect, function () {
+                rowData2 = companyTable.row($(this).parents('tr')).data();
+                thisRow2 = $(this).parents('tr');
+                para2 = '&student=' + userID + '&company=' + rowData2['_id'] + '&choice=' + rowData2['name'];
+                //            console.log(rowData2);
+                positionModal.modal('toggle');
+            });
 
-        function ajaxSend(type, params, action, clickRow, url) {
-            $.ajax({
-                type: type,
-                url: url,
-                data: params,
-                dataType: "json",
-                success: function (response) {
-                    switch (action) {
-                        case "ajaxRemove":
-                            if (response.status == 'success') {
-                                showSuccessNotification("Company removed successfully!");
-                                chosedTable.row(clickRow).remove().draw();
-                                companyTable.ajax.reload(null, false)
-                            } else {
-                                showErrorMessage("Unexpected error #1, Please try again");
-                                console.log(response);
-                            }
-                            break;
+            positionModal.on('show.bs.modal', function (event) {
+                var modal = $(this);
+                modal.find('#positionModalLabel').html(rowData2["name"] + " - Positions");
+                // position-form-group
+                $.each(rowData2["positions"], function (index, value) {
+                    //                console.log(index + ": " + value);
+                    var checkbox_div = "<div class='form-group'>" +
+                        "<input type='checkbox' name='position[]' value = '" + value + "' id=" + index + " class='filled-in chk-col-blue'/>" +
+                        "<label for=" + index + ">" + value + "</label>" +
+                        "</div>";
+                    $("#position-form-group").append(checkbox_div);
+                });
+            });
 
-                        case "ajaxSave":
-                            if (response.status == 'success') {
-                                positionModal.modal('toggle');
-                                showSuccessNotification("Company selected successfully!");
-                                companyTable.row(clickRow).remove().draw();
-                                chosedTable.ajax.reload(null, false);
-                                reset_selection();
-                            } else {
-                                showErrorMessage("Unexpected error #2, Please try again");
-                                console.log(response);
-                            }
-                            break;
+            positionModal.on('hidden.bs.modal', function (e) {
+                $("#position-form-group").empty();
+            });
+
+            function getCheckedPositions() {
+                var temp = [];
+                $("input[name='position[]']").each(function () {
+                    if ($(this).is(':checked')) {
+                        //  alert( $(this).val() );
+                        temp.push($(this).val());
                     }
-                },
-                error: function (xhr, status, error) {
-                    console.log(xhr);
-                    alert("Unexpected error");
-                    console.log(status, error);
-                    showErrorMessage(error);
+                });
+                return temp;
+            }
+
+            positionModal.on("click", "." + saveButton, function () {
+                if (positionForm.valid()) {
+                    var fullpara = para2 + '&position=' + getCheckedPositions();
+                    var url = domain + "student_company";
+                    ajaxSend("POST", fullpara, "ajaxSave", thisRow2, url);
                 }
             });
-        }
 
-        function showSuccessNotification(msg) {
-            showNotification('alert-success', msg, 'top', 'right', null, null, 1500);
-        }
-
-        function showErrorMessage(msg) {
-            swal(msg + "!", '', "error");
-        }
-
-        // function showAjaxLoaderMessage() {
-        //     swal({
-        //         title: "Do you really want to select this company ?",
-        //         text: "Submit to run ajax request",
-        //         type: "info",
-        //         showCancelButton: true,
-        //         closeOnConfirm: false,
-        //         showLoaderOnConfirm: true,
-        //     }, function () {
-        //         console.log("Hello World");
-        //         setTimeout(function () {
-        //             swal("Ajax request finished!");
-        //         }, 2000);
-        //     });
-        // }
-    });
-</script>
-
-
-<script>
-    $(function () {
-        $('#positionForm').validate({
-            rules: {
-                'position[]': {
-                    required: true
-                }
-            },
-            messages: {
-                'position[]': "You have to select at least one position",
-            },
-            highlight: function (input) {
-                console.log(input);
-                $(input).parents('.form-line').addClass('error');
-            },
-            unhighlight: function (input) {
-                $(input).parents('.form-line').removeClass('error');
-            },
-            errorPlacement: function (error, element) {
-                // $(element).parents('.form-group').append(error);
-                $("#position-form-group").append(error);
-                console.log(error);
+            function reset_selection() {
+                var rowData2 = "";
+                var para2 = "";
+                var thisRow2 = "";
             }
-        });
-    });
 
-    $(function () {
-        $.AdminBSB.input.activate();
-        $.AdminBSB.select.activate();
-    });
+            function ajaxSend(type, params, action, clickRow, url) {
+                $.ajax({
+                    type: type,
+                    url: url,
+                    data: params,
+                    dataType: "json",
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("Authorization", getToken());
+                    },
+                    success: function (response) {
+                        switch (action) {
+                            case "ajaxRemove":
+                                if (response.status == 'success') {
+                                    showSuccessNotification("Company removed successfully!");
+                                    chosedTable.row(clickRow).remove().draw();
+                                    companyTable.ajax.reload(null, false)
+                                } else {
+                                    showErrorMessage("Unexpected error #1, Please try again");
+                                    console.log(response);
+                                }
+                                break;
+
+                            case "ajaxSave":
+                                if (response.status == 'success') {
+                                    positionModal.modal('toggle');
+                                    showSuccessNotification("Company selected successfully!");
+                                    companyTable.row(clickRow).remove().draw();
+                                    chosedTable.ajax.reload(null, false);
+                                    reset_selection();
+                                } else {
+                                    showErrorMessage("Unexpected error #2, Please try again");
+                                    console.log(response);
+                                }
+                                break;
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.log(xhr);
+                        alert("Unexpected error");
+                        console.log(status, error);
+                        showErrorMessage(error);
+                    }
+                });
+            }
+
+            function showSuccessNotification(msg) {
+                showNotification('alert-success', msg, 'top', 'right', null, null, 1500);
+            }
+
+        });
+
+        $(function () {
+            $('#positionForm').validate({
+                rules: {
+                    'position[]': {
+                        required: true
+                    }
+                },
+                messages: {
+                    'position[]': "You have to select at least one position",
+                },
+                highlight: function (input) {
+                    console.log(input);
+                    $(input).parents('.form-line').addClass('error');
+                },
+                unhighlight: function (input) {
+                    $(input).parents('.form-line').removeClass('error');
+                },
+                errorPlacement: function (error, element) {
+                    // $(element).parents('.form-group').append(error);
+                    $("#position-form-group").append(error);
+                    console.log(error);
+                }
+            });
+        });
+
+        $(function () {
+            $.AdminBSB.input.activate();
+            $.AdminBSB.select.activate();
+        });
+    }
 </script>

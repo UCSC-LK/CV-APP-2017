@@ -1,0 +1,345 @@
+<!-- Exportable Table -->
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>
+                    System Setup
+                </h2>
+            </div>
+            <div class="body">
+
+                    <button class="btn btn-primary waves-effect" id="setup-std-logins">Setup student logins</button>
+                    <button class="btn btn-primary waves-effect" id="setup-cmp-logins">Setup companies</button>
+
+                <div class="log" id="log"></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- #END# Exportable Table -->
+
+<style type="text/css">
+    p {
+        margin: 0;
+    }
+    .log {
+        font-size: 13px;
+        height: 350px;
+        overflow: auto;
+        margin-top: 10px;
+        border: solid 1px;
+        padding: 7px;
+        font-family: "Lucida Console", Monaco, monospace;
+    }
+</style>
+
+<script type="application/javascript">
+
+    var domain = "../../";
+
+    var studentUsernames = [
+        13000022,
+        13000063,
+        13000098,
+        13000128,
+        13000162,
+        13000187,
+        13000241,
+        13000314,
+        13000322,
+        13000349,
+        13000446,
+        13000497,
+        13000535,
+        13000561,
+        13000616,
+        13000632,
+        13000642,
+        13000645,
+        13000659,
+        13000675,
+        13000683,
+        13000764,
+        13000845,
+        13000901,
+        13000918,
+        13000952,
+        13000985,
+        13000993,
+        13001043,
+        13001051,
+        13001061,
+        13001078,
+        13001086,
+        13001132,
+        13001159,
+        13001221,
+        13001264,
+        13001272,
+        13001329,
+        13020056,
+        13020102,
+        13020112,
+        13020188,
+        13020196,
+        13020201,
+        13020218,
+        13020234,
+        13020242,
+        13020252,
+        13020307,
+        13020315,
+        13020341,
+        13020366,
+        13020439,
+        13020455,
+        13020471,
+        13020579,
+        13020609,
+        13020651,
+        13000454
+    ];
+
+    var companyDetails = [
+        {
+            username: 'ifs',
+            userID:-1,
+            name: 'IFS',
+            logo: 'ifs.png',
+            panels: [],
+            positions: ['Software Engineer']
+        },
+        {
+            username: 'sysco-labs',
+            userID:-1,
+            name: 'Sysco Labs',
+            logo: 'sysco-labs.png',
+            panels: [],
+            positions: ['Software Engineer', 'Quality Assurance Engineer']
+        },
+        {
+            username: 'cambio',
+            userID:-1,
+            name: 'Cambio Health Care Systems',
+            logo: 'cambio.png',
+            panels: [],
+            positions: ['Software Engineer', 'Quality Assurance Engineer', 'Business Analyst']
+        },
+        {
+            username: 'eyepax',
+            userID:-1,
+            name: 'Eyepax',
+            logo: 'eyepax.png',
+            panels: [],
+            positions: ['Software Engineer', 'Business Analyst']
+        },
+        {
+            username: 'wso2',
+            userID:-1,
+            name: 'WSO2 Lanka (Pvt.) Ltd.',
+            logo: 'wso2.png',
+            panels: [],
+            positions: ['Software Engineer', 'Quality Assurance Engineer', 'Devops Engineer']
+        },
+        {
+            username: 'geveo',
+            userID:-1,
+            name: 'Geveo Australia',
+            logo: 'geveo.png',
+            panels: [],
+            positions: ['Software Engineer', 'Quality Assurance Engineer']
+        },
+        {
+            username: 'inova-it',
+            userID:-1,
+            name: 'Inova IT',
+            logo: 'inova-it.png',
+            panels: [],
+            positions: ['Software Engineer', 'Quality Assurance Engineer']
+        },
+        {
+            username: 'fortude',
+            userID:-1,
+            name: 'Brandix i3 - Fortude',
+            logo: 'fortude.png',
+            panels: [],
+            positions: ['Quality Assurance Engineer', 'Business Analyst']
+        },
+        {
+            username: 'simcentric',
+            userID:-1,
+            name: 'Simcentric Technologies',
+            logo: 'simcentric.png',
+            panels: [],
+            positions: ['Software Engineer']
+        },
+        {
+            username: 'virtusa',
+            userID:-1,
+            name: 'Virtusa',
+            logo: 'virtusa.png',
+            panels: [],
+            positions: ['Software Engineer']
+        },
+        {
+            username: 'codegen',
+            userID:-1,
+            name: 'Codegen',
+            logo: 'codegen.png',
+            panels: [],
+            positions: ['Software Engineer', 'Quality Assurance Engineer']
+        },
+        {
+            username: 'mobitel',
+            userID:-1,
+            name: 'Mobitel',
+            logo: 'mobitel.png',
+            panels: [],
+            positions: ['Quality Assurance Engineer', 'Business Analyst']
+        },
+        {
+            username: 'synopsis',
+            userID:-1,
+            name: 'Synopsis Lanka',
+            logo: 'synopsis.png',
+            panels: [],
+            positions: ['Software Engineer']
+        },
+        {
+            username: 'camms',
+            userID:-1,
+            name: 'Camms',
+            logo: 'camms.png',
+            panels: [],
+            positions: ['Software Engineer']
+        },
+        {
+            username: 'zone-24x7',
+            userID:-1,
+            name: 'Zone 24x7',
+            logo: 'zone-24x7.png',
+            panels: [],
+            positions: ['Software Engineer']
+        },
+        {
+            username: 'lsg-technologies',
+            userID:-1,
+            name: 'LSG Technologies',
+            logo: 'lsg-technologies.png',
+            panels: [],
+            positions: ['Engineer']
+        }
+    ];
+
+    var studentCount = 0;
+    var companyCount = 0;
+
+    $('#setup-std-logins').click(function () {
+        for(var i=0; i<studentUsernames.length; i++) {
+            $.ajax({
+                type: "POST",
+                url: domain + "signup",
+                data: {
+                    username: studentUsernames[i],
+                    password: studentUsernames[i],
+                    usertype: 0
+                },
+                dataType: "json",
+                success: function (response) {
+                    if (response.success == true) {
+                        addLogMsg("Added user " + response.data.username);
+                        studentCount ++;
+                    } else {
+                        addLogMsg("Error adding user " + response.data.username + " - " + response.msg);
+                        console.log(response);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    showErrorMessage("Something went wrong");
+                    console.log(xhr);
+                    console.log(status, error);
+                }
+            });
+        }
+        // alert(studentCount + " students inserted successfully");
+        studentCount = 0;
+    });
+
+    $('#setup-cmp-logins').click(function () {
+        for(var i=0; i<companyDetails.length; i++) {
+            // Add user info
+            $.ajax({
+                type: "POST",
+                url: domain + "signup",
+                data: {
+                    username: companyDetails[i].username,
+                    password: companyDetails[i].username,
+                    usertype: 1
+                },
+                dataType: "json",
+                success: function (response) {
+                    if (response.success === true) {
+                        addLogMsg("User added " + response.data.username + " - " + response.data._id);
+                        saveCompanyInfo(response.data.username, response.data._id);
+                        companyCount ++;
+                    } else {
+                        addLogMsg("Error adding user " + response.data.username + " - " + response.msg);
+                        console.log(response);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    showErrorMessage("Something went wrong");
+                    console.log(xhr);
+                    console.log(status, error);
+                }
+            });
+
+        }
+        // alert(companyCount + " companies inserted successfully");
+        companyCount = 0;
+    });
+
+    function saveCompanyInfo(username, userID) {
+        for(var i=0; i<companyDetails.length; i++) {
+            if (companyDetails[i].username == username){
+                $.ajax({
+                    type: "POST",
+                    url: domain + "company",
+                    data: {
+                        name: companyDetails[i].name,
+                        logo: companyDetails[i].logo,
+                        userID: userID,
+                        panels: companyDetails[i].panels,
+                        positions: companyDetails[i].positions
+                    },
+                    dataType: "json",
+                    success: function (response) {
+                        if (response.status === "success") {
+                            addLogMsg("Company info added " + response.data.name);
+                        } else {
+                            addLogMsg("Error adding company ");
+                            console.log(response);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        showErrorMessage("Something went wrong");
+                        console.log(xhr);
+                        console.log(status, error);
+                    }
+                });
+                break;
+            }
+        }
+    }
+
+    function addLogMsg(msg) {
+        var para = document.createElement("p");
+        var node = document.createTextNode(msg);
+        para.appendChild(node);
+        $('#log').append(para);
+    }
+
+
+</script>

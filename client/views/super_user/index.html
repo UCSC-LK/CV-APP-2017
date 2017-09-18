@@ -35,7 +35,7 @@
     <link href="../../assets/css/themes/all-themes.css" rel="stylesheet"/>
 </head>
 
-<body class="theme-blue">
+<body class="theme-grey">
 <!-- Page Loader -->
 <div class="page-loader-wrapper">
     <div class="loader">
@@ -113,6 +113,9 @@ s
                     <ul class="ml-menu">
                         <li class="active">
                             <a href="student-list.html" class="ajax-pg toggled">Student List</a>
+                        </li>
+                        <li>
+                            <a href="setup.html" class="ajax-pg toggled">System Setup</a>
                         </li>
                     </ul>
                 </li>
@@ -199,6 +202,7 @@ s
 </html>
 <script>
     $(document).ready(function() {
+        $('html').removeClass('safari');
         var pageWrapper = $("#page-wrapper");
         $("a.ajax-pg").on("click", function (e) {
             e.preventDefault();
