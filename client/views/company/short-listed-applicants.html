@@ -1,3 +1,9 @@
+<script type="text/javascript">
+    if (typeof userID == 'undefined') {
+        window.location.replace('./');
+    }
+</script>
+
 <div class="row clearfix">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="card">
@@ -16,6 +22,7 @@
             <div class="header">
                 <h2>
                     All Short Listed Applicants
+                    <span id="shortlist-table-header-position" style="color: #9f9f9f; font-size: 80%"></span>
                 </h2>
             </div>
             <div class="body">
@@ -38,101 +45,136 @@
 </div>
 
 
-<script>
+<script type="text/javascript">
 
-    $(document).ready(function () {
+    if (typeof userID == 'undefined') {
+        window.location.replace('./');
+    } else {
+        $(document).ready(function () {
 
-        var viewButton = '<a class="btn btn-info btn-sm  waves-effect ajaxView" style = "margin-right:10px;" title="View CV"> <i class="material-icons">drafts</i> </a>';
-        var ajaxView = "ajaxView";
+            var viewButton = '<a class="btn btn-info btn-sm  waves-effect ajaxView" style = "margin-right:10px;" title="View CV"> <i class="material-icons">description</i> </a>';
+            var ajaxView = "ajaxView";
 
-        // Set position tabs
-        companyObject.positions.forEach(function (t) {
-            var navtab = "<li role='presentation'><a class='positionTab' href='#tablediv' data-toggle='tab'>" + t + "</a></li>"
-            $("#navdiv").append(navtab);
-        });
+            // Set position tabs
+            companyObject.positions.forEach(function (t) {
+                var navtab = "<li role='presentation'><a class='positionTab' href='#tablediv' data-toggle='tab'>" + t + "</a></li>"
+                $("#navdiv").append(navtab);
+            });
 
-        // Set active default position tab
-        var positionTabs = $("#navdiv").children()[0];
-        $(positionTabs).addClass('active');
+            // Set active default position tab
+            var positionTabs = $("#navdiv").children()[0];
+            $(positionTabs).addClass('active');
 
-        var position = companyObject.positions[0];
+            var position = companyObject.positions[0];
+            $('#shortlist-table-header-position').text(position);
 
-        var shortListedTable = $('#shortListedTable').DataTable({
-            dom: 'Bfrtip',
-            responsive: true,
-            buttons: [
-                'pdf', 'print'
-            ],
-            ajax: {
-                url: domain + 'selected_student_company/students',
-                data: function (d) {
-                    d.company = companyObject._id;
-                    d.position = position;
-                },
-                dataSrc: 'result'
-            },
-            "columns": [{
-                "data": "name"
-            },
-                {
-                    "data": "email"
-                },
-                {
-                    "data": "phone"
-                },
-                {
-                    "data": "year",
-                    "width": "15%"
-                },
-                {
-                    "data": "stream",
-                    "width": "12%"
-                },
-                {
-                    "width": "10%",
-                    "data": null,
-                    "defaultContent": viewButton
-                }
-            ],
-            "order": [
-                [1, 'asc']
-            ],
-            initComplete: function () {
-                this.api().columns().every(function () {
-                    if (this[0] == 3 || this[0] == 4) {
-                        var column = this;
-                        var select = $('<select><option value=""></option></select>')
-                            .appendTo($(column.header()))
-                            .on('change', function () {
-                                var val = $.fn.dataTable.util.escapeRegex(
-                                    $(this).val()
-                                );
-                                column
-                                    .search(val ? '^' + val + '$' : '', true, false)
-                                    .draw();
+            var shortListedTable = $('#shortListedTable').DataTable({
+                dom: 'Bfrtip',
+                responsive: true,
+                buttons: [
+                    {
+                        extend: 'pdfHtml5',
+                        message: 'All shortlisted Applicants - ' + position,
+                        title: 'UCSC Career Fair 2017',
+                        filename: 'All shortlisted Applicants - ' + position,
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4]
+                        },
+                        init: function(dt, node, config) {
+                            $(".positionTab").on('click', function() {
+                                config.message = config.filename = 'All shortlisted applicants - ' + $(this).text();
                             });
-                        column.data().unique().sort().each(function (d, j) {
-                            select.append('<option value="' + d + '">' + d + '</option>')
-                        });
+                        }
                     }
-                });
+                ],
+                ajax: {
+                    url: domain + 'selected_student_company/students',
+                    data: function (d) {
+                        d.company = companyObject._id;
+                        d.position = position;
+                    },
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("Authorization", getToken());
+                    },
+                    dataSrc: 'result'
+                },
+                "columns": [{
+                    "data": "name"
+                },
+                    {
+                        "data": "email"
+                    },
+                    {
+                        "data": "phone"
+                    },
+                    {
+                        "data": "year",
+                        "width": "15%"
+                    },
+                    {
+                        "data": "stream",
+                        "width": "12%"
+                    },
+                    {
+                        "width": "10%",
+                        "data": null,
+                        "defaultContent": viewButton
+                    }
+                ],
+                "order": [
+                    [1, 'asc']
+                ],
+                initComplete: function () {
+                    this.api().columns().every(function () {
+                        if (this[0] == 3 || this[0] == 4) {
+                            var column = this;
+                            var select = $('<select><option value="">All</option></select>')
+                                .appendTo($(column.header()).append('</br> '))
+                                .on('change', function () {
+                                    var val = $.fn.dataTable.util.escapeRegex(
+                                        $(this).val()
+                                    );
+                                    column
+                                        .search(val ? '^' + val + '$' : '', true, false)
+                                        .draw();
+                                });
+                            column.data().unique().sort().each(function (d, j) {
+                                select.append('<option value="' + d + '">' + d + '</option>')
+                            });
+                        }
+                    });
+                },
+                "language": {
+                    "emptyTable": "No applicants shortlisted for this position."
+                }
+            });
+
+            // Open CV pdf in new tab
+            shortListedTable.on("click", "." + ajaxView, function () {
+                var rowData = shortListedTable.row($(this).parents('tr')).data();
+                var win = window.open(domain + 'uploads/' + rowData.cv);
+            });
+
+            // Event on table refresh - disable pdf buttons
+            shortListedTable.on('draw.dt', function () {
+                if (shortListedTable.data().length === 0) {
+                    shortListedTable.buttons().disable();
+                } else {
+                    shortListedTable.buttons().enable();
+                }
+            });
+
+            function showErrorMessage(msg) {
+                swal(msg + "!", '', "error");
             }
-        });
 
-        // Open CV pdf in new tab
-        shortListedTable.on("click", "." + ajaxView, function () {
-            var rowData = shortListedTable.row($(this).parents('tr')).data();
-            var win = window.open(domain + 'uploads/' + rowData.cv);
+            //Changing position
+            $('.positionTab').click(function () {
+                $('#shortlist-table-header-position').text($(this).text());
+                position = $(this).text();
+                shortListedTable.ajax.reload();
+            });
         });
+    }
 
-        function showErrorMessage(msg) {
-            swal(msg + "!", '', "error");
-        }
-
-        //Changing position
-        $('.positionTab').click(function () {
-            position = $(this).text();
-            shortListedTable.ajax.reload();
-        });
-    });
 </script>

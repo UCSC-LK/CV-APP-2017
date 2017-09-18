@@ -16,7 +16,7 @@ module.exports = function (app, passport) {
     // });
 
     // process the login form  -  //OK
-    app.post('/login', function (req, res) {
+    app.post('/login', function (req, res, next) {
         console.log("auth.login");
         User.findOne({
             username: req.body.username
@@ -58,7 +58,7 @@ module.exports = function (app, passport) {
     });
 
     // handle logout - Todo
-    app.post("/logout", function (req, res) {
+    app.post("/logout", function (req, res, next) {
         req.logOut();
         res.send({
             success: true,
@@ -72,7 +72,7 @@ module.exports = function (app, passport) {
     //   res.send(req.isAuthenticated() ? req.user : '0');
     // });
     // remove send
-    app.get("/loggedin", function (req, res) {
+    app.get("/loggedin", function (req, res, next) {
         if (req.isAuthenticated()) {
             res.send({
                 success: true,
@@ -114,49 +114,55 @@ module.exports = function (app, passport) {
     // });
 
     // OK
-    app.post('/signup', function (req, res) {
+    app.post('/signup', function (req, res, next) {
         if (!req.body.username || !req.body.password || !req.body.usertype) {
             res.json({
                 success: false,
                 msg: 'Please pass username and password.'
             });
         } else {
-            var newUser = new User({
-                username: req.body.username,
-                password: req.body.password,
-                usertype: req.body.usertype,
-                isfirst: 1
-            });
-            // save the user
-            newUser.save(function (err) {
-                if (err) {
+            //Check if username exists
+            User.findOne({username: req.body.username}, function (err, user) {
+                if (err) throw err;
+                if (!user) {
+                    var newUser = new User({
+                        username: req.body.username,
+                        password: req.body.password,
+                        usertype: req.body.usertype,
+                        isfirst: 1
+                    });
+                    // save the user
+                    newUser.save(function (err, user1) {
+                        if (err) throw err;
+                        res.json({
+                            success: true,
+                            msg: 'Successful created new user.',
+                            data: user1
+                        });
+                    });
+
+                } else {
                     return res.json({
                         success: false,
-                        msg: 'Username already exists.'
+                        msg: 'Username already exists.',
+                        data: {username: req.body.username}
                     });
                 }
-                res.json({
-                    success: true,
-                    msg: 'Successful created new user.'
-                });
             });
         }
     });
 
     //ok
-    app.post('/changepass', function (req, res) {
+    app.post('/changepass', function (req, res, next) {
         if (!req.body.username || !req.body.oldpassword || !req.body.password) {
             res.json({
                 success: false,
                 msg: 'Please pass username , password & new password.'
             });
         } else {
-            User.findOne({
-                username: req.body.username
-            }, function (err, user) {
+            User.findOne({username: req.body.username}, function (err, user) {
                 if (err) throw err;
                 if (!user) {
-                    // res.status(401).send({success: false, msg: 'Authentication failed. User not found.'});
                     res.json({
                         success: false,
                         msg: 'Authentication failed. User not found.'
@@ -171,7 +177,7 @@ module.exports = function (app, passport) {
                                 if (err) {
                                     return res.json({
                                         success: false,
-                                        msg: 'Some thing went wrong.Try again'
+                                        msg: 'Something went wrong. Please try again'
                                     });
                                 }
                                 res.json({

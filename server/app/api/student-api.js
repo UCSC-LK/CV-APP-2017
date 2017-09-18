@@ -2,7 +2,16 @@ var express = require('express'),
     router = express.Router(),
     studentController = require('../controller/student-controller');
 
-router.get('/', studentController.getStudent);
+var jwt = require('express-jwt');
+var config = require('../config/conf');
+
+var auth = jwt({
+    secret: config.secret,
+    userProperty: 'payload'
+});
+
+
+router.get('/',auth, studentController.getStudent);
 
 router.get('/all', studentController.getStudents);
 

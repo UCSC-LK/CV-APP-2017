@@ -27,6 +27,8 @@
 
     <!-- JQuery DataTable Css -->
     <link href="../../assets/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css" rel="stylesheet">
+
+
     <!-- Custom Css -->
     <link href="../../assets/css/style.css" rel="stylesheet">
 
@@ -71,7 +73,7 @@ s
                 <!-- User Menu -->
                 <li class="dropdown">
                     <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button">
-                        <i class="material-icons">keyboard_arrow_down</i>
+                        <i class="material-icons">menu</i>
                     </a>
                     <ul class="dropdown-menu pull-right">
                         <li><a href="profile.html" class="ajax-pg"><i class="material-icons">lock</i>Change Password</a>
@@ -91,22 +93,12 @@ s
     <!-- Left Sidebar -->
     <aside id="leftsidebar" class="sidebar custom-width">
         <!-- User Info -->
-        <div class="user-info" id="company-logo">
-            <!--<div class="image">-->
-                <!--<img src="../../assets/images/user.png" id="company-logo" height="48" alt="User"/>-->
-            <!--</div>-->
-            <!--<div class="info-container">-->
-                <!--<div class="name" data-toggle="dropdown" aria-haspopup="true" id="username" aria-expanded="false">-->
-                    <!--John Doe-->
-                <!--</div>-->
-                <!-- <div class="email">john.doe@example.com</div> -->
-            <!--</div>-->
-        </div>
+        <div class="user-info" id="company-logo"></div>
         <!-- #User Info -->
         <!-- Menu -->
         <div class="menu">
             <ul class="list">
-                <li class="header">Company SECTION</li>
+                <li class="header">Company Section</li>
                 <li class="active">
                     <a href="javascript:void(0);" class="menu-toggle">
                         <i class="material-icons">view_list</i>
@@ -213,6 +205,7 @@ s
     var domain = "../../";
 
     $(document).ready(function () {
+        $('html').removeClass('safari');
         // Code to inject html code into index
         var pageWrapper = $("#page-wrapper");
         $("a.ajax-pg").on("click", function (e) {
@@ -236,8 +229,9 @@ s
             success: function (response) {
                 if (response.success == true) {
                     window.location.replace(response.path);
-                    sessionStorage.removeItem('jwt_token');
-                    sessionStorage.removeItem('user_id');
+                    // sessionStorage.removeItem('jwt_token');
+                    // sessionStorage.removeItem('user_id');
+                    localStorage.removeItem("jwt_token");
                     console.log(response);
                 } else {
                     alert("Something went wrong")
@@ -252,7 +246,8 @@ s
     });
 
     function getToken() {
-        return sessionStorage.getItem('jwt_token');
+        // return sessionStorage.getItem('jwt_token');
+        return localStorage.jwt_token
     }
 
     function isLoggedIn() {
@@ -293,10 +288,13 @@ s
                 userID: userID
             },
             dataType: "json",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", getToken());
+            },
             success: function (response) {
                 if (response.success == true) {
                     companyObject = response.data[0];
-                    console.log(companyObject);
+                    // console.log(companyObject);
                     $('#company-logo').css("background", 'url(' + domain + 'assets/images/company-logos/' + companyObject.logo + ')');
                 } else {
                     showErrorMessage("Something went wrong");
@@ -309,13 +307,14 @@ s
             }
         });
     }
-
     if (isLoggedIn()) {
         user_info = currentUser();
         // check if logged in user is a company
         if (user_info.usertype != 1) {
             window.location.replace('../../index.html');
         }
+        console.log(user_info.usertype);
+
         userID = user_info._id;
         setCompanyObject();
         // console.log(user_info);

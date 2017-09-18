@@ -56,17 +56,12 @@ module.exports.getCompaniesByStudent = function (req, res, next) {
 };
 
 //http://localhost:3000/student_company/students => data : {company, position}
-module.exports.getStudentsByCompanyPosition = function (req, res) {
+module.exports.getStudentsByCompanyPosition = function (req, res, next) {
     StudentCompany.find({
         'company': req.query.company,
         'position': req.query.position
     }, "student -_id", function (err, result) {
-        if (err) {
-            return res.json({
-                success: false,
-                error: err
-            });
-        }
+        if (err) return next(err);
         var studentsInStudentCompany = [];
         result.forEach(function (item) {
             studentsInStudentCompany.push(item.student);
@@ -74,12 +69,7 @@ module.exports.getStudentsByCompanyPosition = function (req, res) {
         SelectedStudentCompany.find({
             'company': req.query.company
         }, "student position -_id", function (err, result1) {
-            if (err) {
-                return res.json({
-                    success: false,
-                    error: err
-                });
-            }
+            if (err) return next(err);
             var studentsInSelectedStudentCompany = [];
             result1.forEach(function (item) {
                 if (item.position == req.query.position)
@@ -97,24 +87,14 @@ module.exports.getStudentsByCompanyPosition = function (req, res) {
                     $in: students
                 }
             }, function (err, result2) {
-                if (err) {
-                    return res.json({
-                        success: false,
-                        error: err
-                    });
-                }
+                if (err) return next(err);
                 // get cv data
                 Cv.find({
                     'userID': {
                         $in: students
                     }
                 }, "userID filename -_id", function (err, result3) {
-                    if (err) {
-                        return res.json({
-                            success: false,
-                            error: err
-                        });
-                    }
+                    if (err) return next(err);
                     var arr = _.map(result3, function (n) {
                         return {
                             [n.userID]: n.filename
@@ -154,17 +134,12 @@ module.exports.getStudentsByCompanyPosition = function (req, res) {
 };
 
 //http://localhost:3000/student_company/students/company
-module.exports.getAllStudentsByCompanyPosition = function (req, res) {
+module.exports.getAllStudentsByCompanyPosition = function (req, res, next) {
     StudentCompany.find({
         'company': req.query.company,
         'position': req.query.position
     }, "student position -_id", function (err, result) {
-        if (err) {
-            return res.json({
-                success: false,
-                error: err
-            });
-        }
+        if (err) return next(err);
         var students = [];
         result.forEach(function (item) {
             students.push(item.student);
@@ -175,24 +150,14 @@ module.exports.getAllStudentsByCompanyPosition = function (req, res) {
                 $in: students
             }
         }, function (err, result2) {
-            if (err) {
-                return res.json({
-                    success: false,
-                    error: err
-                });
-            }
+            if (err) return next(err);
             // get cv data
             Cv.find({
                 'userID': {
                     $in: students
                 }
             }, "userID filename -_id", function (err, result3) {
-                if (err) {
-                    return res.json({
-                        success: false,
-                        error: err
-                    });
-                }
+                if (err) return next(err);
                 var arr = _.map(result3, function (n) {
                     return {
                         [n.userID]: n.filename
@@ -230,9 +195,9 @@ module.exports.getAllStudentsByCompanyPosition = function (req, res) {
     });
 };
 
-module.exports.addStudentCompany = function (req, res) {
+module.exports.addStudentCompany = function (req, res, next) {
     var positions = req.body.position.split(',');
-    var err, result;
+    var errr, result;
     positions.forEach(function (position) {
         var params = {};
         params.student = req.body.student;
@@ -241,14 +206,9 @@ module.exports.addStudentCompany = function (req, res) {
         params.position = position;
         var studentCompany = new StudentCompany(params);
         studentCompany.timeStamp = Date.now();
-        studentCompany.save(function (e, result1) {
-            if (e) {
-                return res.json({
-                    status: false,
-                    error: e
-                });
-            }
-            err = e;
+        studentCompany.save(function (err, result1) {
+            if (err) return next(err);
+            errr = err;
             result = result1;
         });
     });
