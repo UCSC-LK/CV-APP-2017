@@ -39,8 +39,6 @@ module.exports.updateSchedule = function (req, res) {
     }, function (err, result) {
         if (result) {
             console.log("Updating schedule info"); // update info
-            result.student = record.student;
-
             // Updating the schedule slot
             result.schedule[req.body.slot - 1].company = req.body.company;
             result.save(function (err) {
@@ -57,11 +55,57 @@ module.exports.updateSchedule = function (req, res) {
                 });
             });
         } else {
-            return res.json({
-                success: true,
-                msg: 'Your do not have a schedule'
+            var i = 0;
+            var defaultSlots = 8;
+            while(record.schedule.length < defaultSlots) {
+                record.schedule.push({
+                    "slot": ++i,
+                    "company": "-"
+                })
+            }
+            console.log(record);
+            console.log("Updating schedule info"); // update info
+            record.schedule[req.body.slot - 1].company = req.body.company;
+            console.log(record);
+            record.save(function (err) {
+                if (err) {
+                    return res.json({
+                        success: false,
+                        msg: 'Something went wrong.Try again',
+                        error: err
+                    });
+                }
+                return res.json({
+                    success: true,
+                    msg: 'Your details added successfully'
+                });
             });
 
         }
+    });
+
+};
+
+module.exports.deleteScheduleItem = function (req, res) {
+    console.log(req.body);
+    StudentSchedule.findOne({
+        'student' : req.params.query
+    }, function (err, result) {
+        console.log("Updating schedule info"); // update info
+        // Updating the schedule slot
+        result.schedule[req.body.slot - 1].company = "-";
+        result.save(function (err) {
+            if (err) {
+                return res.json({
+                    success: false,
+                    msg: 'Something went wrong.Try again',
+                    error: err
+                });
+            }
+            res.json({
+                success: true,
+                msg: 'Your schedule updated successfully'
+            });
+        });
     });
 };

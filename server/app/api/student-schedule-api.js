@@ -11,6 +11,7 @@ var auth = jwt({
 
 router.get('/schedule/:query', studentScheduleController.getSchedule);
 router.post('/', studentScheduleController.updateSchedule);
+router.post('/:query', studentScheduleController.deleteScheduleItem);
 
 
 module.exports = router;
