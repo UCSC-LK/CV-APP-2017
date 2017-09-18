@@ -10,12 +10,16 @@
             <div class="body">
                 <table id="companyTable" class="table table-bordered table-striped table-hover">
                     <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Phone</th>
-                        <th>Year</th>
-                    </tr>
+                        <tr>
+                            <th>Name</th>
+                            <th>positions</th>
+                            <th>Student Count</th>
+                            <th>Total Count</th>
+                        </tr>
                     </thead>
+                    <tbody>
+
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -24,95 +28,92 @@
 <!-- #END# Exportable Table -->
 
 <script>
-$(document).ready(function() {
+    function setupCompanyTable(companies) {
+        companies.forEach(function (company) {
+            var totalCount = 0;
+            for (var i=0; i<company.positions.length; i++)
+                totalCount += company.positions[i].count;
 
-    var companyTable = $('#companyTable').DataTable({
-    dom: 'Bfrtip',
-    responsive: true,
-    buttons: [
-        'pdf'
-    ],
-      ajax: {
-          url: domain + 'student/all',
-          dataSrc: 'result'
-      },
-      "columns": [
-          { "data": "name" },
-          { "data": "phone" },
-          { "data": "year" },
-          { "data": "email" },
-          { "data": "stream" }
-      ]
-    });
+            $('#companyTable tbody').append('<tr>' +
+                    '<td><strong>' + company.name + '</strong></td>' +
+                    '<td>' + company.positions[0].name + '</td>' +
+                    '<td>' + company.positions[0].count + '</td>' +
+                    '<td><strong>' + totalCount + '</strong></td>' +
+                '</tr>'
+            );
+            if (company.positions.length > 1) {
+                for (var j=1; j<company.positions.length; j++)
+                    $('#companyTable tbody').append('<tr>' +
+                            '<td></td>' +
+                            '<td>' + company.positions[j].name + '</td>' +
+                            '<td>' + company.positions[j].count + '</td>' +
+                            '<td></td>' +
+                        '</tr>'
+                    );
+            }
+        });
+    }
 
-
-    // Defines what happens on the button click on student table row
-    companyTable.on('click', 'tr', function () {
-        if ( $(this).hasClass('selected') ) {
-            $(this).removeClass('selected');
-        }
-        else {
-            companyTable.$('tr.selected').removeClass('selected');
-            $(this).addClass('selected');
-        }
-
-        var rowData = companyTable.row($(this)).data();
-        user_id = rowData['userID'];
-
-        // Reload datatables with the new user id
-        companyTable.ajax.url(domain + 'selected_student_company/companies/' + user_id).load();
-        scheduleTable.ajax.url(domain + 'student_schedule/schedule/' + user_id).load();
-
-    });
-
-
-    function ajaxSend(type, params, action, clickRow, url) {
+    function ajaxCall(url, callback){
         $.ajax({
-            type: type,
+            type: "GET",
             url: url,
-            data: params,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", getToken());
+            },
             dataType: "json",
             success: function (response) {
-                switch (action) {
-                    case "ajaxSelect":
-                        if (response.success) {
-                            showSuccessNotification("Student schedule updated successfully!");
-                            //applicantTable.row(clickRow).remove().draw();
-                            scheduleTable.ajax.url(domain + 'student_schedule/schedule/' + user_id).load();
-                        } else {
-                            showErrorMessage("Unexpected error #1, Please try again");
-                            console.log(response);
-                        }
-                        break;
-
-                    case "ajaxRemove":
-                        if (response.success) {
-                            showSuccessNotification("Schedule removed successfully!");
-                            scheduleTable.ajax.reload(null, false);
-                        } else {
-                            showErrorMessage("Unexpected error #2, Please try again");
-                            console.log(response);
-                        }
-                        break;
-
-
-                }
+                callback(response);
             },
             error: function (xhr, status, error) {
+                callback(false);
                 console.log(xhr);
-                showErrorMessage("Unexpected error");
                 console.log(status, error);
             }
         });
     }
 
-    function showErrorMessage(msg) {
-        swal(msg + "!", '', "error");
-    }
+    $(document).ready(function () {
 
-    function showSuccessNotification(msg) {
-        showNotification('alert-success', msg, 'top', 'right', null, null, 2000);
-    }
+        ajaxCall(domain + "company/all", function (response1) {
+            var companies, studentCompanies;
+            if (response1.success === true) {
+                companies = response1.result;
+                // add count attribute to company positions
+                companies.forEach(function (company) {
+                    for (var i=0; i<company.positions.length; i++) {
+                        company.positions[i] = {
+                            name:company.positions[i],
+                            count:0
+                        }
+                    }
+                });
+                //console.log(companies);
+                ajaxCall(domain + "student_company/all", function (response2) {
+                    //console.log(response2);
+                    if (response2.success === true) {
+                        // go through all student compnay objects
+                        response2.result.forEach(function (sc) {
+                            // for all company objects
+                            for (var i=0; i<companies.length; i++) {
+                                // if company mathces with student object go through all positions
+                                if (companies[i]._id == sc.company) {
+                                    for (var j=0; j<companies[i].positions.length; j++) {
+                                        // if position matches us one the count
+                                        if (companies[i].positions[j].name == sc.position) {
+                                            companies[i].positions[j].count ++;
+                                            break;
+                                        }
+                                    }
+                                    break;
+                                }
+                            }
+                        });
+                    }
+                    setupCompanyTable(companies);
+                });
+            }
+        });
 
-});
+    });
 </script>

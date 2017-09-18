@@ -19,6 +19,17 @@ function toObj(arr) {
     }, {});
 }
 
+module.exports.getStudentCompanies = function (req, res, next) {
+    StudentCompany.find({}, function (err, result) {
+        if (err) return next(err);
+        var temp = {
+            "result": result,
+            "success": true
+        };
+        res.json(temp);
+    });
+};
+
 module.exports.getCompaniesByStudent = function (req, res, next) {
     // Get companies for the given student
     StudentCompany.find({
