@@ -1,6 +1,7 @@
 var SelectedStudentCompany = require('../model/selected-student-company'),
     Student = require('../model/student'),
     Company = require('../model/company'),
+    Schedule = require('../model/student-schedule'),
     jsend = require('jsend'),
     Cv = require('../model/cv'),
     mongoose = require('mongoose'),
@@ -18,21 +19,45 @@ module.exports.getCompaniesBySelectedStudent = function (req, res, next) {
     }, function (err, result) {
         if (err) return next(err);
         //Getting company data
+        var temp = [];
         var companies = _.map(result, 'company');
-        Company.findById({
-            $in: companies
-        }, function (err, result1) {
-            if (err) return next(err);
-            console.log(result1);
-            // if result is null make it empty array.to avoid DataTable error.
-            if (!result1){
-              result1 = [];
+        Company.find({
+            '_id': {
+                $in: companies
             }
-            res.json({
-                success: true,
-                result: result1
+        }, function (err, result1) {
+            if (err) {
+                return res.json({
+                    success: false,
+                    error: err
+                });
+            }
+
+            // Loop through the two array results
+            _.forEach(result1, function (compObj) {
+                _.forEach(result, function (selectedCompObj) {
+                    // Check company ids and update company name in the returned object
+                    if(selectedCompObj.company == compObj._id){
+                        selectedCompObj.company = compObj.name;
+                    }
+                });
             });
-        });
+
+
+                // if result is null make it empty array.to avoid DataTable error.
+                if (result.length === 0){
+                    result = [];
+                }
+                temp = {
+                    "result": result
+                };
+                res.json(temp);
+            });
+            //END
+
+            console.log(result);
+            result.sort({timeStamp: -1});
+
     });
 };
 
