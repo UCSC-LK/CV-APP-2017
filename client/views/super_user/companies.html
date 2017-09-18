@@ -1,0 +1,119 @@
+<!-- Exportable Table -->
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>
+                    Company Table
+                </h2>
+            </div>
+            <div class="body">
+                <table id="companyTable" class="table table-bordered table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>positions</th>
+                            <th>Student Count</th>
+                            <th>Total Count</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- #END# Exportable Table -->
+
+<script>
+    function setupCompanyTable(companies) {
+        companies.forEach(function (company) {
+            var totalCount = 0;
+            for (var i=0; i<company.positions.length; i++)
+                totalCount += company.positions[i].count;
+
+            $('#companyTable tbody').append('<tr>' +
+                    '<td><strong>' + company.name + '</strong></td>' +
+                    '<td>' + company.positions[0].name + '</td>' +
+                    '<td>' + company.positions[0].count + '</td>' +
+                    '<td><strong>' + totalCount + '</strong></td>' +
+                '</tr>'
+            );
+            if (company.positions.length > 1) {
+                for (var j=1; j<company.positions.length; j++)
+                    $('#companyTable tbody').append('<tr>' +
+                            '<td></td>' +
+                            '<td>' + company.positions[j].name + '</td>' +
+                            '<td>' + company.positions[j].count + '</td>' +
+                            '<td></td>' +
+                        '</tr>'
+                    );
+            }
+        });
+    }
+
+    function ajaxCall(url, callback){
+        $.ajax({
+            type: "GET",
+            url: url,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", getToken());
+            },
+            dataType: "json",
+            success: function (response) {
+                callback(response);
+            },
+            error: function (xhr, status, error) {
+                callback(false);
+                console.log(xhr);
+                console.log(status, error);
+            }
+        });
+    }
+
+    $(document).ready(function () {
+
+        ajaxCall(domain + "company/all", function (response1) {
+            var companies, studentCompanies;
+            if (response1.success === true) {
+                companies = response1.result;
+                // add count attribute to company positions
+                companies.forEach(function (company) {
+                    for (var i=0; i<company.positions.length; i++) {
+                        company.positions[i] = {
+                            name:company.positions[i],
+                            count:0
+                        }
+                    }
+                });
+                //console.log(companies);
+                ajaxCall(domain + "student_company/all", function (response2) {
+                    //console.log(response2);
+                    if (response2.success === true) {
+                        // go through all student compnay objects
+                        response2.result.forEach(function (sc) {
+                            // for all company objects
+                            for (var i=0; i<companies.length; i++) {
+                                // if company mathces with student object go through all positions
+                                if (companies[i]._id == sc.company) {
+                                    for (var j=0; j<companies[i].positions.length; j++) {
+                                        // if position matches us one the count
+                                        if (companies[i].positions[j].name == sc.position) {
+                                            companies[i].positions[j].count ++;
+                                            break;
+                                        }
+                                    }
+                                    break;
+                                }
+                            }
+                        });
+                    }
+                    setupCompanyTable(companies);
+                });
+            }
+        });
+
+    });
+</script>

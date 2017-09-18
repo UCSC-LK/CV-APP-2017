@@ -18,6 +18,7 @@ var auth = jwt({
 router.get('/companies/:query',auth, studentCompanyController.getCompaniesByStudent);
 router.get('/students/all', auth, studentCompanyController.getAllStudentsByCompanyPosition);
 router.get('/students', auth, studentCompanyController.getStudentsByCompanyPosition);
+router.get('/all', auth, studentCompanyController.getStudentCompanies);
 router.post('/', auth, studentCompanyController.addStudentCompany);
 router.delete('/:query', auth, studentCompanyController.deleteStudentCompany);
 
