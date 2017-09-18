@@ -8,14 +8,12 @@
                 </h2>
             </div>
             <div class="body">
-                <table id="studentTable" class="table table-bordered table-striped table-hover">
+                <table id="companyTable" class="table table-bordered table-striped table-hover">
                     <thead>
                     <tr>
                         <th>Name</th>
                         <th>Phone</th>
                         <th>Year</th>
-                        <th>Email</th>
-                        <th>Stream</th>
                     </tr>
                     </thead>
                 </table>
@@ -27,28 +25,12 @@
 
 <script>
 $(document).ready(function() {
-    var slots = [
-        "1",
-        "2",
-        "3",
-        "4",
-        "5",
-        "6",
-        "7",
-        "8"
-    ];
 
-    var selectButton =  '<a class="btn btn-warning waves-effect btn-sm ajaxSelect"> </span> Select</a>';
-    var removeButton = '<a class="btn btn-danger btn-sm waves-effect  ajaxRemove"> Remove</a>';
-
-    var ajaxRemove = "ajaxRemove";
-    var ajaxSelect = 'ajaxSelect';
-
-    var studentTable = $('#studentTable').DataTable({
+    var companyTable = $('#companyTable').DataTable({
     dom: 'Bfrtip',
     responsive: true,
     buttons: [
-        'copy', 'csv', 'excel', 'pdf', 'print'
+        'pdf'
     ],
       ajax: {
           url: domain + 'student/all',
@@ -65,16 +47,16 @@ $(document).ready(function() {
 
 
     // Defines what happens on the button click on student table row
-    studentTable.on('click', 'tr', function () {
+    companyTable.on('click', 'tr', function () {
         if ( $(this).hasClass('selected') ) {
             $(this).removeClass('selected');
         }
         else {
-            studentTable.$('tr.selected').removeClass('selected');
+            companyTable.$('tr.selected').removeClass('selected');
             $(this).addClass('selected');
         }
 
-        var rowData = studentTable.row($(this)).data();
+        var rowData = companyTable.row($(this)).data();
         user_id = rowData['userID'];
 
         // Reload datatables with the new user id
