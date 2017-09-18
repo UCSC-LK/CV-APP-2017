@@ -296,7 +296,7 @@ s
                         }
                     } else {
                         showErrorMessage("Something went wrong");
-                        console.log(response);
+                        // console.log(response);
                     }
                 },
                 error: function (xhr, status, error) {
@@ -337,7 +337,7 @@ s
                     }
                 } else {
                     showErrorMessage("Something went wrong");
-                    console.log(response);
+                    // console.log(response);
                 }
             },
             error: function (xhr, status, error) {
@@ -360,14 +360,15 @@ s
             },
             success: function (response) {
                 if (response.success == true) {
+                    localStorage.removeItem("jwt_token");
                     window.location.replace(response.path);
                     // sessionStorage.removeItem('jwt_token');
                     // sessionStorage.removeItem('user_id');
-                    localStorage.removeItem("jwt_token");
+
 
                 } else {
                     showErrorMessage("Something went wrong");
-                    console.log(response);
+                    // console.log(response);
                 }
             },
             error: function (xhr, status, error) {
@@ -441,12 +442,14 @@ s
         // check if logged in user is a student
         if (user_info.usertype != 0) {
             window.location.replace('../../index.html');
+            localStorage.removeItem("jwt_token");
         }
         userID = user_info._id;
         setStudentObject();
         // console.log(user_info);
     } else {
         window.location.replace('../../index.html');
+        localStorage.removeItem("jwt_token");
     }
 
     // Count down

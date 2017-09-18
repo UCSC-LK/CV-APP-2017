@@ -96,7 +96,7 @@ $(function () {
 var loginForm = $("#sign_in");
 
 $('#loginButton').click(function (e) {
-    console.log("clicked");
+    // console.log("clicked");
     if (loginForm.valid()) {
         e.preventDefault();
         var loginData = {

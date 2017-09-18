@@ -228,15 +228,13 @@ s
             dataType: "json",
             success: function (response) {
                 if (response.success == true) {
-                    window.location.replace(response.path);
-                    // sessionStorage.removeItem('jwt_token');
-                    // sessionStorage.removeItem('user_id');
                     localStorage.removeItem("jwt_token");
+                    window.location.replace(response.path);
                     console.log(response);
                 } else {
                     alert("Something went wrong")
                 }
-                console.log(response);
+                // console.log(response);
             },
             error: function (xhr, status, error) {
                 console.log(xhr);
@@ -322,7 +320,7 @@ s
                     $('#company-logo').css("background", 'url(' + domain + 'assets/images/company-logos/' + companyObject.logo + ')');
                 } else {
                     showErrorMessage("Something went wrong");
-                    console.log(response);
+                    // console.log(response);
                 }
             },
             error: function (xhr, status, error) {
@@ -336,10 +334,12 @@ s
         // check if logged in user is a company
         if (user_info.usertype != 1) {
             window.location.replace('../../index.html');
+            localStorage.removeItem("jwt_token");
         }
         userID = user_info._id;
         setCompanyObject();
     } else {
         window.location.replace('../../index.html');
+        localStorage.removeItem("jwt_token");
     }
 </script>
