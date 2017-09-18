@@ -1,6 +1,7 @@
 var SelectedStudentCompany = require('../model/selected-student-company'),
     Student = require('../model/student'),
     Company = require('../model/company'),
+    Schedule = require('../model/student-schedule'),
     jsend = require('jsend'),
     Cv = require('../model/cv'),
     mongoose = require('mongoose'),
@@ -47,17 +48,21 @@ module.exports.getCompaniesBySelectedStudent = function (req, res) {
                     }
                 });
             });
-            result.sort({timeStamp: -1});
 
-            // if result is null make it empty array.to avoid DataTable error.
-            if (result.length === 0){
-                result = [];
-            }
-            temp = {
-                "result": result
-            };
-            res.json(temp);
-        });
+
+                // if result is null make it empty array.to avoid DataTable error.
+                if (result.length === 0){
+                    result = [];
+                }
+                temp = {
+                    "result": result
+                };
+                res.json(temp);
+            });
+            //END
+
+            console.log(result);
+            result.sort({timeStamp: -1});
 
     });
 };

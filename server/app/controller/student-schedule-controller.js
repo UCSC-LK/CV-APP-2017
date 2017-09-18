@@ -63,10 +63,8 @@ module.exports.updateSchedule = function (req, res) {
                     "company": "-"
                 })
             }
-            console.log(record);
             console.log("Updating schedule info"); // update info
             record.schedule[req.body.slot - 1].company = req.body.company;
-            console.log(record);
             record.save(function (err) {
                 if (err) {
                     return res.json({
