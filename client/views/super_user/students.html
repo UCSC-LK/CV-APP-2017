@@ -189,7 +189,7 @@ $(document).ready(function() {
         var rowData = studentTable.row($(this)).data();
         $('#selected-student-name').text(rowData['name']);
         $('#schedule-student-name').text(rowData['name']);
-        studentID = rowData['studentID'];
+        studentID = rowData['userID'];
 
         // Reload datatables with the new user id
         companyTable.ajax.url(domain + 'selected_student_company/companies/' + studentID).load();
@@ -219,6 +219,9 @@ $(document).ready(function() {
             url: url,
             data: params,
             dataType: "json",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", getToken());
+            },
             success: function (response) {
                 switch (action) {
                     case "ajaxSelect":
