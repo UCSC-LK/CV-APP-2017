@@ -28,6 +28,7 @@
     <!-- JQuery DataTable Css -->
     <link href="../../assets/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css" rel="stylesheet">
 
+
     <!-- Custom Css -->
     <link href="../../assets/css/style.css" rel="stylesheet">
 
@@ -65,14 +66,14 @@ s
             <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse"
                data-target="#navbar-collapse" aria-expanded="false"></a>
             <a href="javascript:void(0);" class="bars"></a>
-            <a class="navbar-brand" href="../../index.html">Welcome to UCSC CV App 2017</a>
+            <a class="navbar-brand" href="index.html">Welcome to UCSC CV App 2017</a>
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
                 <!-- User Menu -->
                 <li class="dropdown">
                     <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button">
-                        <i class="material-icons">keyboard_arrow_down</i>
+                        <i class="material-icons">menu</i>
                     </a>
                     <ul class="dropdown-menu pull-right">
                         <li><a href="profile.html" class="ajax-pg"><i class="material-icons">lock</i>Change Password</a>
@@ -87,20 +88,14 @@ s
     </div>
 </nav>
 <!-- #Top Bar -->
+
 <section>
     <!-- Left Sidebar -->
-    <aside id="leftsidebar" class="sidebar">
+    <aside id="leftsidebar" class="sidebar custom-width">
         <!-- User Info -->
-        <div class="user-info">
-            <div class="image">
-                <img src="../../assets/images/user.png" width="48" height="48" alt="User"/>
-            </div>
-            <div class="info-container">
-                <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">John Doe</div>
-                <div class="email">john.doe@example.com</div>
-            </div>
-        </div>
+        <div class="user-info" id="company-logo"></div>
         <!-- #User Info -->
+
         <!-- Menu -->
         <div class="menu">
             <ul class="list">
@@ -125,14 +120,13 @@ s
             </ul>
         </div>
         <!-- #Menu -->
+
+
         <!-- Footer -->
         <div class="legal">
             <div class="copyright">
                 &copy; 2017 - 2018 <a href="javascript:void(0);">UCSC CV App</a>.
             </div>
-            <!-- <div class="version">
-                <b>Version: </b> 1.0.0
-            </div> -->
         </div>
         <!-- #Footer -->
     </aside>
@@ -140,8 +134,7 @@ s
 
 </section>
 
-<!-- <div id="page-wrapper"></div> -->
-<section class="content">
+<section class="content custom-margin">
     <div class="container-fluid">
         <div id="page-wrapper">
             <div class="block-header">
@@ -149,6 +142,7 @@ s
                 <!-- Ajax load here -->
             </div>
         </div>
+    </div>
 </section>
 
 
@@ -178,7 +172,7 @@ s
 
 <!-- Custom Js -->
 <script src="../../assets/js/admin.js"></script>
-<script src="../../assets/js/pages/forms/form-validation.js"></script>
+<!--<script src="../../assets/js/pages/forms/form-validation.js"></script>-->
 <script src="../../assets/js/pages/ui/dialogs.js"></script>
 
 <!-- Demo Js -->
@@ -204,8 +198,10 @@ s
 
 </html>
 <script>
-    $(document).ready(function() {
+
+    $(document).ready(function () {
         $('html').removeClass('safari');
+        // Code to inject html code into index
         var pageWrapper = $("#page-wrapper");
         $("a.ajax-pg").on("click", function (e) {
             e.preventDefault();
@@ -234,6 +230,7 @@ s
             },
             success: function (response) {
                 if (response.success == true) {
+                    localStorage.removeItem("jwt_token");
                     window.location.replace(response.path);
                     // sessionStorage.removeItem('jwt_token');
                     // sessionStorage.removeItem('user_id');
@@ -261,11 +258,37 @@ s
         var payload;
 
         if (token) {
-            payload = token.split('.')[1];
-            payload = window.atob(payload);
-            payload = JSON.parse(payload);
+            //check for token validity
+            $.ajax({
+                type: "GET",
+                url: domain + "loggedin",
+                data: {},
+                dataType: "json",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", token);
+                },
+                success: function (response) {
+                    if (response.success == true) {
+                        // check for token expiration
+                        payload = token.split('.')[1];
+                        payload = window.atob(payload);
+                        payload = JSON.parse(payload);
 
-            return payload.exp > Date.now() / 1000;
+                        if (!(payload.exp > Date.now() / 1000)) {
+                            localStorage.removeItem("jwt_token");
+                            window.location.replace('../../index.html');
+                        }
+                    } else {
+                        localStorage.removeItem("jwt_token");
+                        window.location.replace('../../index.html');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log(xhr);
+                    console.log(status, error);
+                }
+            });
+            return true;
         } else {
             return false;
         }
@@ -284,16 +307,45 @@ s
         };
     }
 
+    function setCompanyObject() {
+        $.ajax({
+            type: "GET",
+            url: domain + "company",
+            data: {
+                userID: userID
+            },
+            dataType: "json",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", getToken());
+            },
+            success: function (response) {
+                if (response.success == true) {
+                    companyObject = response.data[0];
+                    // console.log(companyObject);
+                    $('#company-logo').css("background", 'url(' + domain + 'assets/images/company-logos/' + companyObject.logo + ')');
+                } else {
+                    showErrorMessage("Something went wrong");
+                    // console.log(response);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.log(xhr);
+                console.log(status, error);
+            }
+        });
+    }
     if (isLoggedIn()) {
         user_info = currentUser();
-        // check if logged in user is an admin
-        if (user_info.usertype != 99) {
-            window.location.replace('../../index.html');
-        }
+        // check if logged in user is a company
+        // if (user_info.usertype != 99) {
+        //     window.location.replace('../../index.html');
+        //     localStorage.removeItem("jwt_token");
+        // }
         userID = user_info._id;
-        // console.log(user_info);
+        setCompanyObject();
     } else {
-        window.location.replace('../../index.html');
+        // window.location.replace('../../index.html');
+        // localStorage.removeItem("jwt_token");
     }
 
 </script>

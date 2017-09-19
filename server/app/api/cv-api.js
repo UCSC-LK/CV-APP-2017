@@ -5,6 +5,14 @@ var express = require('express'),
     mime = require('mime'),
     cvController = require('../controller/cv-controller');
 
+var jwt = require('express-jwt');
+var config = require('../config/conf');
+var auth = jwt({
+    secret: config.secret,
+    userProperty: 'payload'
+});
+
+
 // Init multer storage object
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -20,9 +28,9 @@ var upload = multer({
     storage: storage
 }).any();
 
-router.get('/', cvController.getCvDetails);
+router.get('/', auth,cvController.getCvDetails);
 
-router.post('/upload', function (req, res, next) {
+router.post('/upload', auth,function (req, res, next) {
     // Begin upload
     console.log("Uploading file...");
     upload(req, res, function (err) {
@@ -49,6 +57,6 @@ router.post('/upload', function (req, res, next) {
     });
 });
 
-router.post('/download', cvController.getCVZip);
+router.post('/download', auth, cvController.getCVZip);
 
 module.exports = router;

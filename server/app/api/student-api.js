@@ -13,8 +13,8 @@ var auth = jwt({
 
 router.get('/',auth, studentController.getStudent);
 
-router.get('/all', studentController.getStudents);
+router.get('/all',auth, studentController.getStudents);
 
-router.post('/', studentController.addStudent);
+router.post('/',auth, studentController.addStudent);
 
 module.exports = router;

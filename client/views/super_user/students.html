@@ -97,7 +97,10 @@ $(document).ready(function() {
     ],
       ajax: {
           url: domain + 'student/all',
-          dataSrc: 'result'
+          dataSrc: 'result',
+          beforeSend: function (xhr) {
+              xhr.setRequestHeader("Authorization", getToken());
+          }
       },
       "columns": [
           { "data": "name" },
@@ -117,7 +120,10 @@ $(document).ready(function() {
         ],
         ajax: {
             url: domain + 'selected_student_company/companies/' + userID,
-            dataSrc: 'result'
+            dataSrc: 'result',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", getToken());
+            }
         },
         "columns": [
             { "data": "company" },
@@ -155,7 +161,10 @@ $(document).ready(function() {
         ],
         ajax: {
             url: domain + 'student_schedule/schedule/' + userID,
-            dataSrc: 'result'
+            dataSrc: 'result',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", getToken());
+            }
         },
         "columns": [
             { "data": "slot" },
