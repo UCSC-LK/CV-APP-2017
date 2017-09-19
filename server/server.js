@@ -46,7 +46,7 @@ app.use(morgan('common', {
 // logger stdout
 app.use(morgan('dev'));
 
-////
+////////
 
 // var myLogger = function (req, res, next) {
 //   console.log('LOGGED');

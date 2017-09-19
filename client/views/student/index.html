@@ -296,7 +296,7 @@ s
                         }
                     } else {
                         showErrorMessage("Something went wrong");
-                        console.log(response);
+                        // console.log(response);
                     }
                 },
                 error: function (xhr, status, error) {
@@ -337,7 +337,7 @@ s
                     }
                 } else {
                     showErrorMessage("Something went wrong");
-                    console.log(response);
+                    // console.log(response);
                 }
             },
             error: function (xhr, status, error) {
@@ -359,14 +359,15 @@ s
             },
             success: function (response) {
                 if (response.success == true) {
+                    localStorage.removeItem("jwt_token");
                     window.location.replace(response.path);
                     // sessionStorage.removeItem('jwt_token');
                     // sessionStorage.removeItem('user_id');
-                    localStorage.removeItem("jwt_token");
+
 
                 } else {
                     showErrorMessage("Something went wrong");
-                    console.log(response);
+                    // console.log(response);
                 }
             },
             error: function (xhr, status, error) {
@@ -386,11 +387,37 @@ s
         var payload;
 
         if (token) {
-            payload = token.split('.')[1];
-            payload = window.atob(payload);
-            payload = JSON.parse(payload);
+            //check for token validity
+            $.ajax({
+                type: "GET",
+                url: domain + "loggedin",
+                data: {},
+                dataType: "json",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", token);
+                },
+                success: function (response) {
+                    if (response.success == true) {
+                        // check for token expiration
+                        payload = token.split('.')[1];
+                        payload = window.atob(payload);
+                        payload = JSON.parse(payload);
 
-            return payload.exp > Date.now() / 1000;
+                        if (!(payload.exp > Date.now() / 1000)) {
+                            localStorage.removeItem("jwt_token");
+                            window.location.replace('../../index.html');
+                        }
+                    } else {
+                        localStorage.removeItem("jwt_token");
+                        window.location.replace('../../index.html');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log(xhr);
+                    console.log(status, error);
+                }
+            });
+            return true;
         } else {
             return false;
         }
@@ -414,17 +441,19 @@ s
         // check if logged in user is a student
         if (user_info.usertype != 0) {
             window.location.replace('../../index.html');
+            localStorage.removeItem("jwt_token");
         }
         userID = user_info._id;
         setStudentObject();
         // console.log(user_info);
     } else {
         window.location.replace('../../index.html');
+        localStorage.removeItem("jwt_token");
     }
 
+    // Count down
     $('#count-down').countdown('2017/09/19 21:00:00', function(event) {
       $(this).html(event.strftime('Deadline : %d day(s) %H:%M:%S'));
     });
 
-    // console.log(getToken());
 </script>

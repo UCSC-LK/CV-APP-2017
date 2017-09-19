@@ -9,9 +9,9 @@ var auth = jwt({
     userProperty: 'payload'
 });
 
-router.get('/schedule/:query', studentScheduleController.getSchedule);
-router.post('/', studentScheduleController.updateSchedule);
-router.post('/:query', studentScheduleController.deleteScheduleItem);
+router.get('/schedule/:query', auth, studentScheduleController.getSchedule);
 
+router.post('/', auth, studentScheduleController.updateSchedule);
+router.post('/:query', auth, studentScheduleController.deleteScheduleItem);
 
 module.exports = router;

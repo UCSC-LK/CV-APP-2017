@@ -75,7 +75,7 @@ userSchema.methods.generateJwt = function () {
         isfirst: this.isfirst,
         usertype: this.usertype,
         name: this.username,
-        exp: parseInt(expiry.getTime() / 1000),
+        exp: parseInt(expiry.getTime() / 1000)
     }, config.secret); // DO NOT KEEP YOUR SECRET IN THE CODE!
 };
 

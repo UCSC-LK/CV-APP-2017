@@ -338,7 +338,7 @@
                                     applicantTable.ajax.reload(null, false);
                                 } else {
                                     showErrorMessage("Unexpected error #1, Please try again");
-                                    console.log(response);
+                                    // console.log(response);
                                 }
                                 break;
 
@@ -349,7 +349,7 @@
                                     shortListedTable.ajax.reload(null, false);
                                 } else {
                                     showErrorMessage("Unexpected error #2, Please try again");
-                                    console.log(response);
+                                    // console.log(response);
                                 }
                                 break;
 
@@ -359,15 +359,15 @@
                                     $('#panel-count').text(Math.ceil(response.data / 8));
                                 } else {
                                     showErrorMessage("Unexpected error #2, Please try again");
-                                    console.log(response);
+                                    // console.log(response);
                                 }
                                 break;
                         }
                     },
                     error: function (xhr, status, error) {
-                        console.log(xhr);
+                        // console.log(xhr);
                         showErrorMessage("Unexpected error");
-                        console.log(status, error);
+                        // console.log(status, error);
                     }
                 });
             }
