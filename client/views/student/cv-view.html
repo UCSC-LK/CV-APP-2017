@@ -162,5 +162,12 @@
             $.AdminBSB.input.activate();
             $.AdminBSB.select.activate();
         });
+
+        // Disabling all inputs upon deadline
+        if (deadlinePassed) {
+            $("input").prop("disabled", true);
+            $("button").prop("disabled", true);
+        }
+
     }
 </script>
