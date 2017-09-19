@@ -196,7 +196,8 @@ module.exports.getAllStudentsByCompanyPosition = function (req, res, next) {
 };
 
 module.exports.addStudentCompany = function (req, res, next) {
-    var positions = req.body.position.split(',');
+    var positions = req.body.position.split('!#');
+    positions.pop();
     var errr, result;
     positions.forEach(function (position) {
         var params = {};
