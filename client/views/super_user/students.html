@@ -218,6 +218,9 @@ $(document).ready(function() {
             url: url,
             data: params,
             dataType: "json",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", getToken());
+            },
             success: function (response) {
                 switch (action) {
                     case "ajaxSelect":
