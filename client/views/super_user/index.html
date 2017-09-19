@@ -112,7 +112,10 @@ s
                     </a>
                     <ul class="ml-menu">
                         <li class="active">
-                            <a href="student-list.html" class="ajax-pg toggled">Student List</a>
+                            <a href="students.html" class="ajax-pg toggled">Students</a>
+                        </li>
+                        <li>
+                            <a href="companies.html" class="ajax-pg toggled">Companies</a>
                         </li>
                         <li>
                             <a href="setup.html" class="ajax-pg toggled">System Setup</a>
@@ -207,36 +210,39 @@ s
         $("a.ajax-pg").on("click", function (e) {
             e.preventDefault();
             pageWrapper.empty();
-            // pageWrapper.prepend('<div class="loader"><div class="preloader"><div class="spinner-layer pl-blue"><div class="circle-clipper left"><div class="circle"></div></div><div class="circle-clipper right"><div class="circle"></div></div></div></div><p>Please wait...</p></div>');
             pageWrapper.load(this.href);
             $('.ml-menu li.active').removeClass('active');
             $(this).parent().addClass('active');
         });
-        window.onload = pageWrapper.load('student-list.html');
+        window.onload = pageWrapper.load('students.html');
     });
-</script>
 
-<script>
-    var user_id = '59a50deea46e2a5c6f801812';
-    var logoutButton   = $('#logoutButton');
+    //Global userID
+    var userID;
+
     var domain = "../../";
 
-    logoutButton.click(function(){
-        // alert("Hello");
+    // Logout btn action
+    $('#logoutButton').click(function () {
         $.ajax({
             type: "POST",
-            url: "http://localhost:3000/logout",
+            url: domain + "logout",
             data: '',
             dataType: "json",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", getToken());
+            },
             success: function (response) {
                 if (response.success == true) {
                     window.location.replace(response.path);
-                    sessionStorage.removeItem('token');
-                    console.log(response);
+                    // sessionStorage.removeItem('jwt_token');
+                    // sessionStorage.removeItem('user_id');
+                    localStorage.removeItem("jwt_token");
+
                 } else {
-                    showErrorMessage("Something went wrong!");
+                    showErrorMessage("Something went wrong");
+                    console.log(response);
                 }
-//                console.log(response);
             },
             error: function (xhr, status, error) {
                 console.log(xhr);
@@ -245,6 +251,49 @@ s
         });
     });
 
-    var token = sessionStorage.getItem('token')
-    console.log(token);
+    function getToken() {
+        // return sessionStorage.getItem('jwt_token');
+        return localStorage.jwt_token;
+    }
+
+    function isLoggedIn() {
+        var token = getToken();
+        var payload;
+
+        if (token) {
+            payload = token.split('.')[1];
+            payload = window.atob(payload);
+            payload = JSON.parse(payload);
+
+            return payload.exp > Date.now() / 1000;
+        } else {
+            return false;
+        }
+    }
+
+    function currentUser() {
+        var token = getToken();
+        var payload = token.split('.')[1];
+        payload = window.atob(payload);
+        payload = JSON.parse(payload);
+        return {
+            _id: payload._id,
+            isfirst: payload.isfirst,
+            usertype: payload.usertype,
+            name: payload.name
+        };
+    }
+
+    if (isLoggedIn()) {
+        user_info = currentUser();
+        // check if logged in user is an admin
+        if (user_info.usertype != 99) {
+            window.location.replace('../../index.html');
+        }
+        userID = user_info._id;
+        // console.log(user_info);
+    } else {
+        window.location.replace('../../index.html');
+    }
+
 </script>
