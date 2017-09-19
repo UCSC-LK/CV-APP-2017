@@ -9,8 +9,8 @@
             </div>
             <div class="body">
 
-                    <button class="btn btn-primary waves-effect" id="setup-std-logins">Setup student logins</button>
-                    <button class="btn btn-primary waves-effect" id="setup-cmp-logins">Setup companies</button>
+                <button class="btn btn-primary waves-effect" id="setup-std-logins">Setup student logins</button>
+                <button class="btn btn-primary waves-effect" id="setup-cmp-logins">Setup companies</button>
 
                 <div class="log" id="log"></div>
             </div>
@@ -24,6 +24,7 @@
     p {
         margin: 0;
     }
+
     .log {
         font-size: 13px;
         height: 350px;
@@ -40,108 +41,113 @@
     var domain = "../../";
 
     var studentUsernames = [
-      13000022,
-13000063,
-13000098,
-13000128,
-13000162,
-13000187,
-13000241,
-13000314,
-13000322,
-13000349,
-13000446,
-13000497,
-13000535,
-13000561,
-13000616,
-13000632,
-13000642,
-13000645,
-13000659,
-13000675,
-13000683,
-13000764,
-13000845,
-13000901,
-13000918,
-13000952,
-13000985,
-13000993,
-13001043,
-13001051,
-13001061,
-13001078,
-13001086,
-13001132,
-13001159,
-13001221,
-13001264,
-13001272,
-13001329,
-13020056,
-13020102,
-13020112,
-13020188,
-13020196,
-13020201,
-13020218,
-13020234,
-13020242,
-13020252,
-13020307,
-13020315,
-13020341,
-13020366,
-13020439,
-13020455,
-13020471,
-13020579,
-13020609,
-13020651,
-13000454,
-13000101,
-13000306,
-13000322,
-13000357,
-13000381,
-13000462,
-13000551,
-13000594,
-13000608,
-13000675,
-13000705,
-13000837,
-13001019,
-13001124,
-13001205,
-13001248,
-13001345,
-13001371,
-13001401,
-13001434,
-13020323,
-13020404,
-13020471,
-13020528,
-13020587,
-13020392
+        13000022,
+        13000063,
+        13000098,
+        13000101,
+        13000128,
+        13000162,
+        13000187,
+        13000241,
+        13000306,
+        13000314,
+        13000322,
+        13000349,
+        13000357,
+        13000381,
+        13000446,
+        13000454,
+        13000462,
+        13000497,
+        13000535,
+        13000551,
+        13000561,
+        13000594,
+        13000608,
+        13000616,
+        13000632,
+        13000642,
+        13000645,
+        13000659,
+        13000675,
+        13000683,
+        13000705,
+        13000764,
+        13000837,
+        13000845,
+        13000901,
+        13000918,
+        13000952,
+        13000985,
+        13000993,
+        13001019,
+        13001043,
+        13001051,
+        13001061,
+        13001078,
+        13001086,
+        13001124,
+        13001132,
+        13001159,
+        13001205,
+        13001221,
+        13001248,
+        13001264,
+        13001272,
+        13001329,
+        13001345,
+        13001371,
+        13001401,
+        13001434,
+        13020056,
+        13020102,
+        13020112,
+        13020188,
+        13020196,
+        13020201,
+        13020218,
+        13020234,
+        13020242,
+        13020252,
+        13020307,
+        13020315,
+        13020323,
+        13020341,
+        13020366,
+        13020392,
+        13020404,
+        13020439,
+        13020455,
+        13020471,
+        13020528,
+        13020579,
+        13020587,
+        13020609,
+        13020651,
+        13000047,
+        13000624,
+        13000144,
+        13000700,
+        13000268,
+        13020463,
+        13020171,
+        13000047
     ];
 
     var companyDetails = [
         {
-            username:'ifs',
-            password:'X3emtArnS8S5K9xy',
-            userID:-1,
+            username: 'ifs',
+            password: 'X3emtArnS8S5K9xy',
+            userID: -1,
             name: 'IFS SRI LANKA LTD AND IFS RANDD LTD',
             logo: 'ifs.png',
             panels: [],
             positions: ['Software Engineer', 'Business Systems Analyst']
         },
         {
-            username:'sysco-labs',
-            password:'4zjNkAJspXzBgvCc',
-            userID:-1,
+            username: 'sysco-labs',
+            password: '4zjNkAJspXzBgvCc',
+            userID: -1,
             name: 'SYSCO LABS',
             logo: 'sysco-labs.png',
             panels: [],
@@ -149,162 +155,162 @@
         },
         {
             username: 'cambio',
-            password:'zdWmQZ8y6jadZYK8',
-            userID:-1,
+            password: 'zdWmQZ8y6jadZYK8',
+            userID: -1,
             name: 'Cambio Software Engineering',
             logo: 'cambio.png',
             panels: [],
             positions: ['Software Engineer (Java)', 'Quality Assurances', 'Business Analyst']
         },
         {
-            username:'eyepax',
-            password:'ErSLwr8Twxbyyrpn',
-            userID:-1,
+            username: 'eyepax',
+            password: 'ErSLwr8Twxbyyrpn',
+            userID: -1,
             name: 'Eyepax IT Consulting (Pvt) Ltd',
             logo: 'eyepax.png',
             panels: [],
             positions: ['Software Engineer']
         },
         {
-            username:'geveo',
-            password:'h5GrenUqZN27TmBx',
-            userID:-1,
+            username: 'geveo',
+            password: 'h5GrenUqZN27TmBx',
+            userID: -1,
             name: 'Geveo Australasia (Pvt) Ltd',
             logo: 'geveo.png',
             panels: [],
             positions: ['Software Engineer', 'QA']
         },
         {
-            username:'wso2',
-            password:'tCsHeu2PqY7xTy7e',
-            userID:-1,
+            username: 'wso2',
+            password: 'tCsHeu2PqY7xTy7e',
+            userID: -1,
             name: 'WSO2 Lanka (Pvt) Ltd',
             logo: 'wso2.png',
             panels: [],
             positions: ['Software Engineer', 'Software Engineer(PHP)', 'QA']
         },
         {
-            username:'inova-it',
-            password:'Asp5jFrhKuhJxB26',
-            userID:-1,
+            username: 'inova-it',
+            password: 'Asp5jFrhKuhJxB26',
+            userID: -1,
             name: 'Inova IT Systems (Pvt) Ltd',
             logo: 'inova-it.png',
             panels: [],
             positions: ['Software Engineer (Java, PHP)']
         },
         {
-            username:'fortude',
-            password:'5utqqm2MedCKse7C',
-            userID:-1,
+            username: 'fortude',
+            password: '5utqqm2MedCKse7C',
+            userID: -1,
             name: 'Fortude (Pvt) Ltd.',
             logo: 'fortude.png',
             panels: [],
             positions: ['ERP consulting', 'Technical Consultant']
         },
         {
-            username:'simcentric',
-            password:'FaC4uE6c4YwpxACN',
-            userID:-1,
+            username: 'simcentric',
+            password: 'FaC4uE6c4YwpxACN',
+            userID: -1,
             name: 'SimCentric Technologies',
             logo: 'simcentric.png',
             panels: [],
             positions: ['Software Engineer (Java, C++, C#)', 'Business Analyst', 'QA']
         },
         {
-            username:'virtusa',
-            password:'yk4qEzAnZXs36CvH',
-            userID:-1,
+            username: 'virtusa',
+            password: 'yk4qEzAnZXs36CvH',
+            userID: -1,
             name: 'VirtusaPolaris Pvt. Ltd.',
             logo: 'virtusa.png',
             panels: [],
             positions: ['Business Analyst', 'Software Engineer(Java)', 'Engineers-data warehousing']
         },
         {
-            username:'codegen',
-            password:'SC9cbhCSC8Mfg2ge',
-            userID:-1,
+            username: 'codegen',
+            password: 'SC9cbhCSC8Mfg2ge',
+            userID: -1,
             name: 'CodeGen International (Pvt) Ltd',
             logo: 'codegen.png',
             panels: [],
             positions: ['Software Engineer', 'QA', 'Business Analyst', 'Engineers – Systems']
         },
         {
-            username:'mobitel',
-            password:'z3b9LQJeq7Q5KzTm',
-            userID:-1,
+            username: 'mobitel',
+            password: 'z3b9LQJeq7Q5KzTm',
+            userID: -1,
             name: 'Mobitel (Pvt) Ltd',
             logo: 'mobitel.png',
             panels: [],
             positions: ['Software Engineer (01 year fixed contract)', 'Software Engineer', 'ERP specialist']
         },
         {
-            username:'synopsis',
-            password:'4hntdYcjQfwR2cDn',
-            userID:-1,
+            username: 'synopsis',
+            password: '4hntdYcjQfwR2cDn',
+            userID: -1,
             name: 'Synopsys Lanka (Pvt) Ltd',
             logo: 'synopsis.png',
             panels: [],
             positions: ['C++ R & D']
         },
         {
-            username:'camms',
-            password:'HQwxsuA3ZrwJc6Ha',
-            userID:-1,
+            username: 'camms',
+            password: 'HQwxsuA3ZrwJc6Ha',
+            userID: -1,
             name: 'CAM Management Solutions (Pvt) Ltd',
             logo: 'camms.png',
             panels: [],
             positions: ['Associate Business Analyst', 'Associate Software Engineer', 'Business Analyst', 'QA', 'Software Engineer', 'Mobile Developer (ios)']
         },
         {
-            username:'99x-technology',
-            password:'cycYzCPg4S8UfeTr',
-            userID:-1,
+            username: '99x-technology',
+            password: 'cycYzCPg4S8UfeTr',
+            userID: -1,
             name: '99X Technology',
             logo: '99x-technology.png',
             panels: [],
             positions: ['Software Engineer', 'QA']
         },
         {
-            username:'orangehrm',
-            password:'ny2vKTUEb6AWtAep',
-            userID:-1,
+            username: 'orangehrm',
+            password: 'ny2vKTUEb6AWtAep',
+            userID: -1,
             name: 'OrangeHRM ',
             logo: 'orangehrm.png',
             panels: [],
             positions: ['Software Engineer', 'QA Engineer']
         },
         {
-            username:'vizua-matix',
-            password:'sfrjg77KZ3naaveu',
-            userID:-1,
+            username: 'vizua-matix',
+            password: 'sfrjg77KZ3naaveu',
+            userID: -1,
             name: 'VizuaMatix',
             logo: 'vizua-matix.png',
             panels: [],
-            positions: ['Associate - Big Data (More research oriented position for candidates with Mathematics, Statistic, Programming, Artifical Intelligence and machine learning background)','Web Development - UI/UX Engineers (React/Redux Architecture)', 'Associate /Software Engineer - Web Development (Enterprise Micro Service Architecture )']
+            positions: ['Associate - Big Data (Mathematics, Statistic, Programming, AI and ML background)', 'Web Development - UI/UX Engineers (React/Redux)', 'Associate /Software Engineer - Web Development (Enterprise Micro Service)']
         },
         {
-            username:'n-cinga',
-            password:'e4mB9jYDghvWFwSv',
-            userID:-1,
+            username: 'n-cinga',
+            password: 'e4mB9jYDghvWFwSv',
+            userID: -1,
             name: 'nCinga',
             logo: 'n-cinga.png',
             panels: [],
             positions: ['Quality Assurances', 'Software Development']
         },
         {
-            username:'rez-gateway',
-            password:'gBhhSkDQPuJ9zbCe',
-            userID:-1,
+            username: 'rez-gateway',
+            password: 'gBhhSkDQPuJ9zbCe',
+            userID: -1,
             name: 'Reservations Gateway (Pvt) Ltd',
             logo: 'rez-gateway.png',
             panels: [],
             positions: ['Associate Software Engineer', 'Software Engineer (1 year experience or freelancing)', 'BA ( 1-2 year experience)']
         },
         {
-            username:'earth-unversity',
-            password:'BWxLtC8Hg267wuer',
-            userID:-1,
-            name: 'Earth Unversity',
+            username: 'earth-unversity',
+            password: 'BWxLtC8Hg267wuer',
+            userID: -1,
+            name: 'Earth University College',
             logo: 'earth-unversity.png',
             panels: [],
             positions: ['Demonstrator', 'Junior Lecturer (Visiting/Permanent)', 'Lecturer (Visiting/Permanent)', 'Associate Software Engineer', 'Software Engineer']
@@ -315,7 +321,7 @@
     var companyCount = 0;
 
     $('#setup-std-logins').click(function () {
-        for(var i=0; i<studentUsernames.length; i++) {
+        for (var i = 0; i < studentUsernames.length; i++) {
             $.ajax({
                 type: "POST",
                 url: domain + "signup",
@@ -331,14 +337,14 @@
                 success: function (response) {
                     if (response.success == true) {
                         addLogMsg("Added user " + response.data.username);
-                        studentCount ++;
+                        studentCount++;
                     } else {
                         addLogMsg("Error adding user " + response.data.username + " - " + response.msg);
                         console.log(response);
                     }
                     // todo
-                    if (i === studentUsernames.length ){
-                      showSuccessMessage(studentCount + " students inserted successfully , Out of  " + studentUsernames.length)
+                    if (i === studentUsernames.length) {
+                        showSuccessMessage(studentCount + " students inserted successfully , Out of  " + studentUsernames.length)
                     }
 
 
@@ -351,7 +357,6 @@
             });
 
 
-
         }
         // alert(studentCount + " students inserted successfully , Out of  " + studentUsernames.length);
 
@@ -359,7 +364,7 @@
     });
 
     $('#setup-cmp-logins').click(function () {
-        for(var i=0; i<companyDetails.length; i++) {
+        for (var i = 0; i < companyDetails.length; i++) {
             // Add user info
             $.ajax({
                 type: "POST",
@@ -377,14 +382,14 @@
                     if (response.success === true) {
                         addLogMsg("User added " + response.data.username + " - " + response.data._id);
                         saveCompanyInfo(response.data.username, response.data._id);
-                        companyCount ++;
+                        companyCount++;
                     } else {
                         addLogMsg("Error adding user " + response + " - " + response.msg);
                         console.log(response);
 
                     }
-                    if (i === companyDetails.length ){
-                      showSuccessMessage(companyCount + " students inserted successfully , Out of  " + companyDetails.length)
+                    if (i === companyDetails.length) {
+                        showSuccessMessage(companyCount + " students inserted successfully , Out of  " + companyDetails.length)
                     }
                 },
                 error: function (xhr, status, error) {
@@ -399,8 +404,8 @@
     });
 
     function saveCompanyInfo(username, userID) {
-        for(var i=0; i<companyDetails.length; i++) {
-            if (companyDetails[i].username == username){
+        for (var i = 0; i < companyDetails.length; i++) {
+            if (companyDetails[i].username == username) {
                 $.ajax({
                     type: "POST",
                     url: domain + "company",
