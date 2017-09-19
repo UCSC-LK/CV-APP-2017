@@ -178,19 +178,18 @@
             });
 
             function getCheckedPositions() {
-                var temp = [];
+                var temp2 = "";
                 $("input[name='position[]']").each(function () {
                     if ($(this).is(':checked')) {
-                        //  alert( $(this).val() );
-                        temp.push($(this).val());
+                        temp2 = temp2.concat(String($(this).val()),"!#");
                     }
                 });
-                return temp;
+                return temp2;
             }
 
             positionModal.on("click", "." + saveButton, function () {
                 if (positionForm.valid()) {
-                    var fullpara = para2 + '&position=' + getCheckedPositions();
+                    var fullpara = para2 + '&position=' + encodeURIComponent(getCheckedPositions());
                     var url = domain + "student_company";
                     ajaxSend("POST", fullpara, "ajaxSave", thisRow2, url);
                 }
