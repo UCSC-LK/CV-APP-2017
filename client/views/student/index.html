@@ -361,13 +361,9 @@ s
                 if (response.success == true) {
                     localStorage.removeItem("jwt_token");
                     window.location.replace(response.path);
-                    // sessionStorage.removeItem('jwt_token');
-                    // sessionStorage.removeItem('user_id');
-
-
                 } else {
                     showErrorMessage("Something went wrong");
-                    // console.log(response);
+                    console.log(response);
                 }
             },
             error: function (xhr, status, error) {
