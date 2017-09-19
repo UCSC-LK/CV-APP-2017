@@ -78,8 +78,15 @@
     } else {
         $(document).ready(function () {
 
-            var selectButton = '<a class="btn btn-warning waves-effect btn-sm ajaxSelect"> Select</a>';
-            var removeButton = '<a class="btn btn-danger waves-effect btn-sm ajaxRemove"> Remove</a>';
+            // Disabling actions upon deadline
+            if (deadlinePassed) {
+                var selectButton = '';
+                var removeButton = '';
+            } else {
+                var selectButton = '<a class="btn btn-warning waves-effect btn-sm ajaxSelect"> Select</a>';
+                var removeButton = '<a class="btn btn-danger waves-effect btn-sm ajaxRemove"> Remove</a>';
+            }
+
             var ajaxRemove = "ajaxRemove";
             var ajaxSelect = "ajaxSelect";
             var saveButton = "saveButton";
@@ -97,7 +104,7 @@
                     dataSrc: 'result',
                     beforeSend: function (xhr) {
                         xhr.setRequestHeader("Authorization", getToken());
-                    },
+                    }
                 },
                 "columns": [{
                     "data": "name"
@@ -281,5 +288,12 @@
             $.AdminBSB.input.activate();
             $.AdminBSB.select.activate();
         });
+
+        // Disabling all inputs upon deadline
+        if (deadlinePassed) {
+            $("input").prop("disabled", true);
+            $("button").prop("disabled", true);
+        }
+
     }
 </script>
