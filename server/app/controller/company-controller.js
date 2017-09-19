@@ -21,7 +21,11 @@ module.exports.getCompany = function (req, res, next) {
 module.exports.getCompanies = function (req, res, next) {
     Company.find({}, function (err, result) {
         if (err) return next(err);
-        res.json(result);
+        var temp = {
+            "result": result,
+            "success": true
+        };
+        res.json(temp);
     });
 };
 
