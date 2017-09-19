@@ -24,18 +24,4 @@ var studentScheduleSchema = mongoose.Schema({
     }
 });
 
-studentScheduleSchema.pre("save",function(next) {
-    if (this.isNew) {
-        this.schedule = [];
-        var i = 0;
-        while(this.schedule.length < defaultSlots) {
-            this.schedule.push({
-                "slot": ++i,
-                "company": "-"
-            })
-        }
-    }
-    next();
-});
-
 module.exports = mongoose.model('StudentSchedule', studentScheduleSchema);
