@@ -217,7 +217,20 @@
                     },
                     success: function (response) {
                         if (response.success === true) {
-                            window.open(domain + response.data);
+                            var element = document.createElement('a');
+                            element.setAttribute('href', domain + response.data);
+
+                            var filename = response.data.split("/")[2].split("-").join(" ");
+                            element.setAttribute('download', filename);
+
+                            element.style.display = 'none';
+                            document.body.appendChild(element);
+
+                            element.click();
+
+                            document.body.removeChild(element);
+
+//                            window.open(domain + response.data);
                         } else {
                             showErrorMessage(response.msg);
                         }
