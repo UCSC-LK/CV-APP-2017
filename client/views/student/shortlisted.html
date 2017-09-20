@@ -9,7 +9,7 @@
         <div class="card">
             <div class="header">
                 <h2>
-                    Your interview schdule
+                    Companies you've been short-listed by
                 </h2>
             </div>
             <div class="body">
@@ -17,8 +17,8 @@
                        width="100%">
                     <thead>
                     <tr>
-                        <th>Id</th>
-                        <th>Company</th>
+                      <th>Company</th>
+                      <th>Position</th>
                     </tr>
                     </thead>
                 </table>
@@ -36,7 +36,12 @@
                 dom: 'Bfrtip',
                 responsive: true,
                 buttons: [
-                    'pdf'
+                  {
+                  extend: 'pdfHtml5',
+                  message: 'Shortlisted companies',
+                  title: 'UCSC Career Fair 2017',
+                  filename: 'Shortlisted companies'
+                  }
                 ],
                 ajax: {
                     url: domain + 'selected_student_company/companies/' + userID,
@@ -45,15 +50,12 @@
                         xhr.setRequestHeader("Authorization", getToken());
                     }
                 },
-                "columns": [{
-                    "data": "_id"
-                },
-                    {
-                        "data": "name"
-                    }
+                "columns": [
+                  { "data": "company" },
+                  { "data": "position" }
                 ],
                 "language": {
-                    "emptyTable": "Sorry! Your interview has not been scheduled yet."
+                    "emptyTable": "Sorry! No companies have shortlisted you yet."
                 }
             });
 
