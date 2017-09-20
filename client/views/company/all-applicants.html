@@ -73,7 +73,7 @@
             var applicantTable = $('#apllicantTable').DataTable({
                 dom: 'Bfrtip',
                 responsive: true,
-                "order": [[ 3, "desc" ]],
+                "order": [[ 3, "asa" ]],
                 buttons: [
                     {
                         extend: 'pdfHtml5',
@@ -131,9 +131,6 @@
                         "data": null,
                         "defaultContent": viewButton
                     }
-                ],
-                "order": [
-                    [1, 'asc']
                 ],
                 initComplete: function () {
                     this.api().columns().every(function () {
