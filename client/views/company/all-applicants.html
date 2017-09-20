@@ -149,8 +149,20 @@
                                         .search(val ? '^' + val + '$' : '', true, false)
                                         .draw();
                                 });
-                            column.data().unique().sort().each(function (d, j) {
-                                select.append('<option value="' + d + '">' + d + '</option>')
+                            // column.data().unique().sort().each(function (d, j) {
+                            //     select.append('<option value="' + d + '">' + d + '</option>')
+                            // });
+
+                            // Todo - implemet dynamic method - along with ajax reload
+                            var selectors;
+                            if (this[0] == 3){
+                              selectors = ['4th Year','3rd year','Passed Out'];
+                            }else {
+                              selectors = ['CS','SE','IS'];
+                            }
+
+                            $.each(selectors, function (index, d) {
+                              select.append('<option value="' + d + '">' + d + '</option>')
                             });
                         }
                     });
