@@ -48,8 +48,8 @@
                             <tr>
                                 <th></th>
                                 <th>Name</th>
-                                <th id = "_2" >Year</th>
-                                <th id = "_3" >Stream</th>
+                                <th>Year</th>
+                                <th>Stream</th>
                                 <th>Actions</th>
                             </tr>
                             </thead>
@@ -109,31 +109,6 @@
             var position = companyObject.positions[0];
             $('#applicant-table-header-position').text(position);
             $('#shortlist-table-header-position').text(position);
-
-            $('#apllicantTable').on('xhr.dt', function ( e, settings, json, xhr ) {
-              // todo #__2
-                var api = new $.fn.dataTable.Api( settings );
-                api.columns().every(function () {
-                    if (this[0] == 2 || this[0] == 3) {
-                        var column = this;
-                        // get the content form the tr tag
-                        var title = $("#_" +this[0]).text().split(" ")[0]
-                        var select = $('<select><option value="">All</option></select>')
-                            .appendTo($(column.header()).empty().append(title+'</br> '))
-                            .on('change', function () {
-                                var val = $.fn.dataTable.util.escapeRegex(
-                                    $(this).val()
-                                );
-                                column
-                                    .search(val ? '^' + val + '$' : '', true, false)
-                                    .draw();
-                            });
-                        column.data().unique().sort().each(function (d, j) {
-                            select.append('<option value="' + d + '">' + d + '</option>')
-                        });
-                    }
-                });
-            } );
 
             var applicantTable = $('#apllicantTable').DataTable({
                 dom: 'Bfrtip',
@@ -195,9 +170,8 @@
                     this.api().columns().every(function () {
                         if (this[0] == 2 || this[0] == 3) {
                             var column = this;
-                            var title = $("#_" +this[0]).text().split(" ")[0]
                             var select = $('<select><option value="">All</option></select>')
-                                .appendTo($(column.header()).empty().append(title+'</br> '))
+                                .appendTo($(column.header()).append('</br> '))
                                 .on('change', function () {
                                     var val = $.fn.dataTable.util.escapeRegex(
                                         $(this).val()
