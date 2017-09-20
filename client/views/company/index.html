@@ -36,6 +36,12 @@
     <link href="../../assets/css/themes/all-themes.css" rel="stylesheet"/>
 </head>
 
+<style type="text/css">
+    #main-menu li.active {
+        background: #ffa275;
+    }
+</style>
+
 <body class="theme-grey">
 <!-- Page Loader -->
 <div class="page-loader-wrapper">
@@ -69,17 +75,20 @@ s
             <a class="navbar-brand" href="index.html">UCSC Career Fair 2017</a>
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse">
-                <ul class="nav navbar-nav navbar-right" style="margin-top:15px !important;">
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="material-icons">menu</i></a>
-                        <ul class="dropdown-menu">
-                          <li><a href="profile.html" class="ajax-pg"><i class="material-icons">lock</i>Change Password</a>
-                          </li>
-                          <li role="seperator" class="divider"></li>
-                          <li><a id="logoutButton"> <i class="material-icons">input</i>Sign Out</a></li>
-                        </ul>
-                    </li>
-                </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false"><i class="material-icons">menu</i></a>
+                    <ul class="dropdown-menu" style="margin-top:15px !important;">
+                        <li><a href="profile.html" style="padding: 7px;" class="ajax-pg"><i
+                                class="material-icons">lock</i>Change Password</a>
+                        </li>
+                        <li role="seperator" class="divider"></li>
+                        <li><a id="logoutButton" style="padding: 7px;"><i class="material-icons">input</i>Sign Out</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
         </div>
     </div>
 </nav>
@@ -199,7 +208,6 @@ s
     // Global company object
     var companyObject;
 
-    // var domain = "http://localhost:3000/";
     var domain = "../../";
 
     $(document).ready(function () {
@@ -210,7 +218,7 @@ s
             e.preventDefault();
             pageWrapper.empty();
             pageWrapper.load(this.href);
-            $('.ml-menu li.active').removeClass('active');
+            $('#main-menu li.active').removeClass('active');
             $(this).parent().addClass('active');
         });
         window.onload = pageWrapper.load('applicants.html');

@@ -17,7 +17,7 @@
                        width="100%">
                     <thead>
                     <tr>
-                        <th>Id</th>
+                        <th>Slot</th>
                         <th>Company</th>
                     </tr>
                     </thead>
@@ -39,18 +39,15 @@
                     'pdf'
                 ],
                 ajax: {
-                    url: domain + 'selected_student_company/companies/' + userID,
+                    url: domain + 'student_schedule/schedule/' + userID,
                     dataSrc: 'result',
                     beforeSend: function (xhr) {
                         xhr.setRequestHeader("Authorization", getToken());
                     }
                 },
-                "columns": [{
-                    "data": "_id"
-                },
-                    {
-                        "data": "name"
-                    }
+                "columns": [
+                    { "data": "slot" },
+                    { "data": "company" }
                 ],
                 "language": {
                     "emptyTable": "Sorry! No companies have shortlisted you yet."

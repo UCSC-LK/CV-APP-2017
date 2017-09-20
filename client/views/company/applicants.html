@@ -18,11 +18,14 @@
     <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
         <div class="card">
             <div class="body" style="padding: 20px 10px;">
-              <i class="material-icons" style="color:#000; float:right" data-toggle="tooltip" title="Tooltips are not CSS-only plugins, and must therefore be initialized with jQuery: select the specified element and call the tooltip() method.!">info</i>
+              <i class="material-icons" style="color:#000;float:right;position: absolute;top: 7px;right: 7px;" data-toggle="tooltip"
+                 title="Since we have allocated an average of 30 minutes per interview, one panel will be able to conduct 8 pre-scheduled interviews."
+              >info
+              </i>
                 <div style="height: 41px">
-                    <div class="col-xs-1" id="student-count" style="padding: 0; font-size: 30px; margin-right: 8px; text-align: center;">4</div>
-                    <div class="col-xs-3" style="padding: 0;">Slots reserved</div>
-                    <div class="col-xs-offset-2 col-xs-1" id="panel-count" style="padding: 0; font-size: 30px; margin-right: 8px; text-align: center;">1</div>
+                    <div class="col-xs-2" id="student-count" style="padding: 0; font-size: 30px; margin-right: 8px; text-align: center;">0</div>
+                    <div class="col-xs-4" style="padding: 0;">Interview slots reserved</div>
+                    <div class="col-xs-offset-1 col-xs-1" id="panel-count" style="padding: 0; font-size: 30px; margin-right: 8px; text-align: center;">0</div>
                     <div class="col-xs-3" style="padding: 0;">Panel(s) required</div>
                 </div>
             </div>
@@ -153,10 +156,10 @@
                     },
                     {
                         "data": "stream",
-                        "width": "10%"
+                        "width": "8%"
                     },
                     {
-                        "width": "20%",
+                        "width": "21%",
                         "data": null,
                         "defaultContent": viewButton + selectButton
                     }
