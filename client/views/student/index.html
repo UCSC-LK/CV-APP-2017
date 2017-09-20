@@ -233,6 +233,8 @@ s
 
     var domain = "../../";
 
+    var deadlinePassed = true;
+
     // Code to inject html code into index
     $(document).ready(function () {
 
@@ -361,13 +363,9 @@ s
                 if (response.success == true) {
                     localStorage.removeItem("jwt_token");
                     window.location.replace(response.path);
-                    // sessionStorage.removeItem('jwt_token');
-                    // sessionStorage.removeItem('user_id');
-
-
                 } else {
                     showErrorMessage("Something went wrong");
-                    // console.log(response);
+                    console.log(response);
                 }
             },
             error: function (xhr, status, error) {
@@ -452,8 +450,8 @@ s
     }
 
     // Count down
-    $('#count-down').countdown('2017/09/19 21:00:00', function(event) {
-      $(this).html(event.strftime('Deadline : %d day(s) %H:%M:%S'));
+    $('#count-down').countdown('2017/09/19 23:00:00', function(event) {
+      $(this).html(event.strftime('Deadline: 2017.09.19 - 11 pm<br><small style="font-size: 13px;">%d days, %H hours, %M minutes and %S seconds</small>'));
     });
 
 </script>

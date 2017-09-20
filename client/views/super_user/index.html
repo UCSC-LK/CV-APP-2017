@@ -107,6 +107,9 @@ s
                     </a>
                     <ul class="ml-menu">
                         <li class="active">
+                            <a href="main.html" class="ajax-pg toggled">Main</a>
+                        </li>
+                        <li>
                             <a href="students.html" class="ajax-pg toggled">Students</a>
                         </li>
                         <li>
@@ -210,7 +213,7 @@ s
             $('.ml-menu li.active').removeClass('active');
             $(this).parent().addClass('active');
         });
-        window.onload = pageWrapper.load('students.html');
+        window.onload = pageWrapper.load('main.html');
     });
 
     //Global userID
@@ -232,8 +235,6 @@ s
                 if (response.success == true) {
                     localStorage.removeItem("jwt_token");
                     window.location.replace(response.path);
-                    // sessionStorage.removeItem('jwt_token');
-                    // sessionStorage.removeItem('user_id');
                     localStorage.removeItem("jwt_token");
 
                 } else {
@@ -307,45 +308,17 @@ s
         };
     }
 
-    function setCompanyObject() {
-        $.ajax({
-            type: "GET",
-            url: domain + "company",
-            data: {
-                userID: userID
-            },
-            dataType: "json",
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader("Authorization", getToken());
-            },
-            success: function (response) {
-                if (response.success == true) {
-                    companyObject = response.data[0];
-                    // console.log(companyObject);
-                    $('#company-logo').css("background", 'url(' + domain + 'assets/images/company-logos/' + companyObject.logo + ')');
-                } else {
-                    showErrorMessage("Something went wrong");
-                    // console.log(response);
-                }
-            },
-            error: function (xhr, status, error) {
-                console.log(xhr);
-                console.log(status, error);
-            }
-        });
-    }
     if (isLoggedIn()) {
         user_info = currentUser();
-        // check if logged in user is a company
-        // if (user_info.usertype != 99) {
-        //     window.location.replace('../../index.html');
-        //     localStorage.removeItem("jwt_token");
-        // }
+        // check if logged in user is a student
+        if (user_info.usertype != 99) {
+            window.location.replace('../../index.html');
+            localStorage.removeItem("jwt_token");
+        }
         userID = user_info._id;
-        setCompanyObject();
     } else {
-        // window.location.replace('../../index.html');
-        // localStorage.removeItem("jwt_token");
+        window.location.replace('../../index.html');
+        localStorage.removeItem("jwt_token");
     }
 
 </script>
