@@ -125,8 +125,11 @@ s
                     </a>
                     <ul class="ml-menu">
                         <li class="active">
-                            <a href="schedule.html" class="ajax-pg toggled">Schedule</a>
+                            <a href="shortlisted.html" class="ajax-pg toggled">Short listed</a>
                         </li>
+                        <!-- <li>
+                            <a href="schedule.html" class="ajax-pg toggled">Schedule</a>
+                        </li> -->
                         <li>
                             <a href="student-details.html" class="ajax-pg toggled">My details</a>
                         </li>
@@ -233,7 +236,7 @@ s
 
     var domain = "../../";
 
-    var deadlinePassed = true;
+    var deadlinePassed = false;
 
     // Code to inject html code into index
     $(document).ready(function () {
@@ -245,7 +248,7 @@ s
             e.preventDefault();
             validation(this);
         });
-        window.onload = pageWrapper.load('schedule.html');
+        window.onload = pageWrapper.load('shortlisted.html');
 
         function validation(thisNav) {
             var path = thisNav.href.split("/");
@@ -450,8 +453,8 @@ s
     }
 
     // Count down
-    $('#count-down').countdown('2017/09/19 23:00:00', function(event) {
-      $(this).html(event.strftime('Deadline: 2017.09.19 - 11 pm<br><small style="font-size: 13px;">%d days, %H hours, %M minutes and %S seconds</small>'));
+    $('#count-down').countdown('2017/09/20 23:00:00', function(event) {
+      $(this).html(event.strftime('Deadline: 2017.09.20 - 11 pm<br><small style="font-size: 13px;">%d days, %H hours, %M minutes and %S seconds</small>'));
     });
 
 </script>
