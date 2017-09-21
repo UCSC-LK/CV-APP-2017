@@ -200,9 +200,16 @@ $(document).ready(function() {
     companyTable.on("click", "." + ajaxSelect, function () {
 
         var rowData = companyTable.row($(this).parents('tr')).data();
-        var slot = 4;
+        var slot;
+
+        // Get the value from the dropdown list
+        $.each(companyTable.row($(this).parents('tr')), function (index, value) {
+            slot = ($(value).find('select').val());
+        });
+
         var url = domain + 'student_schedule';
         var para = '&company=' + rowData['company'] + '&student=' + rowData['student'] + '&slot=' + slot;
+
         ajaxSend("POST", para, "ajaxSelect", null, url);
     });
 
