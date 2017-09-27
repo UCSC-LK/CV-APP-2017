@@ -53,7 +53,7 @@
         <p>Please wait...</p>
     </div>
 </div>
-s
+
 <!-- #END# Page Loader -->
 <!-- Overlay For Sidebars -->
 <div class="overlay"></div>
@@ -98,33 +98,32 @@ s
         <!-- #User Info -->
 
         <!-- Menu -->
-        <div class="menu">
+        <div class="menu" id="main-menu">
             <ul class="list">
-                <li class="header">SUPER USER</li>
+                <li class="header">Super User Section</li>
                 <li class="active">
-                    <a href="javascript:void(0);" class="menu-toggle">
-                        <i class="material-icons">view_list</i>
-                        <span>My Account</span>
-                    </a>
-                    <ul class="ml-menu">
-                        <li class="active">
-                            <a href="main.html" class="ajax-pg toggled">Main</a>
-                        </li>
-                        <li>
-                            <a href="students.html" class="ajax-pg toggled">Students</a>
-                        </li>
-                        <li>
-                            <a href="companies.html" class="ajax-pg toggled">Companies</a>
-                        </li>
-                        <li>
-                            <a href="setup.html" class="ajax-pg toggled">System Setup</a>
-                        </li>
-                    </ul>
+                    <a href="main.html" class="ajax-pg toggled"><i
+                            class="material-icons">assignment</i><span>Scheduler</span></a>
+                </li>
+                <li>
+                    <a href="students.html" class="ajax-pg toggled"><i
+                            class="material-icons">face</i><span>All Students</span></a>
+                </li>
+                <li>
+                    <a href="companies.html" class="ajax-pg toggled"><i
+                            class="material-icons">business</i><span>All Companies</span></a>
+                </li>
+                <li>
+                    <a href="setup.html" class="ajax-pg toggled"><i
+                            class="material-icons">settings</i><span>System Setup</span></a>
+                </li>
+                <li>
+                    <a href="contact.html" class="ajax-pg toggled"><i
+                            class="material-icons">phone</i><span>Contact Us</span></a>
                 </li>
             </ul>
         </div>
         <!-- #Menu -->
-
 
         <!-- Footer -->
         <div class="legal">
@@ -142,7 +141,7 @@ s
     <div class="container-fluid">
         <div id="page-wrapper">
             <div class="block-header">
-                <h2>BLANK PAGE</h2>
+                <h2>Loading...</h2>
                 <!-- Ajax load here -->
             </div>
         </div>
@@ -211,7 +210,7 @@ s
             e.preventDefault();
             pageWrapper.empty();
             pageWrapper.load(this.href);
-            $('.ml-menu li.active').removeClass('active');
+            $('#main-menu li.active').removeClass('active');
             $(this).parent().addClass('active');
         });
         window.onload = pageWrapper.load('main.html');
