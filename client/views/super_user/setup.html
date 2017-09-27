@@ -12,6 +12,19 @@
                 <button class="btn btn-primary waves-effect" id="setup-std-logins">Setup student logins</button>
                 <button class="btn btn-primary waves-effect" id="setup-cmp-logins">Setup companies</button>
 
+                <div id="addStudentsForm" class="setup-form-wrapper">
+                    <p>Enter student usernames and passwords in csv format. <pre>username1, password1 <br>username2, password2 <br>...</pre></p>
+                    <textarea name="studentData" id="studentDataText" style="width: 100%" rows="5"></textarea>
+                    <button onclick="setupStudents()" class="btn btn-primary waves-effect">Setup</button>
+                </div>
+
+                <div id="addCompaniesForm" class="setup-form-wrapper">
+                    <p>Enter company details as a JSON. </p>
+                    <pre>username1, password1, companyName1, logoName1, [panel1, panel2, ...], [positions1, position2, ...]<br>username2, password2, companyName2, logoName2, [panel1, panel2, ...], [positions1, position2, ...]<br>...</pre>
+                    <textarea name="studentData" id="companyDataText" style="width: 100%" rows="5"></textarea>
+                    <button onclick="setupCompanies()" class="btn btn-primary waves-effect">Setup</button>
+                </div>
+
                 <div class="log" id="log"></div>
             </div>
         </div>
@@ -34,145 +47,184 @@
         padding: 7px;
         font-family: "Lucida Console", Monaco, monospace;
     }
+
+    .setup-form-wrapper {
+        padding: 10px 17px;
+        border: 2px solid #9e9e9e;
+        margin: 5px 0;
+        display: none;
+    }
+
+    textarea {
+        font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+    }
+
 </style>
 
 <script type="application/javascript">
 
     var domain = "../../";
 
-    var studentUsernames = [];
-
-    var companyDetails = [];
-
-    var studentCount = 0;
-    var companyCount = 0;
-
     $('#setup-std-logins').click(function () {
-        for (var i = 0; i < studentUsernames.length; i++) {
-            $.ajax({
-                type: "POST",
-                url: domain + "signup",
-                data: {
-                    username: studentUsernames[i],
-                    password: studentUsernames[i],
-                    usertype: 0
-                },
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader("Authorization", getToken());
-                },
-                dataType: "json",
-                success: function (response) {
-                    if (response.success == true) {
-                        addLogMsg("Added user " + response.data.username);
-                        studentCount++;
-                    } else {
-                        addLogMsg("Error adding user " + response.data.username + " - " + response.msg);
-                        console.log(response);
-                    }
-                    // todo
-                    if (i === studentUsernames.length) {
-                        showSuccessMessage(studentCount + " students inserted successfully , Out of  " + studentUsernames.length)
-                    }
-
-
-                },
-                error: function (xhr, status, error) {
-                    showErrorMessage("Something went wrong");
-                    console.log(xhr);
-                    console.log(status, error);
-                }
-            });
-
-
-        }
-        // alert(studentCount + " students inserted successfully , Out of  " + studentUsernames.length);
-
-        studentCount = 0;
+        $('#addStudentsForm').css('display', 'block');
+        $('#addCompaniesForm').css('display', 'none');
     });
 
     $('#setup-cmp-logins').click(function () {
-        for (var i = 0; i < companyDetails.length; i++) {
-            // Add user info
-            $.ajax({
-                type: "POST",
-                url: domain + "signup",
-                data: {
-                    username: companyDetails[i].username,
-                    password: companyDetails[i].password,
-                    usertype: 1
-                },
-                dataType: "json",
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader("Authorization", getToken());
-                },
-                success: function (response) {
-                    if (response.success === true) {
-                        addLogMsg("User added " + response.data.username + " - " + response.data._id);
-                        saveCompanyInfo(response.data.username, response.data._id);
-                        companyCount++;
-                    } else {
-                        addLogMsg("Error adding user " + response + " - " + response.msg);
-                        console.log(response);
-
-                    }
-                    if (i === companyDetails.length) {
-                        showSuccessMessage(companyCount + " students inserted successfully , Out of  " + companyDetails.length)
-                    }
-                },
-                error: function (xhr, status, error) {
-                    showErrorMessage("Something went wrong");
-                    console.log(xhr);
-                    console.log(status, error);
-                }
-            });
-
-        }
-        companyCount = 0;
+        $('#addStudentsForm').css('display', 'none');
+        $('#addCompaniesForm').css('display', 'block');
     });
 
-    function saveCompanyInfo(username, userID) {
-        for (var i = 0; i < companyDetails.length; i++) {
-            if (companyDetails[i].username == username) {
-                $.ajax({
-                    type: "POST",
-                    url: domain + "company",
-                    data: {
-                        name: companyDetails[i].name,
-                        logo: companyDetails[i].logo,
-                        userID: userID,
-                        panels: companyDetails[i].panels,
-                        positions: companyDetails[i].positions
-                    },
-                    beforeSend: function (xhr) {
-                        xhr.setRequestHeader("Authorization", getToken());
-                    },
-                    dataType: "json",
-                    success: function (response) {
-                        if (response.status === "success") {
-                            addLogMsg("Company info added " + response.data.name);
-                        } else {
-                            addLogMsg("<----Error adding company----> ");
-                            console.log(response);
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        showErrorMessage("Something went wrong");
-                        console.log(xhr);
-                        console.log(status, error);
-                    }
-                });
-                break;
-            }
-        }
+    function saveCompanyInfo(data) {
+        ajaxSend("POST", domain + "company", data)
+            .done(function (response) {
+                if (response.status === "success") {
+                    addLogMsg("Company info added " + response.data.name);
+                } else {
+                    addLogMsg("<----Error adding company----> ");
+                    console.log(response);
+                }
+            })
+            .fail(function (xhr, status, error) {
+                showErrorMessage("Something went wrong");
+                console.log(xhr);
+                console.log(status, error);
+            })
+        ;
     }
 
     function addLogMsg(msg) {
         var para = document.createElement("p");
         var node = document.createTextNode(msg);
         para.appendChild(node);
-        $('#log').append(para);
+        var logElement = $('#log');
+        logElement.append(para);
+
+        logElement.animate({
+            scrollTop: logElement[0].scrollHeight
+        }, 10);
     }
 
+    function setupStudents() {
+        var text = $('#studentDataText').val();
+        if (text !== "") {
+            var logins = text.split('\n');
+            // variables for log details
+            totalCount = logins.length;
+            successCount = 0;
+            operationType = 'student';
+
+            logins.forEach(function (param) {
+                var login = param.split(',');
+                if (login.length !== 2) {
+                    addLogMsg('Invalid details: ' + param);
+                } else {
+                    var data = {
+                        username: login[0].trim(),
+                        password: login[1].trim(),
+                        usertype: 0
+                    };
+                    ajaxSend("POST", domain + "signup", data)
+                        .done(function (response) {
+                            if (response.success == true) {
+                                addLogMsg("Added user " + response.data.username);
+                                successCount++;
+                            } else {
+                                addLogMsg("Error adding user " + response.data.username + " - " + response.msg);
+                                // console.log(response);
+                            }
+                        })
+                        .fail(function (xhr, status, error) {
+                            showErrorMessage("Something went wrong");
+                            console.log(xhr);
+                            console.log(status, error);
+                        })
+                    ;
+                }
+            });
+        }
+    }
+
+    function setupCompanies() {
+        var text = $('#companyDataText').val();
+        if (text !== "") {
+            var logins = text.split('\n');
+            // variables for log details
+            totalCount = logins.length;
+            successCount = 0;
+            operationType = 'company';
+
+            logins.forEach(function (param) {
+                var temp = param.split('[');
+                var data = {};
+                try {
+                    if (temp.length !== 3) throw 'Error';
+                    //get basic details
+                    var details = temp[0].split(',');
+                    if (details.length !== 5) throw 'Error';
+                    data.username = details[0].trim();
+                    data.password = details[1].trim();
+                    data.name = details[2].trim();
+                    data.logo = details[3].trim();
+
+                    //get panels
+                    data.panels = temp[1].replace(']', '').slice(0, -2).split(',');
+                    //trim panels
+                    data.panels = data.panels.map(function(e){
+                        return e.trim();
+                    });
+                    if (data.panels.length === 1 && data.panels[0] === "") data.panels = [];
+                    if (data.panels.indexOf("") !== -1) throw 'Error';
+
+                    //get positions
+                    data.positions = temp[2].replace(']', '').split(',');
+                    //trim positions
+                    data.positions = data.positions.map(function(e){
+                        return e.trim();
+                    });
+
+                    if (data.positions === '') throw 'Error';
+                    if (data.positions.indexOf("") !== -1) throw 'Error';
+                }
+                catch (e) {
+                    addLogMsg('Invalid login details: ' + param);
+                    return;
+                }
+
+                data.usertype = 1;
+                ajaxSend("POST", domain + "signup", data)
+                    .done(function (response) {
+                        if (response.success === true) {
+                            addLogMsg("User added " + response.data.username + " - " + response.data._id);
+                            data.userID = response.data._id;
+                            saveCompanyInfo(data);
+                            successCount++;
+                        } else {
+                            addLogMsg("Error adding user " + response + " - " + response.msg);
+                            // console.log(response);
+                        }
+                    })
+                    .fail(function (xhr, status, error) {
+                        showErrorMessage("Something went wrong");
+                        console.log(xhr);
+                        console.log(status, error);
+                    })
+                ;
+            });
+        }
+    }
+
+    function ajaxSend(type, url, data) {
+        return $.ajax({
+            type: type,
+            url: url,
+            data: data,
+            dataType: "json",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", getToken());
+            }
+        });
+    }
 
 </script>
 
