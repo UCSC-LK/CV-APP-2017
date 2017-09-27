@@ -99,40 +99,38 @@ s
                 <div class="name" data-toggle="dropdown" aria-haspopup="true" id="username" aria-expanded="false">
                     John Doe
                 </div>
-                <!-- <div class="email">john.doe@example.com</div> -->
-
             </div>
         </div>
         <!-- #User Info -->
         <!-- Menu -->
-        <div class="menu">
+        <div class="menu" id="main-menu">
             <ul class="list">
-                <li class="header">STUDENT SECTION</li>
-
+                <li class="header">Student Section</li>
                 <li class="active">
-                    <a href="javascript:void(0);" class="menu-toggle">
-                        <i class="material-icons">view_list</i>
-                        <span>My Account</span>
-                    </a>
-                    <ul class="ml-menu">
-                        <li class="active">
-                            <a href="shortlisted.html" class="ajax-pg toggled">Short listed</a>
-                        </li>
-                        <!-- <li>
-                            <a href="schedule.html" class="ajax-pg toggled">Schedule</a>
-                        </li> -->
-                        <li>
-                            <a href="student-details.html" class="ajax-pg toggled">My details</a>
-                        </li>
-                        <li>
-                            <a href="cv-view.html" class="ajax-pg toggled">My CV</a>
-                        </li>
-                        <li>
-                            <a href="company-select.html" class="ajax-pg toggled">My companies</a>
-                        </li>
-                        <li><div class="navbar-brand" id="count-down"></div></li>
-                    </ul>
+                    <a href="shortlisted.html" class="ajax-pg toggled"><i
+                            class="material-icons">done_all</i><span>Shortlistings</span></a>
                 </li>
+                <!--<li>-->
+                    <!--<a href="schedule.html" class="ajax-pg toggled"><i-->
+                            <!--class="material-icons">assignment</i><span>Schedule</span></a>-->
+                <!--</li>-->
+                <li>
+                    <a href="student-details.html" class="ajax-pg toggled"><i
+                            class="material-icons">account_box</i><span>My Details</span></a>
+                </li>
+                <li>
+                    <a href="cv-view.html" class="ajax-pg toggled"><i
+                            class="material-icons">description</i><span>My CV</span></a>
+                </li>
+                <li>
+                    <a href="company-select.html" class="ajax-pg toggled"><i
+                            class="material-icons">business</i><span>Applied Companies</span></a>
+                </li>
+                <li>
+                    <a href="contact.html" class="ajax-pg toggled"><i
+                            class="material-icons">phone</i><span>Contact Us</span></a>
+                </li>
+
             </ul>
         </div>
         <!-- #Menu -->
@@ -141,9 +139,6 @@ s
             <div class="copyright">
                 &copy; 2017 - 2018 <a href="javascript:void(0);">UCSC CV App</a>.
             </div>
-            <!-- <div class="version">
-                    <b>Version: </b> 1.0.0
-                </div> -->
         </div>
         <!-- #Footer -->
     </aside>
@@ -292,7 +287,7 @@ s
                         }
                     } else {
                         showErrorMessage("Something went wrong");
-                        // console.log(response);
+                        console.log(response);
                     }
                 },
                 error: function (xhr, status, error) {
@@ -305,10 +300,11 @@ s
         function updatepage(thisNav) {
             pageWrapper.empty();
             pageWrapper.load(thisNav.href);
-            $('.ml-menu li.active').removeClass('active');
-            $(thisNav).parent().addClass('active');
+            $('#main-menu li.active').removeClass('active');
+            var href = thisNav.href.split('/');
+            var query = 'a[href="' + href[href.length-1] + '"]';
+            $(query).parent().addClass('active');
         }
-
     });
 
     // get student info and set studentObject
@@ -444,8 +440,8 @@ s
     }
 
     // Count down
-    $('#count-down').countdown('2017/09/20 23:00:00', function(event) {
-      $(this).html(event.strftime('Deadline: 2017.09.20 - 11 pm<br><small style="font-size: 13px;">%d days, %H hours, %M minutes and %S seconds</small>'));
-    });
+//    $('#count-down').countdown('2017/09/20 23:00:00', function(event) {
+//      $(this).html(event.strftime('Deadline: 2017.09.20 - 11 pm<br><small style="font-size: 13px;">%d days, %H hours, %M minutes and %S seconds</small>'));
+//    });
 
 </script>
