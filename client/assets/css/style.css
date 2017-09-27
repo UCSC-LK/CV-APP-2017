@@ -10805,3 +10805,22 @@ html.ie11 .bs-searchbox .form-control {
 .tooltip-inner {
     max-width: 100% !important;
 }
+#main-menu li.active {
+    background: #ffa275;
+}
+
+.circle-img {
+    width: 100px;
+    border-radius: 100%;
+    margin: 10px 0px;
+}
+
+.social-icon {
+    width: 35px;
+    margin-right: 5px;
+    display: none;
+}
+
+.team-content {
+    padding: 22px 10px;
+}
