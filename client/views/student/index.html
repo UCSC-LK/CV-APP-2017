@@ -371,6 +371,10 @@ s
     }
 
     function isLoggedIn() {
+
+        //holding the document.ready state
+        $.holdReady( true );
+
         var token = getToken();
         var payload;
 
@@ -399,6 +403,8 @@ s
                         localStorage.removeItem("jwt_token");
                         window.location.replace('../../index.html');
                     }
+                    //releasing the document.ready state
+                    $.holdReady( false );
                 },
                 error: function (xhr, status, error) {
                     console.log(xhr);
