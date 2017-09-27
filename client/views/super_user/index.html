@@ -229,10 +229,14 @@
     // log message adding in setup
     $( document ).ajaxStop(function() {
         if (operationType === 'student') {
-            addLogMsg("Operation completed. " + successCount + " students out of " + totalCount + " added successfully.");
+            addLogMsg("---------------------");
+            addLogMsg("Operation completed. " + successCount + " out of " + totalCount + " students added successfully.");
+            addLogMsg("---------------------");
             operationType = "";
         } else if (operationType === 'company') {
-            addLogMsg("Operation completed. " + successCount + " companies out of " + totalCount + " added successfully.");
+            addLogMsg("---------------------");
+            addLogMsg("Operation completed. " + successCount + " out of " + totalCount + " companies added successfully.");
+            addLogMsg("---------------------");
             operationType = "";
         }
     });

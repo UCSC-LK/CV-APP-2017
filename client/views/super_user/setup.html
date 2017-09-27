@@ -76,35 +76,33 @@
     });
 
     function saveCompanyInfo(data) {
-        $.ajax({
-            type: "POST",
-            url: domain + "company",
-            data: data,
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader("Authorization", getToken());
-            },
-            dataType: "json",
-            success: function (response) {
+        ajaxSend("POST", domain + "company", data)
+            .done(function (response) {
                 if (response.status === "success") {
                     addLogMsg("Company info added " + response.data.name);
                 } else {
                     addLogMsg("<----Error adding company----> ");
                     console.log(response);
                 }
-            },
-            error: function (xhr, status, error) {
+            })
+            .fail(function (xhr, status, error) {
                 showErrorMessage("Something went wrong");
                 console.log(xhr);
                 console.log(status, error);
-            }
-        });
+            })
+        ;
     }
 
     function addLogMsg(msg) {
         var para = document.createElement("p");
         var node = document.createTextNode(msg);
         para.appendChild(node);
-        $('#log').append(para);
+        var logElement = $('#log');
+        logElement.append(para);
+
+        logElement.animate({
+            scrollTop: logElement[0].scrollHeight
+        }, 10);
     }
 
     function setupStudents() {
@@ -119,35 +117,29 @@
             logins.forEach(function (param) {
                 var login = param.split(',');
                 if (login.length !== 2) {
-                    addLogMsg('Invalid login details: ' + param);
+                    addLogMsg('Invalid details: ' + param);
                 } else {
-                    $.ajax({
-                        type: "POST",
-                        url: domain + "signup",
-                        data: {
-                            username: login[0],
-                            password: login[1],
-                            usertype: 0
-                        },
-                        beforeSend: function (xhr) {
-                            xhr.setRequestHeader("Authorization", getToken());
-                        },
-                        dataType: "json",
-                        success: function (response) {
+                    var data = {
+                        username: login[0].trim(),
+                        password: login[1].trim(),
+                        usertype: 0
+                    };
+                    ajaxSend("POST", domain + "signup", data)
+                        .done(function (response) {
                             if (response.success == true) {
                                 addLogMsg("Added user " + response.data.username);
                                 successCount++;
                             } else {
                                 addLogMsg("Error adding user " + response.data.username + " - " + response.msg);
-                                console.log(response);
+                                // console.log(response);
                             }
-                        },
-                        error: function (xhr, status, error) {
+                        })
+                        .fail(function (xhr, status, error) {
                             showErrorMessage("Something went wrong");
                             console.log(xhr);
                             console.log(status, error);
-                        }
-                    });
+                        })
+                    ;
                 }
             });
         }
@@ -198,19 +190,10 @@
                     addLogMsg('Invalid login details: ' + param);
                     return;
                 }
-                $.ajax({
-                    type: "POST",
-                    url: domain + "signup",
-                    data: {
-                        username: data.username,
-                        password: data.password,
-                        usertype: 1
-                    },
-                    dataType: "json",
-                    beforeSend: function (xhr) {
-                        xhr.setRequestHeader("Authorization", getToken());
-                    },
-                    success: function (response) {
+
+                data.usertype = 1;
+                ajaxSend("POST", domain + "signup", data)
+                    .done(function (response) {
                         if (response.success === true) {
                             addLogMsg("User added " + response.data.username + " - " + response.data._id);
                             data.userID = response.data._id;
@@ -218,20 +201,30 @@
                             successCount++;
                         } else {
                             addLogMsg("Error adding user " + response + " - " + response.msg);
-                            console.log(response);
+                            // console.log(response);
                         }
-                    },
-                    error: function (xhr, status, error) {
+                    })
+                    .fail(function (xhr, status, error) {
                         showErrorMessage("Something went wrong");
                         console.log(xhr);
                         console.log(status, error);
-                    }
-                });
+                    })
+                ;
             });
-
         }
     }
 
+    function ajaxSend(type, url, data) {
+        return $.ajax({
+            type: type,
+            url: url,
+            data: data,
+            dataType: "json",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", getToken());
+            }
+        });
+    }
 
 </script>
 
