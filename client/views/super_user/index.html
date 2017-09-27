@@ -221,6 +221,22 @@
 
     var domain = "../../";
 
+    //variables for system setup
+    var totalCount = 0;
+    var successCount = 0;
+    var operationType = '';
+
+    // log message adding in setup
+    $( document ).ajaxStop(function() {
+        if (operationType === 'student') {
+            addLogMsg("Operation completed. " + successCount + " students out of " + totalCount + " added successfully.");
+            operationType = "";
+        } else if (operationType === 'comapny') {
+            addLogMsg("Operation completed. " + successCount + " companies out of " + totalCount + " added successfully.");
+            operationType = "";
+        }
+    });
+
     // Logout btn action
     $('#logoutButton').click(function () {
         $.ajax({

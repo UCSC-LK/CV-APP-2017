@@ -12,6 +12,11 @@
                 <button class="btn btn-primary waves-effect" id="setup-std-logins">Setup student logins</button>
                 <button class="btn btn-primary waves-effect" id="setup-cmp-logins">Setup companies</button>
 
+                <div id="addStudentsForm">
+                    <p>Enter student usernames and passwords in csv format. <pre>username1, password1 <br>username2, password2 <br>...</pre></p>
+                    <textarea name="studentData" id="studentDataText" style="width: 100%" rows="5"></textarea>
+                    <button onclick="setupStudents()" class="btn btn-primary waves-effect">Setup</button>
+                </div>
                 <div class="log" id="log"></div>
             </div>
         </div>
@@ -34,6 +39,14 @@
         padding: 7px;
         font-family: "Lucida Console", Monaco, monospace;
     }
+
+    #addStudentsForm {
+        padding: 10px 17px;
+        border: 2px solid #9e9e9e;
+        margin: 5px 0;
+        display: none;
+    }
+
 </style>
 
 <script type="application/javascript">
@@ -44,50 +57,48 @@
 
     var companyDetails = [];
 
-    var studentCount = 0;
-    var companyCount = 0;
-
     $('#setup-std-logins').click(function () {
-        for (var i = 0; i < studentUsernames.length; i++) {
-            $.ajax({
-                type: "POST",
-                url: domain + "signup",
-                data: {
-                    username: studentUsernames[i],
-                    password: studentUsernames[i],
-                    usertype: 0
-                },
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader("Authorization", getToken());
-                },
-                dataType: "json",
-                success: function (response) {
-                    if (response.success == true) {
-                        addLogMsg("Added user " + response.data.username);
-                        studentCount++;
-                    } else {
-                        addLogMsg("Error adding user " + response.data.username + " - " + response.msg);
-                        console.log(response);
-                    }
-                    // todo
-                    if (i === studentUsernames.length) {
-                        showSuccessMessage(studentCount + " students inserted successfully , Out of  " + studentUsernames.length)
-                    }
+        $('#addStudentsForm').css('display', 'block');
+//        for (var i = 0; i < studentUsernames.length; i++) {
+//            $.ajax({
+//                type: "POST",
+//                url: domain + "signup",
+//                data: {
+//                    username: studentUsernames[i],
+//                    password: studentUsernames[i],
+//                    usertype: 0
+//                },
+//                beforeSend: function (xhr) {
+//                    xhr.setRequestHeader("Authorization", getToken());
+//                },
+//                dataType: "json",
+//                success: function (response) {
+//                    if (response.success == true) {
+//                        addLogMsg("Added user " + response.data.username);
+//                        successCount++;
+//                    } else {
+//                        addLogMsg("Error adding user " + response.data.username + " - " + response.msg);
+//                        console.log(response);
+//                    }
+//                    // todo
+//                    if (i === studentUsernames.length) {
+//                        showSuccessMessage(successCount + " students inserted successfully , Out of  " + studentUsernames.length)
+//                    }
+//
+//
+//                },
+//                error: function (xhr, status, error) {
+//                    showErrorMessage("Something went wrong");
+//                    console.log(xhr);
+//                    console.log(status, error);
+//                }
+//            });
+//
+//
+//        }
+        // alert(successCount + " students inserted successfully , Out of  " + studentUsernames.length);
 
-
-                },
-                error: function (xhr, status, error) {
-                    showErrorMessage("Something went wrong");
-                    console.log(xhr);
-                    console.log(status, error);
-                }
-            });
-
-
-        }
-        // alert(studentCount + " students inserted successfully , Out of  " + studentUsernames.length);
-
-        studentCount = 0;
+        successCount = 0;
     });
 
     $('#setup-cmp-logins').click(function () {
@@ -172,6 +183,53 @@
         para.appendChild(node);
         $('#log').append(para);
     }
+
+    function setupStudents() {
+        var text = $('#studentDataText').val();
+        if (text !== "") {
+            var logins = text.split('\n');
+            // variables for logging
+            totalCount = logins.length;
+            successCount = 0;
+            operationType = 'student';
+
+            logins.forEach(function (param) {
+                var login = param.split(',');
+                if (login.length !== 2) {
+                    addLogMsg('Invalid login details: ' + param);
+                } else {
+                    $.ajax({
+                        type: "POST",
+                        url: domain + "signup",
+                        data: {
+                            username: login[0],
+                            password: login[1],
+                            usertype: 0
+                        },
+                        beforeSend: function (xhr) {
+                            xhr.setRequestHeader("Authorization", getToken());
+                        },
+                        dataType: "json",
+                        success: function (response) {
+                            if (response.success == true) {
+                                addLogMsg("Added user " + response.data.username);
+                                successCount++;
+                            } else {
+                                addLogMsg("Error adding user " + response.data.username + " - " + response.msg);
+                                console.log(response);
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            showErrorMessage("Something went wrong");
+                            console.log(xhr);
+                            console.log(status, error);
+                        }
+                    });
+                }
+            });
+        }
+    }
+
 
 
 </script>
