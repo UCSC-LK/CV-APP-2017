@@ -1,7 +1,7 @@
 var SelectedStudentCompany = require('../model/selected-student-company'),
     Student = require('../model/student'),
     Company = require('../model/company'),
-    Schedule = require('../model/student-schedule'),
+    StudentSchedule = require('../model/student-schedule'),
     jsend = require('jsend'),
     Cv = require('../model/cv'),
     mongoose = require('mongoose'),
@@ -43,20 +43,34 @@ module.exports.getCompaniesBySelectedStudent = function (req, res, next) {
                 });
             });
 
+            StudentSchedule.findOne({
+                'student': req.params.query
+            }, function (err, result2) {
+                if (err) {
+                    return res.json({
+                        success: false,
+                        error: err
+                    });
+                }
 
+                // Implement the code to delete the entry in result arrays
+
+                console.log(result);
+                console.log(result2);
+                //console.log(result2.schedule);
                 // if result is null make it empty array.to avoid DataTable error.
                 if (result.length === 0){
                     result = [];
                 }
+
+                result.sort({timeStamp: -1});
                 temp = {
                     "result": result
                 };
                 res.json(temp);
             });
-            //END
 
-            console.log(result);
-            result.sort({timeStamp: -1});
+        });
 
     });
 };

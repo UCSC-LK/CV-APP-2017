@@ -26,6 +26,20 @@
         <div class="card">
             <div class="header">
                 <h2>Selected Companies <span style="color: #9f9f9f; font-size: 80%" id="selected-student-name"></span></h2>
+                <p>
+                    <label>Select list</label>
+                    <select id = "myList">
+                        <option value = "1">1</option>
+                        <option value = "2">2</option>
+                        <option value = "3">3</option>
+                        <option value = "4">4</option>
+                        <option value = "5">5</option>
+                        <option value = "6">6</option>
+                        <option value = "7">7</option>
+                        <option value = "8">8</option>
+
+                    </select>
+                </p>
             </div>
             <div class="body">
                 <table id = "companyTable" class="table table-bordered table-striped table-hover" cellspacing="0" width="100%">
@@ -33,7 +47,6 @@
                     <tr>
                         <th>Company</th>
                         <th>Position</th>
-                        <th>Slot</th>
                         <th>Action</th>
                     </tr>
                     </thead>
@@ -71,16 +84,6 @@
 
 <script>
 $(document).ready(function() {
-    var slots = [
-        "1",
-        "2",
-        "3",
-        "4",
-        "5",
-        "6",
-        "7",
-        "8"
-    ];
     var studentID;
 
 
@@ -129,25 +132,6 @@ $(document).ready(function() {
         "columns": [
             { "data": "company" },
             { "data": "position" },
-            {
-                "render": function(d,t,r){
-                    var $select = $("<select></select>", {
-                        "id": "start",
-                        "value": d
-                    });
-                    $.each(slots, function(k,v){
-                        var $option = $("<option></option>", {
-                            "text": v,
-                            "value": v
-                        });
-                        if(d === v){
-                            $option.attr("selected", "selected")
-                        }
-                        $select.append($option);
-                    });
-                    return $select.prop("outerHTML");
-                }
-            },
             {   "data": null,
                 "defaultContent": selectButton
             }
@@ -200,16 +184,10 @@ $(document).ready(function() {
     companyTable.on("click", "." + ajaxSelect, function () {
 
         var rowData = companyTable.row($(this).parents('tr')).data();
-        var slot;
-
-        // Get the value from the dropdown list
-        $.each(companyTable.row($(this).parents('tr')), function (index, value) {
-            slot = ($(value).find('select').val());
-        });
+        var slot = document.getElementById("myList").value;
 
         var url = domain + 'student_schedule';
         var para = '&company=' + rowData['company'] + '&student=' + rowData['student'] + '&slot=' + slot;
-
         ajaxSend("POST", para, "ajaxSelect", null, url);
     });
 
