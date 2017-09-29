@@ -131,6 +131,7 @@ module.exports.getStudentsByCompanyPosition = function (req, res, next) {
                         e.email = value.email;
                         e.year = value.year;
                         e.stream = value.stream;
+                        e.isAvailable = value.isAvailable;
                         e.cv = resultObject[value.userID];
                         final.push(e);
                     });
@@ -194,6 +195,7 @@ module.exports.getAllStudentsByCompanyPosition = function (req, res, next) {
                     e.email = value.email;
                     e.year = value.year;
                     e.stream = value.stream;
+                    e.isAvailable = value.isAvailable;
                     e.cv = resultObject[value.userID];
                     final.push(e);
                 });
