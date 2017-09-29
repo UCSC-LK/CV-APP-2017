@@ -17,4 +17,6 @@ router.get('/all',auth, studentController.getStudents);
 
 router.post('/',auth, studentController.addStudent);
 
+router.post('/updateAvailability',auth, studentController.updateAvailability);
+
 module.exports = router;

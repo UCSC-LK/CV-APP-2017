@@ -25,6 +25,10 @@ var studentSchema = mongoose.Schema({
     userID: {
         type: String,
         required: true
+    },
+    isAvailable: {
+        type: Boolean,
+        default: true
     }
 });
 
