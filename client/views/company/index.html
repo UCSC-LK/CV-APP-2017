@@ -36,12 +36,6 @@
     <link href="../../assets/css/themes/all-themes.css" rel="stylesheet"/>
 </head>
 
-<style type="text/css">
-    #main-menu li.active {
-        background: #ffa275;
-    }
-</style>
-
 <body class="theme-grey">
 <!-- Page Loader -->
 <div class="page-loader-wrapper">
@@ -59,7 +53,7 @@
         <p>Please wait...</p>
     </div>
 </div>
-s
+
 <!-- #END# Page Loader -->
 <!-- Overlay For Sidebars -->
 <div class="overlay"></div>
@@ -104,26 +98,22 @@ s
         <div class="menu" id="main-menu">
             <ul class="list">
                 <li class="header">Company Section</li>
-                <!-- <li class="active">
-                    <a href="javascript:void(0);" class="menu-toggle">
-                        <i class="material-icons">view_list</i>
-                        <span>My Account</span>
-                    </a>
-                    <ul class="ml-menu"> -->
-                        <li class="active">
-                            <a href="applicants.html" class="ajax-pg toggled"><i class="material-icons">face</i><span>Applicants</span></a>
-                        </li>
-                        <li>
-                            <a href="all-applicants.html" class="ajax-pg toggled"><i class="material-icons">fingerprint</i><span>All Applicants</span></a>
-                        </li>
-                        <li>
-                            <a href="short-listed-applicants.html" class="ajax-pg toggled"><i class="material-icons">done_all</i><span>All Shortlisted Applicants</span></a>
-                        </li>
-                        <li>
-                            <a href="contact.html" class="ajax-pg toggled"><i class="material-icons">phone</i><span>Contact Us</span></a>
-                        </li>
-                    <!-- </ul>
-                </li> -->
+                <li class="active">
+                    <a href="applicants.html" class="ajax-pg toggled"><i
+                            class="material-icons">face</i><span>Applicants</span></a>
+                </li>
+                <li>
+                    <a href="all-applicants.html" class="ajax-pg toggled"><i
+                            class="material-icons">fingerprint</i><span>All Applicants</span></a>
+                </li>
+                <li>
+                    <a href="short-listed-applicants.html" class="ajax-pg toggled"><i
+                            class="material-icons">done_all</i><span>All Shortlisted Applicants</span></a>
+                </li>
+                <li>
+                    <a href="contact.html" class="ajax-pg toggled"><i
+                            class="material-icons">phone</i><span>Contact Us</span></a>
+                </li>
             </ul>
         </div>
         <!-- #Menu -->
@@ -143,7 +133,7 @@ s
     <div class="container-fluid">
         <div id="page-wrapper">
             <div class="block-header">
-                <h2>BLANK PAGE</h2>
+                <h2>Loading...</h2>
                 <!-- Ajax load here -->
             </div>
         </div>
@@ -224,8 +214,8 @@ s
         window.onload = pageWrapper.load('applicants.html');
     });
 
-    var logoutButton = $('#logoutButton');
-    logoutButton.click(function () {
+    // Logout btn action
+    $('#logoutButton').click(function () {
         // alert("Hello");
         $.ajax({
             type: "POST",
@@ -255,6 +245,10 @@ s
     }
 
     function isLoggedIn() {
+
+        //holding the document.ready state
+        $.holdReady( true );
+
         var token = getToken();
         var payload;
 
@@ -283,6 +277,8 @@ s
                         localStorage.removeItem("jwt_token");
                         window.location.replace('../../index.html');
                     }
+                    //releasing the document.ready state
+                    $.holdReady( false );
                 },
                 error: function (xhr, status, error) {
                     console.log(xhr);
@@ -335,6 +331,7 @@ s
             }
         });
     }
+
     if (isLoggedIn()) {
         user_info = currentUser();
         // check if logged in user is a company

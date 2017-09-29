@@ -71,6 +71,8 @@ module.exports.getCompaniesBySelectedStudent = function (req, res, next) {
             });
 
         });
+            // console.log(result);
+            result.sort({timeStamp: -1});
 
     });
 };
