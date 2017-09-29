@@ -27,8 +27,8 @@
             <div class="header">
                 <h2>Selected Companies <span style="color: #9f9f9f; font-size: 80%" id="selected-student-name"></span></h2>
                 <p>
-                    <label>Select list</label>
-                    <select id = "myList">
+                    <label>Slot: </label>
+                    <select id = "timeslot">
                         <option value = "1">1</option>
                         <option value = "2">2</option>
                         <option value = "3">3</option>
@@ -184,7 +184,7 @@ $(document).ready(function() {
     companyTable.on("click", "." + ajaxSelect, function () {
 
         var rowData = companyTable.row($(this).parents('tr')).data();
-        var slot = document.getElementById("myList").value;
+        var slot = document.getElementById("timeslot").value;
 
         var url = domain + 'student_schedule';
         var para = '&company=' + rowData['company'] + '&student=' + rowData['student'] + '&slot=' + slot;

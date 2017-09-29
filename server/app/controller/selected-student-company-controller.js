@@ -55,9 +55,6 @@ module.exports.getCompaniesBySelectedStudent = function (req, res, next) {
 
                 // Implement the code to delete the entry in result arrays
 
-                console.log(result);
-                console.log(result2);
-                //console.log(result2.schedule);
                 // if result is null make it empty array.to avoid DataTable error.
                 if (result.length === 0){
                     result = [];
