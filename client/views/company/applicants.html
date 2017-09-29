@@ -113,6 +113,13 @@
             var applicantTable = $('#apllicantTable').DataTable({
                 dom: 'Bfrtip',
                 responsive: true,
+                createdRow: function( row, data, dataIndex ) {
+                  // console.log(data);
+                if (!data["isAvailable"]) {
+                    $( row ).css( "background-color", "#D98880" );
+                    // $( row ).addClass( "warning" );
+                }
+              },
                 "order": [[ 2, "asc" ]],
                 buttons: [
                     {
@@ -162,9 +169,19 @@
                     {
                         "width": "21%",
                         "data": null,
-                        "defaultContent": viewButton + selectButton
+                        // "defaultContent": viewButton + selectButton
                     }
                 ],
+                columnDefs: [{
+                // puts a button in the last column
+                  targets: [-1], render: function (a, b, data, d) {
+                      if (data["isAvailable"]) {
+                          return viewButton + selectButton;
+                      }else{
+                        return viewButton;
+                      }
+                  }
+                }],
                 // $(column.footer()).empty()
                 initComplete: function () {
                     this.api().columns().every(function () {
@@ -273,6 +290,14 @@
             var shortListedTable = $('#shortListedTable').DataTable({
                 dom: 'Bfrtip',
                 responsive: true,
+                createdRow: function( row, data, dataIndex ) {
+                  console.log("test");
+                console.log(data);
+                if (!data["isAvailable"]) {
+                    $( row ).css( "background-color", "#D98880" );
+                    // $( row ).addClass( "warning" );
+                }
+              },
                 buttons: [
                     {
                         extend: 'pdfHtml5',

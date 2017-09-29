@@ -74,6 +74,12 @@
                 dom: 'Bfrtip',
                 responsive: true,
                 "order": [[ 3, "asc" ]],
+                createdRow: function( row, data, dataIndex ) {
+                if (!data["isAvailable"]) {
+                    $( row ).css( "background-color", "#D98880" );
+                    // $( row ).addClass( "warning" );
+                }
+              },
                 buttons: [
                     {
                         extend: 'pdfHtml5',
@@ -132,6 +138,7 @@
                         "defaultContent": viewButton
                     }
                 ],
+
                 initComplete: function () {
                     this.api().columns().every(function () {
                         if (this[0] == 3 || this[0] == 4) {
