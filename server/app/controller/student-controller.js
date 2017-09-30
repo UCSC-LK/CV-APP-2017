@@ -70,3 +70,15 @@ module.exports.addStudent = function (req, res, next) {
         }
     });
 };
+
+// Return student by userid
+module.exports.updateAvailability = function (req, res, next) {
+    Student.update({_id: req.body.userID}, {$set: {isAvailable: req.body.isAvailable}},
+        function (err, result) {
+        if (err) return next(err);
+        res.json({
+            success: true,
+            data: result
+        });
+    });
+};

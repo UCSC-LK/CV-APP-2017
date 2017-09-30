@@ -18,6 +18,7 @@
                         <th>Email</th>
                         <th>Stream</th>
                         <th>Apply Count</th>
+                        <th>Availability</th>
                     </tr>
                     </thead>
                 </table>
@@ -35,9 +36,41 @@
 </style>
 
 <script>
+
+    var studentTable;
+
+    function changeStudentAvailability(id, value) {
+        $.ajax({
+            type: "POST",
+            url: domain + "student/updateAvailability",
+            data: {
+                userID: id,
+                isAvailable: value
+            },
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", getToken());
+            },
+            dataType: "json",
+            success: function (response) {
+                if (response.success == true) {
+//                    showSuccessMessage("Done");
+                    studentTable.ajax.reload();
+                } else {
+                    showErrorMessage("Something went wrong");
+                    console.log(response);
+                }
+            },
+            error: function (xhr, status, error) {
+                showErrorMessage("Something went wrong");
+                console.log(xhr);
+                console.log(status, error);
+            }
+        });
+    }
+
     $(document).ready(function () {
 
-        var studentTable = $('#studentTable').DataTable({
+        studentTable = $('#studentTable').DataTable({
             dom: 'Bfrtip',
             responsive: true,
             buttons: [
@@ -57,8 +90,24 @@
                 {"data": "year"},
                 {"data": "email"},
                 {"data": "stream"},
-                {"data": "applyCount"}
-            ]
+                {
+                    "data": "applyCount",
+                    "width": "5%"
+                },
+                {"data": null}
+            ],
+            "columnDefs": [{
+                // put true or false button for student availability
+                targets: [-1], render: function (a, b, data, d) {
+                    if (data.isAvailable) {
+                        return "<button class='btn btn-success waves-effect' title='Click to change' " +
+                            "onclick='changeStudentAvailability(\"" + data._id + "\", false)'>True</button>";
+                    } else {
+                        return "<button class='btn btn-danger waves-effect' title='Click to change' " +
+                            "onclick='changeStudentAvailability(\"" + data._id + "\", true)'>False</button>";
+                    }
+                }
+            }]
         });
 
     });

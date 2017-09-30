@@ -74,6 +74,17 @@
                 dom: 'Bfrtip',
                 responsive: true,
                 "order": [[ 3, "asc" ]],
+                createdRow: function( row, data, dataIndex ) {
+                if (!data["isAvailable"]) {
+                    $( row ).css( "background-color", "#9E9E9E" );
+                    var sTitle = "Applicant not available anymore";
+                    $( row ).attr('rel', 'tooltip');
+                    $( row ).attr('title', sTitle);
+                    $( row ).tooltip({
+                        html: true
+                    });
+                }
+              },
                 buttons: [
                     {
                         extend: 'pdfHtml5',
@@ -132,6 +143,7 @@
                         "defaultContent": viewButton
                     }
                 ],
+
                 initComplete: function () {
                     this.api().columns().every(function () {
                         if (this[0] == 3 || this[0] == 4) {

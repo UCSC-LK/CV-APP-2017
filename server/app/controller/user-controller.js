@@ -22,21 +22,25 @@ module.exports.getStudentUsers = function (req, res, next) {
                     e.username = user.username;
                     _.forEach(result2, function (student) { //for each student object
                         if (user._id == student.userID) {
+                            e._id = student._id;
                             e.name = student.name;
                             e.phone = student.phone;
                             e.year = student.year;
                             e.email = student.email;
                             e.stream = student.stream;
+                            e.isAvailable = student.isAvailable;
                             found = true;
                             return false;
                         }
                     });
                     if (!found) {
+                        e._id = "";
                         e.name = "";
                         e.phone = "";
                         e.year = "";
                         e.email = "";
                         e.stream = "";
+                        e.isAvailable = "";
                     }
 
                     // set apply count
@@ -47,7 +51,6 @@ module.exports.getStudentUsers = function (req, res, next) {
                         }
                     });
                     e.applyCount = applyCount;
-
                     final.push(e);
                 });
 

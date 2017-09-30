@@ -113,6 +113,19 @@
             var applicantTable = $('#apllicantTable').DataTable({
                 dom: 'Bfrtip',
                 responsive: true,
+                createdRow: function( row, data, dataIndex ) {
+                  // console.log(data);
+                if (!data["isAvailable"]) {
+                    $( row ).css( "background-color", "#9E9E9E" );
+                    // $( row ).addClass( "GREY" );
+                    var sTitle = "Applicant not available anymore";
+                    $( row ).attr('rel', 'tooltip');
+                    $( row ).attr('title', sTitle);
+                    $( row ).tooltip({
+                        html: true
+                    });
+                }
+              },
                 "order": [[ 2, "asc" ]],
                 buttons: [
                     {
@@ -162,9 +175,19 @@
                     {
                         "width": "21%",
                         "data": null,
-                        "defaultContent": viewButton + selectButton
+                        // "defaultContent": viewButton + selectButton
                     }
                 ],
+                columnDefs: [{
+                // puts a button in the last column
+                  targets: [-1], render: function (a, b, data, d) {
+                      if (data["isAvailable"]) {
+                          return viewButton + selectButton;
+                      }else{
+                        return viewButton;
+                      }
+                  }
+                }],
                 // $(column.footer()).empty()
                 initComplete: function () {
                     this.api().columns().every(function () {
@@ -198,6 +221,9 @@
 
                         }
                     });
+
+
+
                 },
                 "language": {
                     "emptyTable": "Sorry! No applicants available for this position."
@@ -273,6 +299,18 @@
             var shortListedTable = $('#shortListedTable').DataTable({
                 dom: 'Bfrtip',
                 responsive: true,
+                createdRow: function( row, data, dataIndex ) {
+                if (!data["isAvailable"]) {
+                    $( row ).css( "background-color", "#9E9E9E" );
+                    // $( row ).addClass( "GREY" );
+                    var sTitle = "Applicant not available anymore";
+                    $( row ).attr('rel', 'tooltip');
+                    $( row ).attr('title', sTitle);
+                    $( row ).tooltip({
+                        html: true
+                    });
+                }
+              },
                 buttons: [
                     {
                         extend: 'pdfHtml5',
