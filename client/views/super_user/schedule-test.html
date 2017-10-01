@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Schedule</title>
+
+    <!-- Bootstrap Core Css -->
+    <link href="../../assets/plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
 </head>
 <body>
 
@@ -10,60 +13,42 @@
     table, th, td {
         border: 1px solid;
     }
-    .off {
-        background-color: gray;
+
+    .box {
+        width: 40px;
+        height: 30px;
+        border: 1px solid;
+        float: left;
+        margin: 1px;
+        text-align: center;
+        line-height: 30px;
     }
+
+    .off {
+        background-color: #c5c5c5;
+    }
+
     .on {
         background-color: white;
     }
-</style>
-    <table id="table">
-        <thead>
-            <tr>
-                <td>Student</td>
-                <td>C1</td>
-                <td>C2</td>
-                <td>C3</td>
-                <td>C4</td>
-                <td>C5</td>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>s1</td>
-                <td class="off"></td>
-                <td class="on"><div contenteditable></div></td>
-                <td class="off"></td>
-                <td class="off"></td>
-                <td class="on"><div contenteditable></div></td>
-            </tr>
-            <tr>
-                <td>s2</td>
-                <td class="on"><div contenteditable></div></td>
-                <td class="on"><div contenteditable></div></td>
-                <td class="off"></td>
-                <td class="off"></td>
-                <td class="on"><div contenteditable></div></td>
-            </tr>
-            <tr>
-                <td>s3</td>
-                <td class="off"></td>
-                <td class="on"><div contenteditable></div></td>
-                <td class="on"><div contenteditable></div></td>
-                <td class="on"><div contenteditable></div></td>
-                <td class="off"></td>
-            </tr>
-            <tr>
-                <td>s4</td>
-                <td class="on"><div contenteditable></div></td>
-                <td class="off"></td>
-                <td class="off"></td>
-                <td class="off"></td>
-                <td class="on"><div contenteditable></div></td>
-            </tr>
-        </tbody>
-    </table>
 
+    .header {
+        background: gray;
+    }
+
+    .company {
+        text-orientation: upright;
+        writing-mode: vertical-lr;
+        height: 100px;
+        line-height: 40px;
+    }
+
+    .student {
+        width:100px;
+    }
+</style>
+
+<div id="container"></div>
 <!-- Jquery Core Js -->
 <script src="../../assets/plugins/jquery/jquery.min.js"></script>
 
@@ -95,23 +80,199 @@
 
 <script type="text/javascript">
 
-    var dataTable = $('#table').DataTable();
+    var companies = ['C0', 'C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8', 'C9', 'C0', 'C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8', 'C9'];
+    var students = ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8', 'S9', 'S10', 'S11', 'S12', 'S13', 'S14', 'S15', 'S16', 'S17', 'S18', 'S19', 'S20'
+        , 'S21', 'S22', 'S23', 'S24', 'S25', 'S26', 'S27', 'S28', 'S29', 'S30', 'S31', 'S32', 'S33', 'S34', 'S35', 'S36', 'S37', 'S38', 'S39', 'S40'];
+    var data = [
+        [0, -1, 0, -1, -1, 0, 0, -1, 0, -1, -1, 0, -1, 0, 0, -1, 0, -1, -1, 0],
+        [-1, -1, 0, -1, 0, 0, -1, -1, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
+        [0, -1, -1, -1, 0, -1, 0, -1, -1, -1, 0, -1, 0, -1, 0, -1, -1, -1, 0, -1],
+        [0, -1, 0, -1, 0, 0, -1, 0, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
+        [-1, -1, 0, -1, -1, 0, -1, 0, -1, -1, 0, -1, -1, 0, -1, 0, -1, -1, 0, 0],
+        [0, -1, 0, -1, -1, 0, 0, -1, 0, -1, -1, 0, -1, 0, 0, -1, 0, -1, -1, 0],
+        [-1, -1, 0, -1, 0, 0, -1, -1, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
+        [0, -1, -1, -1, 0, -1, 0, -1, -1, -1, 0, -1, 0, -1, 0, -1, -1, -1, 0, -1],
+        [0, -1, 0, -1, 0, 0, -1, 0, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
+        [0, -1, 0, -1, -1, 0, 0, -1, 0, -1, -1, 0, -1, 0, 0, -1, 0, -1, -1, 0],
+        [-1, -1, 0, -1, 0, 0, -1, -1, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
+        [0, -1, -1, -1, 0, -1, 0, -1, -1, -1, 0, -1, 0, -1, 0, -1, -1, -1, 0, -1],
+        [0, -1, 0, -1, 0, 0, -1, 0, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
+        [-1, -1, 0, -1, -1, 0, -1, 0, -1, -1, 0, -1, -1, 0, -1, 0, -1, -1, 0, 0],
+        [0, -1, 0, -1, -1, 0, 0, -1, 0, -1, -1, 0, -1, 0, 0, -1, 0, -1, -1, 0],
+        [-1, -1, 0, -1, 0, 0, -1, -1, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
+        [0, -1, -1, -1, 0, -1, 0, -1, -1, -1, 0, -1, 0, -1, 0, -1, -1, -1, 0, -1],
+        [0, -1, 0, -1, 0, 0, -1, 0, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
+        [-1, -1, 0, -1, -1, 0, -1, 0, -1, -1, 0, -1, -1, 0, -1, 0, -1, -1, 0, 0],
+        [0, -1, 0, -1, -1, 0, 0, -1, 0, -1, -1, 0, -1, 0, 0, -1, 0, -1, -1, 0],
+        [-1, -1, 0, -1, 0, 0, -1, -1, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
+        [0, -1, 0, -1, -1, 0, 0, -1, 0, -1, -1, 0, -1, 0, 0, -1, 0, -1, -1, 0],
+        [-1, -1, 0, -1, 0, 0, -1, -1, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
+        [0, -1, -1, -1, 0, -1, 0, -1, -1, -1, 0, -1, 0, -1, 0, -1, -1, -1, 0, -1],
+        [0, -1, 0, -1, 0, 0, -1, 0, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
+        [-1, -1, 0, -1, -1, 0, -1, 0, -1, -1, 0, -1, -1, 0, -1, 0, -1, -1, 0, 0],
+        [0, -1, 0, -1, -1, 0, 0, -1, 0, -1, -1, 0, -1, 0, 0, -1, 0, -1, -1, 0],
+        [-1, -1, 0, -1, 0, 0, -1, -1, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
+        [0, -1, -1, -1, 0, -1, 0, -1, -1, -1, 0, -1, 0, -1, 0, -1, -1, -1, 0, -1],
+        [0, -1, 0, -1, 0, 0, -1, 0, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
+        [0, -1, 0, -1, -1, 0, 0, -1, 0, -1, -1, 0, -1, 0, 0, -1, 0, -1, -1, 0],
+        [-1, -1, 0, -1, 0, 0, -1, -1, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
+        [0, -1, -1, -1, 0, -1, 0, -1, -1, -1, 0, -1, 0, -1, 0, -1, -1, -1, 0, -1],
+        [0, -1, 0, -1, 0, 0, -1, 0, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
+        [-1, -1, 0, -1, -1, 0, -1, 0, -1, -1, 0, -1, -1, 0, -1, 0, -1, -1, 0, 0],
+        [0, -1, 0, -1, -1, 0, 0, -1, 0, -1, -1, 0, -1, 0, 0, -1, 0, -1, -1, 0],
+        [-1, -1, 0, -1, 0, 0, -1, -1, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
+        [0, -1, -1, -1, 0, -1, 0, -1, -1, -1, 0, -1, 0, -1, 0, -1, -1, -1, 0, -1],
+        [0, -1, 0, -1, 0, 0, -1, 0, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
+        [-1, -1, 0, -1, -1, 0, -1, 0, -1, -1, 0, -1, -1, 0, -1, 0, -1, -1, 0, 0],
+        [0, -1, 0, -1, -1, 0, 0, -1, 0, -1, -1, 0, -1, 0, 0, -1, 0, -1, -1, 0],
+        [-1, -1, 0, -1, 0, 0, -1, -1, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0]
+    ];
+    var errorColor = '#ff7070';
+    var specialErrorColor = 'red';
+    var nonErrorColor = 'white';
+    var nullColor = '#c5c5c5';
 
-    $('.on').click(function () {
-        var tableInfo = Array.prototype.map.call(document.querySelectorAll('#table'), function(tr){
-            return Array.prototype.map.call(tr.querySelectorAll('td'), function(td){
-                return td.innerHTML;
-            });
+    // Confirm on page reload
+//    $(window).bind('beforeunload', function(){
+//        return 'Are you sure you want to leave?';
+//    });
+
+    $(document).ready(function () {
+
+        // Initializing the grid
+        var container = $('#container');
+        var html = "<div class='col-xs-12'><div class='box header company student'></div>";
+        companies.forEach(function (company) {
+            html += "<div class='box header company'>" + company + "</div>";
         });
+        html += "</div>";
+        container.append(html);
+        // Adding student name with row data
+        for (var i=0; i<students.length; i++) {
+            html = "<div class='col-xs-12'><div class='box header student'>" + students[i] + "</div>";
+            data[i].forEach(function (d) {
+                if (d === -1) {
+                    html += "<div class='box off'></div>";
+                } else {
+                    html += "<div class='box on' contentEditable>" + d + "</div>";
+                }
+            });
+            html += "</div>";
+            container.append(html);
+        }
 
+        // event to trigger when numbers changed
+        $('.box.on').on('input propertychange paste', function () {
+            var num = $(this).text();
+            if (num !== "") {
+                if (!$.isNumeric(num)) {
+                    $(this).css('background', errorColor);
+                } else {
+
+                    // finding row index -> i
+                    var columns = $(this).parent().parent().children();
+                    var rowIndex;
+                    for (var i=0; i<columns.length; i++) {
+                        if (columns[i] === $(this).parent()[0]) {
+                            rowIndex = i;
+                            break;
+                        }
+                    }
+
+                    // finding column index -> j
+                    var row = $(this).parent().children();
+                    var columnIndex;
+                    for (var i=0; i<row.length; i++) {
+                        if (row[i] === this) {
+                            columnIndex = i;
+                            break;
+                        }
+                    }
+
+                    //Check for any conflicts
+                    checkConflict(this, num, rowIndex, columnIndex);
+
+                    //update data matrix
+                    data[rowIndex-1][columnIndex-1] = parseInt(num);
+                }
+            }
+        })
     });
 
-    $('#table tbody').on( 'click', 'tr', function () {
-        console.log( dataTable.row( this ).data() );
-        console.log( dataTable.column( this ).data() );
-    } );
+    function checkConflict(element, num, rowIndex, columnIndex) {
+        var isErrorRow = false;
+        var rowData = getRow(rowIndex);
+        if (num !== '0' && (rowData.indexOf(parseInt(num)) !== -1)) {
+            colorRow(rowIndex, errorColor, 'error', rowData.indexOf(parseInt(num)));
+            isErrorRow = true;
+        } else {
+            colorRow(rowIndex, nonErrorColor);
+            isErrorRow = false;
+        }
 
+        var isErrorColumn = false;
+        var columnData = getColumn(columnIndex);
+        if (num !== '0' && (columnData.indexOf(parseInt(num)) !== -1)) {
+            colorColumn(columnIndex, errorColor, 'error', columnData.indexOf(parseInt(num)));
+            isErrorColumn = true;
+        } else {
+            colorColumn(columnIndex, nonErrorColor);
+            isErrorColumn = false;
+        }
 
+        // Need to change the color of the click element specifically
+        if (isErrorRow || isErrorColumn) {
+            $(element).css('background', specialErrorColor);
+        } else {
+            $(element).css('background', nonErrorColor);
+        }
+    }
+
+    function getRow(rowIndex) {
+        return data[rowIndex - 1];
+    }
+
+    function getColumn(columnIndex) {
+        var column = [];
+        data.forEach(function (row) {
+            column.push(row[columnIndex - 1]);
+        });
+        return column;
+    }
+
+    function colorRow(rowIndex, color, type, conflictIndex) {
+        var container = $('#container');
+        var row = container.children()[rowIndex];
+        // color the whole row on error, only the .on boxes otherwise
+        if (type === 'error') {
+            $(row).find('.box.on').css('background', color);
+            $(row).find('.box.off').css('background', color);
+            // Specially colored the conflicting box
+            $($(row).children()[conflictIndex + 1]).css('background', specialErrorColor);
+        } else {
+            $(row).find('.box.on').css('background', color);
+            $(row).find('.box.off').css('background', nullColor);
+        }
+    }
+
+    function colorColumn(columnIndex, color, type, conflictIndex) {
+        var rows = $('#container').children();
+        for (var i=1; i<rows.length; i++) {
+            var element = $(rows[i]).children()[columnIndex];
+            // color the whole column on error, only the .on boxes otherwise
+            if (type === 'error') {
+                $(element).css('background', color);
+                // Specially colored the conflicting box
+                if (i === conflictIndex + 1)
+                    $(element).css('background', specialErrorColor);
+            } else {
+                if ($(element).hasClass('on'))
+                    $(element).css('background', color);
+                if ($(element).hasClass('off'))
+                    $(element).css('background', nullColor);
+            }
+        }
+    }
 </script>
 
 
