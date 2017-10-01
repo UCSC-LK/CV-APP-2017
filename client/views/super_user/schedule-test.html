@@ -81,8 +81,53 @@
 <script type="text/javascript">
 
     var companies = ['C0', 'C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8', 'C9', 'C0', 'C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8', 'C9'];
-    var students = ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8', 'S9', 'S10', 'S11', 'S12', 'S13', 'S14', 'S15', 'S16', 'S17', 'S18', 'S19', 'S20'
-        , 'S21', 'S22', 'S23', 'S24', 'S25', 'S26', 'S27', 'S28', 'S29', 'S30', 'S31', 'S32', 'S33', 'S34', 'S35', 'S36', 'S37', 'S38', 'S39', 'S40'];
+//    var students = ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8', 'S9', 'S10', 'S11', 'S12', 'S13', 'S14', 'S15', 'S16', 'S17', 'S18', 'S19', 'S20'
+//        , 'S21', 'S22', 'S23', 'S24', 'S25', 'S26', 'S27', 'S28', 'S29', 'S30', 'S31', 'S32', 'S33', 'S34', 'S35', 'S36', 'S37', 'S38', 'S39', 'S40'];
+//    var data = [
+//        [0, -1, 0, -1, -1, 0, 0, -1, 0, -1, -1, 0, -1, 0, 0, -1, 0, -1, -1, 0],
+//        [-1, -1, 0, -1, 0, 0, -1, -1, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
+//        [0, -1, -1, -1, 0, -1, 0, -1, -1, -1, 0, -1, 0, -1, 0, -1, -1, -1, 0, -1],
+//        [0, -1, 0, -1, 0, 0, -1, 0, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
+//        [-1, -1, 0, -1, -1, 0, -1, 0, -1, -1, 0, -1, -1, 0, -1, 0, -1, -1, 0, 0],
+//        [0, -1, 0, -1, -1, 0, 0, -1, 0, -1, -1, 0, -1, 0, 0, -1, 0, -1, -1, 0],
+//        [-1, -1, 0, -1, 0, 0, -1, -1, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
+//        [0, -1, -1, -1, 0, -1, 0, -1, -1, -1, 0, -1, 0, -1, 0, -1, -1, -1, 0, -1],
+//        [0, -1, 0, -1, 0, 0, -1, 0, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
+//        [0, -1, 0, -1, -1, 0, 0, -1, 0, -1, -1, 0, -1, 0, 0, -1, 0, -1, -1, 0],
+//        [-1, -1, 0, -1, 0, 0, -1, -1, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
+//        [0, -1, -1, -1, 0, -1, 0, -1, -1, -1, 0, -1, 0, -1, 0, -1, -1, -1, 0, -1],
+//        [0, -1, 0, -1, 0, 0, -1, 0, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
+//        [-1, -1, 0, -1, -1, 0, -1, 0, -1, -1, 0, -1, -1, 0, -1, 0, -1, -1, 0, 0],
+//        [0, -1, 0, -1, -1, 0, 0, -1, 0, -1, -1, 0, -1, 0, 0, -1, 0, -1, -1, 0],
+//        [-1, -1, 0, -1, 0, 0, -1, -1, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
+//        [0, -1, -1, -1, 0, -1, 0, -1, -1, -1, 0, -1, 0, -1, 0, -1, -1, -1, 0, -1],
+//        [0, -1, 0, -1, 0, 0, -1, 0, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
+//        [-1, -1, 0, -1, -1, 0, -1, 0, -1, -1, 0, -1, -1, 0, -1, 0, -1, -1, 0, 0],
+//        [0, -1, 0, -1, -1, 0, 0, -1, 0, -1, -1, 0, -1, 0, 0, -1, 0, -1, -1, 0],
+//        [-1, -1, 0, -1, 0, 0, -1, -1, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
+//        [0, -1, 0, -1, -1, 0, 0, -1, 0, -1, -1, 0, -1, 0, 0, -1, 0, -1, -1, 0],
+//        [-1, -1, 0, -1, 0, 0, -1, -1, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
+//        [0, -1, -1, -1, 0, -1, 0, -1, -1, -1, 0, -1, 0, -1, 0, -1, -1, -1, 0, -1],
+//        [0, -1, 0, -1, 0, 0, -1, 0, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
+//        [-1, -1, 0, -1, -1, 0, -1, 0, -1, -1, 0, -1, -1, 0, -1, 0, -1, -1, 0, 0],
+//        [0, -1, 0, -1, -1, 0, 0, -1, 0, -1, -1, 0, -1, 0, 0, -1, 0, -1, -1, 0],
+//        [-1, -1, 0, -1, 0, 0, -1, -1, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
+//        [0, -1, -1, -1, 0, -1, 0, -1, -1, -1, 0, -1, 0, -1, 0, -1, -1, -1, 0, -1],
+//        [0, -1, 0, -1, 0, 0, -1, 0, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
+//        [0, -1, 0, -1, -1, 0, 0, -1, 0, -1, -1, 0, -1, 0, 0, -1, 0, -1, -1, 0],
+//        [-1, -1, 0, -1, 0, 0, -1, -1, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
+//        [0, -1, -1, -1, 0, -1, 0, -1, -1, -1, 0, -1, 0, -1, 0, -1, -1, -1, 0, -1],
+//        [0, -1, 0, -1, 0, 0, -1, 0, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
+//        [-1, -1, 0, -1, -1, 0, -1, 0, -1, -1, 0, -1, -1, 0, -1, 0, -1, -1, 0, 0],
+//        [0, -1, 0, -1, -1, 0, 0, -1, 0, -1, -1, 0, -1, 0, 0, -1, 0, -1, -1, 0],
+//        [-1, -1, 0, -1, 0, 0, -1, -1, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
+//        [0, -1, -1, -1, 0, -1, 0, -1, -1, -1, 0, -1, 0, -1, 0, -1, -1, -1, 0, -1],
+//        [0, -1, 0, -1, 0, 0, -1, 0, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
+//        [-1, -1, 0, -1, -1, 0, -1, 0, -1, -1, 0, -1, -1, 0, -1, 0, -1, -1, 0, 0],
+//        [0, -1, 0, -1, -1, 0, 0, -1, 0, -1, -1, 0, -1, 0, 0, -1, 0, -1, -1, 0],
+//        [-1, -1, 0, -1, 0, 0, -1, -1, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0]
+//    ];
+    var students = ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7'];
     var data = [
         [0, -1, 0, -1, -1, 0, 0, -1, 0, -1, -1, 0, -1, 0, 0, -1, 0, -1, -1, 0],
         [-1, -1, 0, -1, 0, 0, -1, -1, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
@@ -90,43 +135,10 @@
         [0, -1, 0, -1, 0, 0, -1, 0, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
         [-1, -1, 0, -1, -1, 0, -1, 0, -1, -1, 0, -1, -1, 0, -1, 0, -1, -1, 0, 0],
         [0, -1, 0, -1, -1, 0, 0, -1, 0, -1, -1, 0, -1, 0, 0, -1, 0, -1, -1, 0],
-        [-1, -1, 0, -1, 0, 0, -1, -1, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
-        [0, -1, -1, -1, 0, -1, 0, -1, -1, -1, 0, -1, 0, -1, 0, -1, -1, -1, 0, -1],
-        [0, -1, 0, -1, 0, 0, -1, 0, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
-        [0, -1, 0, -1, -1, 0, 0, -1, 0, -1, -1, 0, -1, 0, 0, -1, 0, -1, -1, 0],
-        [-1, -1, 0, -1, 0, 0, -1, -1, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
-        [0, -1, -1, -1, 0, -1, 0, -1, -1, -1, 0, -1, 0, -1, 0, -1, -1, -1, 0, -1],
-        [0, -1, 0, -1, 0, 0, -1, 0, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
-        [-1, -1, 0, -1, -1, 0, -1, 0, -1, -1, 0, -1, -1, 0, -1, 0, -1, -1, 0, 0],
-        [0, -1, 0, -1, -1, 0, 0, -1, 0, -1, -1, 0, -1, 0, 0, -1, 0, -1, -1, 0],
-        [-1, -1, 0, -1, 0, 0, -1, -1, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
-        [0, -1, -1, -1, 0, -1, 0, -1, -1, -1, 0, -1, 0, -1, 0, -1, -1, -1, 0, -1],
-        [0, -1, 0, -1, 0, 0, -1, 0, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
-        [-1, -1, 0, -1, -1, 0, -1, 0, -1, -1, 0, -1, -1, 0, -1, 0, -1, -1, 0, 0],
-        [0, -1, 0, -1, -1, 0, 0, -1, 0, -1, -1, 0, -1, 0, 0, -1, 0, -1, -1, 0],
-        [-1, -1, 0, -1, 0, 0, -1, -1, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
-        [0, -1, 0, -1, -1, 0, 0, -1, 0, -1, -1, 0, -1, 0, 0, -1, 0, -1, -1, 0],
-        [-1, -1, 0, -1, 0, 0, -1, -1, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
-        [0, -1, -1, -1, 0, -1, 0, -1, -1, -1, 0, -1, 0, -1, 0, -1, -1, -1, 0, -1],
-        [0, -1, 0, -1, 0, 0, -1, 0, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
-        [-1, -1, 0, -1, -1, 0, -1, 0, -1, -1, 0, -1, -1, 0, -1, 0, -1, -1, 0, 0],
-        [0, -1, 0, -1, -1, 0, 0, -1, 0, -1, -1, 0, -1, 0, 0, -1, 0, -1, -1, 0],
-        [-1, -1, 0, -1, 0, 0, -1, -1, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
-        [0, -1, -1, -1, 0, -1, 0, -1, -1, -1, 0, -1, 0, -1, 0, -1, -1, -1, 0, -1],
-        [0, -1, 0, -1, 0, 0, -1, 0, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
-        [0, -1, 0, -1, -1, 0, 0, -1, 0, -1, -1, 0, -1, 0, 0, -1, 0, -1, -1, 0],
-        [-1, -1, 0, -1, 0, 0, -1, -1, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
-        [0, -1, -1, -1, 0, -1, 0, -1, -1, -1, 0, -1, 0, -1, 0, -1, -1, -1, 0, -1],
-        [0, -1, 0, -1, 0, 0, -1, 0, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
-        [-1, -1, 0, -1, -1, 0, -1, 0, -1, -1, 0, -1, -1, 0, -1, 0, -1, -1, 0, 0],
-        [0, -1, 0, -1, -1, 0, 0, -1, 0, -1, -1, 0, -1, 0, 0, -1, 0, -1, -1, 0],
-        [-1, -1, 0, -1, 0, 0, -1, -1, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
-        [0, -1, -1, -1, 0, -1, 0, -1, -1, -1, 0, -1, 0, -1, 0, -1, -1, -1, 0, -1],
-        [0, -1, 0, -1, 0, 0, -1, 0, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
-        [-1, -1, 0, -1, -1, 0, -1, 0, -1, -1, 0, -1, -1, 0, -1, 0, -1, -1, 0, 0],
-        [0, -1, 0, -1, -1, 0, 0, -1, 0, -1, -1, 0, -1, 0, 0, -1, 0, -1, -1, 0],
         [-1, -1, 0, -1, 0, 0, -1, -1, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0]
+
     ];
+    var conflictMatrix = new Array; //0 - no conflict at this i,j , 1 - conflict
     var errorColor = '#ff7070';
     var specialErrorColor = 'red';
     var nonErrorColor = 'white';
@@ -166,7 +178,7 @@
             var num = $(this).text();
             if (num !== "") {
                 if (!$.isNumeric(num)) {
-                    $(this).css('background', errorColor);
+                    $(this).css('background', specialErrorColor);
                 } else {
 
                     // finding row index -> i
@@ -189,42 +201,102 @@
                         }
                     }
 
-                    //Check for any conflicts
-                    checkConflict(this, num, rowIndex, columnIndex);
-
                     //update data matrix
                     data[rowIndex-1][columnIndex-1] = parseInt(num);
+
+                    updateConflictMatrix();
+
+                    changeGridColors();
                 }
             }
         })
     });
 
-    function checkConflict(element, num, rowIndex, columnIndex) {
-        var isErrorRow = false;
-        var rowData = getRow(rowIndex);
-        if (num !== '0' && (rowData.indexOf(parseInt(num)) !== -1)) {
-            colorRow(rowIndex, errorColor, 'error', rowData.indexOf(parseInt(num)));
-            isErrorRow = true;
-        } else {
-            colorRow(rowIndex, nonErrorColor);
-            isErrorRow = false;
+    //return duplicates of an array omitting 0 and -1
+    Array.prototype.getDuplicates = function () {
+        var duplicates = {};
+        for (var i = 0; i < this.length; i++) {
+            if (this[i] !== 0 && this[i] !== -1)
+                if(duplicates.hasOwnProperty(this[i])) {
+                    duplicates[this[i]].push(i);
+                } else if (this.lastIndexOf(this[i]) !== i) {
+                    duplicates[this[i]] = [i];
+                }
+        }
+        var duplicateIndexes = [];
+        for (key in duplicates) {
+            duplicateIndexes = duplicateIndexes.concat(duplicates[key]);
+        }
+        return duplicateIndexes;
+    };
+
+    function initConflictMatrix() {
+        conflictMatrix = [];
+        for (var i=0; i<students.length; i++) {
+            var row = [];
+            for (var j=0; j<companies.length; j++) {
+                row.push(0);
+            }
+            conflictMatrix.push(row);
+        }
+    }
+
+    function changeGridColors() {
+
+        console.log(conflictMatrix);
+
+        // Color conflicting rows
+        for (var i=0; i<conflictMatrix.length; i++) {
+            colorRow(i+1, nonErrorColor);
+            var sum = 0;
+            for(var j=0; j<conflictMatrix[i].length; j++) {
+                sum += conflictMatrix[i][j];
+                if (sum > 1) {
+                    colorRow(i+1, errorColor, 'error');
+                    break;
+                }
+            }
         }
 
-        var isErrorColumn = false;
-        var columnData = getColumn(columnIndex);
-        if (num !== '0' && (columnData.indexOf(parseInt(num)) !== -1)) {
-            colorColumn(columnIndex, errorColor, 'error', columnData.indexOf(parseInt(num)));
-            isErrorColumn = true;
-        } else {
-            colorColumn(columnIndex, nonErrorColor);
-            isErrorColumn = false;
+        // Color conflicting columns
+        for(var j=0; j<conflictMatrix[0].length; j++) {
+            var sum = 0;
+            for (var i=0; i<conflictMatrix.length; i++) {
+                sum += conflictMatrix[i][j];
+                if (sum > 1) {
+                    colorColumn(j+1, errorColor, 'error');
+                    break;
+                }
+            }
         }
 
-        // Need to change the color of the click element specifically
-        if (isErrorRow || isErrorColumn) {
-            $(element).css('background', specialErrorColor);
-        } else {
-            $(element).css('background', nonErrorColor);
+        // Specially color conflicting boxes
+        for (var i=0; i<students.length; i++) {
+            for (var j=0; j<companies.length; j++) {
+                if (conflictMatrix[i][j] === 1)
+                    colorCell(i, j, specialErrorColor);
+            }
+        }
+    }
+
+    function updateConflictMatrix() {
+
+        initConflictMatrix();
+
+        for (var i=0; i<students.length; i++) {
+            var rowData = getRow(i+1);
+            var rowDuplicates = rowData.getDuplicates();
+            rowDuplicates.forEach(function (index) {
+                conflictMatrix[i][index] = 1;
+            });
+        }
+
+        for (var j=0; j<companies.length; j++) {
+            var columnData = getColumn(j+1);
+            var columnDuplicates = columnData.getDuplicates();
+            columnDuplicates.forEach(function (index) {
+                conflictMatrix[index][j] = 1;
+            });
         }
     }
 
@@ -240,31 +312,26 @@
         return column;
     }
 
-    function colorRow(rowIndex, color, type, conflictIndex) {
+    function colorRow(rowIndex, color, type) {
         var container = $('#container');
         var row = container.children()[rowIndex];
         // color the whole row on error, only the .on boxes otherwise
         if (type === 'error') {
             $(row).find('.box.on').css('background', color);
             $(row).find('.box.off').css('background', color);
-            // Specially colored the conflicting box
-            $($(row).children()[conflictIndex + 1]).css('background', specialErrorColor);
         } else {
             $(row).find('.box.on').css('background', color);
             $(row).find('.box.off').css('background', nullColor);
         }
     }
 
-    function colorColumn(columnIndex, color, type, conflictIndex) {
+    function colorColumn(columnIndex, color, type) {
         var rows = $('#container').children();
         for (var i=1; i<rows.length; i++) {
             var element = $(rows[i]).children()[columnIndex];
             // color the whole column on error, only the .on boxes otherwise
             if (type === 'error') {
                 $(element).css('background', color);
-                // Specially colored the conflicting box
-                if (i === conflictIndex + 1)
-                    $(element).css('background', specialErrorColor);
             } else {
                 if ($(element).hasClass('on'))
                     $(element).css('background', color);
@@ -273,6 +340,13 @@
             }
         }
     }
+
+    function colorCell(i, j, color) {
+        var container = $('#container');
+        var row = container.children()[i + 1];
+        $($(row).children()[j + 1]).css('background', color);
+    }
+    
 </script>
 
 
