@@ -76,8 +76,13 @@
                 "order": [[ 3, "asc" ]],
                 createdRow: function( row, data, dataIndex ) {
                 if (!data["isAvailable"]) {
-                    $( row ).css( "background-color", "#D98880" );
-                    // $( row ).addClass( "warning" );
+                    $( row ).css( "background-color", "#9E9E9E" );
+                    var sTitle = "Applicant not available anymore";
+                    $( row ).attr('rel', 'tooltip');
+                    $( row ).attr('title', sTitle);
+                    $( row ).tooltip({
+                        html: true
+                    });
                 }
               },
                 buttons: [
