@@ -119,7 +119,7 @@ module.exports.deleteScheduleItem = function (req, res) {
 module.exports.getShortlisted = function (req, res, next) {
   var finalResult = [];
   var allStudents = new Promise(function(resolve, reject) {
-    Student.find({},function (err, result) {
+    Student.find({isAvailable:{$in:[null,true]} },function (err, result) {
         if (result) {
           // console.log(result);
            resolve(result);
@@ -153,7 +153,7 @@ module.exports.getShortlisted = function (req, res, next) {
       var subPromise = new Promise(function(resolve, reject) {
         Selectedstudentcompany.find({'student' : item.userID}, function (err, result) {
           if (err) reject(err);
-          var temp = [item.name];
+          var temp = [];
           var shortlistedCompany = {};
           _.forEach(result,function(items) {
               shortlistedCompany[items.company] = items;

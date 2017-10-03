@@ -150,29 +150,53 @@
 //    });
 
     $(document).ready(function () {
+      var domain = "../../";
+      var container = $('#container');
+      var html = "<div class='col-xs-12'><div class='box header company student'></div>";
 
-        // Initializing the grid
-        var container = $('#container');
-        var html = "<div class='col-xs-12'><div class='box header company student'></div>";
-        companies.forEach(function (company) {
-            html += "<div class='box header company'>" + company + "</div>";
-        });
-        html += "</div>";
-        container.append(html);
-        // Adding student name with row data
-        for (var i=0; i<students.length; i++) {
-            html = "<div class='col-xs-12'><div class='box header student'>" + students[i] + "</div>";
-            data[i].forEach(function (d) {
-                if (d === -1) {
-                    html += "<div class='box off'></div>";
-                } else {
-                    html += "<div class='box on' contentEditable>" + d + "</div>";
+      $.ajax({
+          type: "GET",
+          url: domain + "student_schedule/all",
+          data: '',
+          dataType: "json",
+          // beforeSend: function (xhr) {
+          //     xhr.setRequestHeader("Authorization", getToken());
+          // },
+          success: function (response) {
+              if (response.success == true) {
+                students = response.students;
+                data =  response.dataMatrix;
+                companies = response.companies;
+
+                // Initializing the grid
+                companies.forEach(function (company) {
+                    html += "<div class='box header company'>" + company.name + "</div>";
+                });
+                html += "</div>";
+                container.append(html);
+                // Adding student name with row data
+                for (var i=0; i<students.length; i++) {
+                    html = "<div class='col-xs-12'><div class='box header student'>" + students[i].name + "</div>";
+                    data[i].forEach(function (d) {
+                        if (d === -1) {
+                            html += "<div class='box off'></div>";
+                        } else {
+                            html += "<div class='box on' contentEditable>" + d + "</div>";
+                        }
+                    });
+                    html += "</div>";
+                    container.append(html);
                 }
-            });
-            html += "</div>";
-            container.append(html);
-        }
-
+              } else {
+                  showErrorMessage("Something went wrong");
+                  console.log(response);
+              }
+          },
+          error: function (xhr, status, error) {
+              console.log(xhr);
+              console.log(status, error);
+          }
+      });
         // event to trigger when numbers changed
         $('.box.on').on('input propertychange paste', function () {
             var num = $(this).text();
@@ -346,7 +370,7 @@
         var row = container.children()[i + 1];
         $($(row).children()[j + 1]).css('background', color);
     }
-    
+
 </script>
 
 
