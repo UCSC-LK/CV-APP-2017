@@ -1,4 +1,9 @@
 var StudentSchedule = require('../model/student-schedule');
+var Student = require('../model/student');
+var Company = require('../model/company');
+var Selectedstudentcompany = require('../model/selected-student-company');
+_ = require('lodash');
+
 
 
 // Return student by schedule by student id
@@ -107,4 +112,84 @@ module.exports.deleteScheduleItem = function (req, res) {
             });
         });
     });
+};
+
+
+
+module.exports.getShortlisted = function (req, res, next) {
+  var finalResult = [];
+  var allStudents = new Promise(function(resolve, reject) {
+    Student.find({},function (err, result) {
+        if (result) {
+          // console.log(result);
+           resolve(result);
+        }
+        else {
+           reject(err);
+        }
+      });
+   });
+  //
+  var allCompanies = new Promise(function(resolve, reject) {
+    Company.find({},function (err, result) {
+        if (result) {
+          // console.log(result);
+           resolve(result);
+        }
+        else {
+           reject(err);
+        }
+      });
+  });
+  //
+  Promise.all([allStudents,allCompanies])
+  .then(function(results) {
+    var allStudents = results[0];
+    var allCompanies = results[1];
+    var allSubqueries = [];
+
+    allStudents.forEach(function(item){
+
+      var subPromise = new Promise(function(resolve, reject) {
+        Selectedstudentcompany.find({'student' : item.userID}, function (err, result) {
+          if (err) reject(err);
+          var temp = [item.name];
+          var shortlistedCompany = {};
+          _.forEach(result,function(items) {
+              shortlistedCompany[items.company] = items;
+          });
+          allCompanies.forEach(function(company) {
+            // console.log(shortlistedCompany.hasOwnProperty(company._id));
+            if (shortlistedCompany.hasOwnProperty(company._id)){
+              temp.push(0);
+            }else{
+              temp.push(-1);
+            }
+          });
+          finalResult.push(temp);
+          resolve(temp);
+         });
+      });
+
+      allSubqueries.push(subPromise);
+    });
+
+    Promise.all(allSubqueries).then(function functionName() {
+      // console.log("###########_____________#############");
+      // _.forEach(finalResult,function(test) {
+      //   console.log(test.toString());
+      // });
+      // console.log("###########_____________#############");
+      return res.json({
+          success: true,
+          dataMatrix:finalResult,
+          students:allStudents,
+          companies:allCompanies
+      });
+    });
+  })
+  .catch(function(err) {
+    console.log("Failed:", err);
+    return next(err);
+  });
 };
