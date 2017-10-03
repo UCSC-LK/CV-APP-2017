@@ -5,12 +5,11 @@ var Selectedstudentcompany = require('../model/selected-student-company');
 _ = require('lodash');
 
 
-
 // Return student by schedule by student id
 module.exports.getSchedule = function (req, res, next) {
     StudentSchedule.find({
         'student': req.params.query
-    }, { schedule: 1}, function (err, result) {
+    }, {schedule: 1}, function (err, result) {
         if (err) {
             return res.json({
                 success: false,
@@ -19,7 +18,7 @@ module.exports.getSchedule = function (req, res, next) {
         }
         var res1;
         // if result is null make it empty array.to avoid DataTable error.
-        if (result.length === 0){
+        if (result.length === 0) {
             res1 = [];
         }
         else {
@@ -41,7 +40,7 @@ module.exports.updateSchedule = function (req, res) {
 
     // Check if schedule exists
     StudentSchedule.findOne({
-        'student' : record['student']
+        'student': record['student']
     }, function (err, result) {
         if (result) {
             console.log("Updating schedule info"); // update info
@@ -63,7 +62,7 @@ module.exports.updateSchedule = function (req, res) {
         } else {
             var i = 0;
             var defaultSlots = 8;
-            while(record.schedule.length < defaultSlots) {
+            while (record.schedule.length < defaultSlots) {
                 record.schedule.push({
                     "slot": ++i,
                     "company": "-"
@@ -93,7 +92,7 @@ module.exports.updateSchedule = function (req, res) {
 module.exports.deleteScheduleItem = function (req, res) {
     console.log(req.body);
     StudentSchedule.findOne({
-        'student' : req.params.query
+        'student': req.params.query
     }, function (err, result) {
         console.log("Updating schedule info"); // update info
         // Updating the schedule slot
@@ -115,81 +114,80 @@ module.exports.deleteScheduleItem = function (req, res) {
 };
 
 
-
 module.exports.getShortlisted = function (req, res, next) {
-  var finalResult = [];
-  var allStudents = new Promise(function(resolve, reject) {
-    Student.find({isAvailable:{$in:[null,true]} },function (err, result) {
-        if (result) {
-          // console.log(result);
-           resolve(result);
-        }
-        else {
-           reject(err);
-        }
-      });
-   });
-  //
-  var allCompanies = new Promise(function(resolve, reject) {
-    Company.find({},function (err, result) {
-        if (result) {
-          // console.log(result);
-           resolve(result);
-        }
-        else {
-           reject(err);
-        }
-      });
-  });
-  //
-  Promise.all([allStudents,allCompanies])
-  .then(function(results) {
-    var allStudents = results[0];
-    var allCompanies = results[1];
-    var allSubqueries = [];
-
-    allStudents.forEach(function(item){
-
-      var subPromise = new Promise(function(resolve, reject) {
-        Selectedstudentcompany.find({'student' : item.userID}, function (err, result) {
-          if (err) reject(err);
-          var temp = [];
-          var shortlistedCompany = {};
-          _.forEach(result,function(items) {
-              shortlistedCompany[items.company] = items;
-          });
-          allCompanies.forEach(function(company) {
-            // console.log(shortlistedCompany.hasOwnProperty(company._id));
-            if (shortlistedCompany.hasOwnProperty(company._id)){
-              temp.push(0);
-            }else{
-              temp.push(-1);
+    var finalResult = [];
+    var allStudents = new Promise(function (resolve, reject) {
+        Student.find({isAvailable: {$in: [null, true]}}, function (err, result) {
+            if (result) {
+                // console.log(result);
+                resolve(result);
             }
-          });
-          finalResult.push(temp);
-          resolve(temp);
-         });
-      });
-
-      allSubqueries.push(subPromise);
+            else {
+                reject(err);
+            }
+        });
     });
-
-    Promise.all(allSubqueries).then(function functionName() {
-      // console.log("###########_____________#############");
-      // _.forEach(finalResult,function(test) {
-      //   console.log(test.toString());
-      // });
-      // console.log("###########_____________#############");
-      return res.json({
-          success: true,
-          dataMatrix:finalResult,
-          students:allStudents,
-          companies:allCompanies
-      });
+    //
+    var allCompanies = new Promise(function (resolve, reject) {
+        Company.find({}, function (err, result) {
+            if (result) {
+                // console.log(result);
+                resolve(result);
+            }
+            else {
+                reject(err);
+            }
+        });
     });
-  })
-  .catch(function(err) {
-    console.log("Failed:", err);
-    return next(err);
-  });
+    //
+    Promise.all([allStudents, allCompanies])
+        .then(function (results) {
+            var allStudents = results[0];
+            var allCompanies = results[1];
+            var allSubqueries = [];
+
+            allStudents.forEach(function (item) {
+
+                var subPromise = new Promise(function (resolve, reject) {
+                    Selectedstudentcompany.find({'student': item.userID}, function (err, result) {
+                        if (err) reject(err);
+                        var temp = [];
+                        var shortlistedCompany = {};
+                        _.forEach(result, function (items) {
+                            shortlistedCompany[items.company] = items;
+                        });
+                        allCompanies.forEach(function (company) {
+                            // console.log(shortlistedCompany.hasOwnProperty(company._id));
+                            if (shortlistedCompany.hasOwnProperty(company._id)) {
+                                temp.push(0);
+                            } else {
+                                temp.push(-1);
+                            }
+                        });
+                        finalResult.push(temp);
+                        resolve(temp);
+                    });
+                });
+
+                allSubqueries.push(subPromise);
+            });
+
+            Promise.all(allSubqueries).then(function functionName() {
+                // console.log("###########_____________#############");
+                // _.forEach(finalResult,function(test) {
+                //   console.log(test.toString());
+                // });
+                // console.log("###########_____________#############");
+                return res.json({
+                    success: true,
+                    dataMatrix: finalResult,
+                    students: allStudents,
+                    companies: allCompanies
+                });
+            });
+        })
+        .catch(function (err) {
+            console.log("Failed:", err);
+            return next(err);
+        });
 };
