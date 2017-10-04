@@ -217,7 +217,7 @@
                     url: domain + "cv/download",
                     data: {
                         cvs: cvs,
-                        position: position,
+                        position: encodeURIComponent(position),
                         company: companyObject.userID
                     },
                     dataType: "json",
@@ -226,6 +226,7 @@
                     },
                     success: function (response) {
                         if (response.success === true) {
+                            console.log(response);
                             var element = document.createElement('a');
                             element.setAttribute('href', domain + response.data);
 

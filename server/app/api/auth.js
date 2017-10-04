@@ -85,7 +85,7 @@ module.exports = function (app, passport) {
         if (!req.body.username || !req.body.password || !req.body.usertype) {
             res.json({
                 success: false,
-                msg: 'Please pass username and password.'
+                msg: 'Please provide your username and password.'
             });
         } else {
             //Check if username exists
@@ -103,7 +103,7 @@ module.exports = function (app, passport) {
                         if (err) throw err;
                         res.json({
                             success: true,
-                            msg: 'Successful created new user.',
+                            msg: 'Successfully created new user.',
                             data: user1
                         });
                     });
@@ -124,7 +124,7 @@ module.exports = function (app, passport) {
         if (!req.body.username || !req.body.oldpassword || !req.body.password) {
             res.json({
                 success: false,
-                msg: 'Please pass username , password & new password.'
+                msg: 'Please provide your username, old password & new password.'
             });
         } else {
             User.findOne({username: req.body.username}, function (err, user) {

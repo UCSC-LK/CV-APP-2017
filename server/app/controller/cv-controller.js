@@ -93,7 +93,7 @@ module.exports.getCvDetails = function (req, res, next) {
 // Return a zip of CVs
 module.exports.getCVZip = function (req, res, next) {
 
-    var outputZipName = req.body.position.split(' ').join('-') + '-All-CVs.zip';
+    var outputZipName = decodeURIComponent(req.body.position).split(' ').join('-') + '-All-CVs.zip';
 
     // create folder for the company
     var dirPath = path.join(__dirname, '..', '..', 'assets', 'uploads', req.body.company);

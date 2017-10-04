@@ -18,14 +18,19 @@
     <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
         <div class="card">
             <div class="body" style="padding: 20px 10px;">
-              <i class="material-icons" style="color:#000;float:right;position: absolute;top: 7px;right: 7px;" data-toggle="tooltip"
-                 title="Since we have allocated an average of 30 minutes per interview, one panel will be able to conduct 8 pre-scheduled interviews."
-              >info
-              </i>
+                <i class="material-icons" style="color:#000;float:right;position: absolute;top: 7px;right: 7px;"
+                   data-toggle="tooltip"
+                   title="Since we have allocated an average of 30 minutes per interview, one panel will be able to conduct 8 pre-scheduled interviews."
+                >info
+                </i>
                 <div style="height: 41px">
-                    <div class="col-xs-2" id="student-count" style="padding: 0; font-size: 30px; margin-right: 8px; text-align: center;">0</div>
+                    <div class="col-xs-2" id="student-count"
+                         style="padding: 0; font-size: 30px; margin-right: 8px; text-align: center;">0
+                    </div>
                     <div class="col-xs-4" style="padding: 0;">Interview slots reserved</div>
-                    <div class="col-xs-offset-1 col-xs-1" id="panel-count" style="padding: 0; font-size: 30px; margin-right: 8px; text-align: center;">0</div>
+                    <div class="col-xs-offset-1 col-xs-1" id="panel-count"
+                         style="padding: 0; font-size: 30px; margin-right: 8px; text-align: center;">0
+                    </div>
                     <div class="col-xs-3" style="padding: 0;">Panel(s) required</div>
                 </div>
             </div>
@@ -113,20 +118,20 @@
             var applicantTable = $('#apllicantTable').DataTable({
                 dom: 'Bfrtip',
                 responsive: true,
-                createdRow: function( row, data, dataIndex ) {
-                  // console.log(data);
-                if (!data["isAvailable"]) {
-                    $( row ).css( "background-color", "#9E9E9E" );
-                    // $( row ).addClass( "GREY" );
-                    var sTitle = "Applicant not available anymore";
-                    $( row ).attr('rel', 'tooltip');
-                    $( row ).attr('title', sTitle);
-                    $( row ).tooltip({
-                        html: true
-                    });
-                }
-              },
-                "order": [[ 2, "asc" ]],
+                createdRow: function (row, data, dataIndex) {
+                    // console.log(data);
+                    if (!data["isAvailable"]) {
+                        $(row).css("background-color", "#9E9E9E");
+                        // $( row ).addClass( "GREY" );
+                        var sTitle = "Applicant not available anymore";
+                        $(row).attr('rel', 'tooltip');
+                        $(row).attr('title', sTitle);
+                        $(row).tooltip({
+                            html: true
+                        });
+                    }
+                },
+                "order": [[2, "asc"]],
                 buttons: [
                     {
                         extend: 'pdfHtml5',
@@ -136,8 +141,8 @@
                         exportOptions: {
                             columns: [1, 2, 3]
                         },
-                        init: function(dt, node, config) {
-                            $(".positionTab").on('click', function() {
+                        init: function (dt, node, config) {
+                            $(".positionTab").on('click', function () {
                                 config.message = config.filename = 'Not shortlisted applicants - ' + $(this).text();
                             });
                         }
@@ -179,14 +184,14 @@
                     }
                 ],
                 columnDefs: [{
-                // puts a button in the last column
-                  targets: [-1], render: function (a, b, data, d) {
-                      if (data["isAvailable"]) {
-                          return viewButton + selectButton;
-                      }else{
-                        return viewButton;
-                      }
-                  }
+                    // puts a button in the last column
+                    targets: [-1], render: function (a, b, data, d) {
+                        if (data["isAvailable"]) {
+                            return viewButton + selectButton;
+                        } else {
+                            return viewButton;
+                        }
+                    }
                 }],
                 // $(column.footer()).empty()
                 initComplete: function () {
@@ -208,20 +213,19 @@
                             // });
                             // Todo - implemet dynamic method - along with ajax reload
                             var selectors;
-                            if (this[0] == 2){
-                              selectors = ['4th Year','3rd year','Passed Out'];
-                            }else {
-                              selectors = ['CS','SE','IS'];
+                            if (this[0] == 2) {
+                                selectors = ['4th Year', '3rd year', 'Passed Out'];
+                            } else {
+                                selectors = ['CS', 'SE', 'IS'];
                             }
 
                             $.each(selectors, function (index, d) {
-                              select.append('<option value="' + d + '">' + d + '</option>')
+                                select.append('<option value="' + d + '">' + d + '</option>')
                             });
 
 
                         }
                     });
-
 
 
                 },
@@ -276,7 +280,7 @@
                 var rowData = applicantTable.row($(this).parents('tr')).data();
                 var url = domain + "selected_student_company";
                 var thisRow = $(this).parents('tr');
-                var para = '&company=' + companyObject._id + '&student=' + rowData['userID'] + '&position=' + position;
+                var para = '&company=' + companyObject._id + '&student=' + rowData['userID'] + '&position=' + encodeURIComponent(position);
                 // console.log(url + para);
                 ajaxSend("POST", para, "ajaxSelect", thisRow, url);
             });
@@ -299,18 +303,18 @@
             var shortListedTable = $('#shortListedTable').DataTable({
                 dom: 'Bfrtip',
                 responsive: true,
-                createdRow: function( row, data, dataIndex ) {
-                if (!data["isAvailable"]) {
-                    $( row ).css( "background-color", "#9E9E9E" );
-                    // $( row ).addClass( "GREY" );
-                    var sTitle = "Applicant not available anymore";
-                    $( row ).attr('rel', 'tooltip');
-                    $( row ).attr('title', sTitle);
-                    $( row ).tooltip({
-                        html: true
-                    });
-                }
-              },
+                createdRow: function (row, data, dataIndex) {
+                    if (!data["isAvailable"]) {
+                        $(row).css("background-color", "#9E9E9E");
+                        // $( row ).addClass( "GREY" );
+                        var sTitle = "Applicant not available anymore";
+                        $(row).attr('rel', 'tooltip');
+                        $(row).attr('title', sTitle);
+                        $(row).tooltip({
+                            html: true
+                        });
+                    }
+                },
                 buttons: [
                     {
                         extend: 'pdfHtml5',
@@ -320,8 +324,8 @@
                         exportOptions: {
                             columns: [0]
                         },
-                        init: function(dt, node, config) {
-                            $(".positionTab").on('click', function() {
+                        init: function (dt, node, config) {
+                            $(".positionTab").on('click', function () {
                                 config.message = config.filename = 'Shortlisted applicants - ' + $(this).text();
                             });
                         }
@@ -391,7 +395,7 @@
                                     applicantTable.ajax.reload(null, false);
                                 } else {
                                     showErrorMessage("Unexpected error #1, Please try again");
-                                    // console.log(response);
+                                    console.log(response);
                                 }
                                 break;
 
@@ -402,7 +406,7 @@
                                     shortListedTable.ajax.reload(null, false);
                                 } else {
                                     showErrorMessage("Unexpected error #2, Please try again");
-                                    // console.log(response);
+                                    console.log(response);
                                 }
                                 break;
 
@@ -412,15 +416,15 @@
                                     $('#panel-count').text(Math.ceil(response.data / 8));
                                 } else {
                                     showErrorMessage("Unexpected error #2, Please try again");
-                                    // console.log(response);
+                                    console.log(response);
                                 }
                                 break;
                         }
                     },
                     error: function (xhr, status, error) {
-                        // console.log(xhr);
+                        console.log(xhr);
                         showErrorMessage("Unexpected error");
-                        // console.log(status, error);
+                        console.log(status, error);
                     }
                 });
             }
@@ -444,12 +448,12 @@
         });
     }
 
-    function infomessage(){
-      swal("Hello world!");
+    function infomessage() {
+        swal("Hello world!");
     }
 
-    $(document).ready(function(){
-    $('[data-toggle="tooltip"]').tooltip();
-});
+    $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
 
 </script>
