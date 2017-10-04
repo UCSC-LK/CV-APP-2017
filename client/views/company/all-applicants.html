@@ -228,9 +228,10 @@
                         if (response.success === true) {
                             console.log(response);
                             var element = document.createElement('a');
-                            element.setAttribute('href', domain + response.data);
+                            var nameParts = response.data.split("/");
+                            element.setAttribute('href', domain + nameParts[0] + '/' + nameParts[1] + '/' + encodeURIComponent(nameParts[2]));
 
-                            var filename = response.data.split("/")[2].split("-").join(" ");
+                            var filename = nameParts[2].split("-").join(" ");
                             element.setAttribute('download', filename);
 
                             element.style.display = 'none';
