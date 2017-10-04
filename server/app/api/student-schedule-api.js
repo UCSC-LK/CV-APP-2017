@@ -10,8 +10,8 @@ var auth = jwt({
 });
 
 router.get('/schedule/:query', auth, studentScheduleController.getSchedule);
-
 router.post('/', auth, studentScheduleController.updateSchedule);
 router.post('/:query', auth, studentScheduleController.deleteScheduleItem);
+router.get('/all', studentScheduleController.getShortlisted);
 
 module.exports = router;

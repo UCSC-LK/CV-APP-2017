@@ -183,6 +183,8 @@
                         return e.trim();
                     });
 
+                    //todo use encodeURIComponent()
+
                     if (data.positions === '') throw 'Error';
                     if (data.positions.indexOf("") !== -1) throw 'Error';
                 }

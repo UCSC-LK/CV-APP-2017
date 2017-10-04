@@ -1,0 +1,301 @@
+
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 30px;">
+        <div id="container"></div>
+    </div>
+</div>
+
+<style type="text/css">
+    table, th, td {
+        border: 1px solid;
+    }
+
+    .box {
+        width: 33px;
+        height: 30px;
+        border: 1px solid;
+        float: left;
+        margin: 1px;
+        text-align: center;
+        line-height: 30px;
+    }
+
+    .off {
+        background-color: #dcdcdc;
+    }
+
+    .on {
+        background-color: white;
+    }
+
+    .header {
+        background: #c5c5c5;
+    }
+
+    .company {
+        writing-mode: vertical-lr;
+        height: 150px;
+        line-height: 40px;
+    }
+
+    .student {
+        width: 150px;
+    }
+</style>
+
+<script type="text/javascript">
+
+    var companies = ['C0', 'C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8', 'C9', 'C0', 'C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8', 'C9'];
+    var students = ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7'];
+    var data = [
+        [0, -1, 0, -1, -1, 0, 0, -1, 0, -1, -1, 0, -1, 0, 0, -1, 0, -1, -1, 0],
+        [-1, -1, 0, -1, 0, 0, -1, -1, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
+        [0, -1, -1, -1, 0, -1, 0, -1, -1, -1, 0, -1, 0, -1, 0, -1, -1, -1, 0, -1],
+        [0, -1, 0, -1, 0, 0, -1, 0, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
+        [-1, -1, 0, -1, -1, 0, -1, 0, -1, -1, 0, -1, -1, 0, -1, 0, -1, -1, 0, 0],
+        [0, -1, 0, -1, -1, 0, 0, -1, 0, -1, -1, 0, -1, 0, 0, -1, 0, -1, -1, 0],
+        [-1, -1, 0, -1, 0, 0, -1, -1, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0]
+
+    ];
+    var conflictMatrix = []; //0 - no conflict at this i,j , 1 - conflict
+    var errorColor = '#ff7070';
+    var specialErrorColor = 'red';
+    var nonErrorColor = 'white';
+    var nullColor = '#dcdcdc';
+
+    // Confirm on page reload
+    //    $(window).bind('beforeunload', function(){
+    //        return 'Are you sure you want to leave?';
+    //    });
+
+    $(document).ready(function () {
+
+        $.ajax({
+            type: "GET",
+            url: domain + "student_schedule/all",
+            data: '',
+            dataType: "json",
+             beforeSend: function (xhr) {
+                 xhr.setRequestHeader("Authorization", getToken());
+             },
+            success: function (response) {
+                if (response.success == true) {
+                    students = response.students;
+                    data = response.dataMatrix;
+                    companies = response.companies;
+
+                    // Initializing the grid
+                    initGrid();
+
+                } else {
+                    showErrorMessage("Something went wrong");
+                    console.log(response);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.log(xhr);
+                console.log(status, error);
+            }
+        });
+
+
+    });
+
+    function initGrid() {
+        var container = $('#container');
+        var html = "<div class='col-xs-12'><div class='box header company student'></div>";
+        // Adding company names
+        companies.forEach(function (company) {
+            html += "<div class='box header company'>" + company.name + "</div>";
+        });
+        html += "</div>";
+        container.append(html);
+        // Adding student name with row data
+        for (var i = 0; i < students.length; i++) {
+            html = "<div class='col-xs-12'><div class='box header student'>" + students[i].name + "</div>";
+            data[i].forEach(function (d) {
+                if (d === -1) {
+                    html += "<div class='box off'></div>";
+                } else {
+                    html += "<div class='box on' contentEditable>" + d + "</div>";
+                }
+            });
+            html += "</div>";
+            container.append(html);
+        }
+    }
+
+    $( document ).ajaxStop(function() {
+        // event to trigger when numbers changed
+        $('.box.on').on('input propertychange paste', function () {
+            var num = $(this).text();
+            if (num !== "") {
+                if (!$.isNumeric(num)) {
+                    $(this).css('background', specialErrorColor);
+                } else {
+
+                    // finding row index -> i
+                    var columns = $(this).parent().parent().children();
+                    var rowIndex;
+                    for (var i = 0; i < columns.length; i++) {
+                        if (columns[i] === $(this).parent()[0]) {
+                            rowIndex = i;
+                            break;
+                        }
+                    }
+
+                    // finding column index -> j
+                    var row = $(this).parent().children();
+                    var columnIndex;
+                    for (var i = 0; i < row.length; i++) {
+                        if (row[i] === this) {
+                            columnIndex = i;
+                            break;
+                        }
+                    }
+
+                    //update data matrix
+                    data[rowIndex - 1][columnIndex - 1] = parseInt(num);
+
+                    updateConflictMatrix();
+
+                    changeGridColors();
+                }
+            }
+        });
+    });
+
+    //return duplicates of an array omitting 0 and -1
+    Array.prototype.getDuplicates = function () {
+        var duplicates = {};
+        for (var i = 0; i < this.length; i++) {
+            if (this[i] !== 0 && this[i] !== -1)
+                if (duplicates.hasOwnProperty(this[i])) {
+                    duplicates[this[i]].push(i);
+                } else if (this.lastIndexOf(this[i]) !== i) {
+                    duplicates[this[i]] = [i];
+                }
+        }
+        var duplicateIndexes = [];
+        for (key in duplicates) {
+            duplicateIndexes = duplicateIndexes.concat(duplicates[key]);
+        }
+        return duplicateIndexes;
+    };
+
+    function initConflictMatrix() {
+        conflictMatrix = [];
+        for (var i = 0; i < students.length; i++) {
+            var row = [];
+            for (var j = 0; j < companies.length; j++) {
+                row.push(0);
+            }
+            conflictMatrix.push(row);
+        }
+    }
+
+    function changeGridColors() {
+
+        // Color conflicting rows
+        for (var i = 0; i < conflictMatrix.length; i++) {
+            colorRow(i + 1, nonErrorColor);
+            var sum = 0;
+            for (var j = 0; j < conflictMatrix[i].length; j++) {
+                sum += conflictMatrix[i][j];
+                if (sum > 1) {
+                    colorRow(i + 1, errorColor, 'error');
+                    break;
+                }
+            }
+        }
+
+        // Color conflicting columns
+        for (var j = 0; j < conflictMatrix[0].length; j++) {
+            var sum = 0;
+            for (var i = 0; i < conflictMatrix.length; i++) {
+                sum += conflictMatrix[i][j];
+                if (sum > 1) {
+                    colorColumn(j + 1, errorColor, 'error');
+                    break;
+                }
+            }
+        }
+
+        // Specially color conflicting boxes
+        for (var i = 0; i < students.length; i++) {
+            for (var j = 0; j < companies.length; j++) {
+                if (conflictMatrix[i][j] === 1)
+                    colorCell(i, j, specialErrorColor);
+            }
+        }
+    }
+
+    function updateConflictMatrix() {
+
+        initConflictMatrix();
+
+        for (var i = 0; i < students.length; i++) {
+            var rowData = getRow(i + 1);
+            var rowDuplicates = rowData.getDuplicates();
+            rowDuplicates.forEach(function (index) {
+                conflictMatrix[i][index] = 1;
+            });
+        }
+
+        for (var j = 0; j < companies.length; j++) {
+            var columnData = getColumn(j + 1);
+            var columnDuplicates = columnData.getDuplicates();
+            columnDuplicates.forEach(function (index) {
+                conflictMatrix[index][j] = 1;
+            });
+        }
+    }
+
+    function getRow(rowIndex) {
+        return data[rowIndex - 1];
+    }
+
+    function getColumn(columnIndex) {
+        var column = [];
+        data.forEach(function (row) {
+            column.push(row[columnIndex - 1]);
+        });
+        return column;
+    }
+
+    function colorRow(rowIndex, color, type) {
+        var container = $('#container');
+        var row = container.children()[rowIndex];
+        // color the whole row on error, only the .on boxes otherwise
+        if (type === 'error') {
+            $(row).find('.box.on').css('background', color);
+            $(row).find('.box.off').css('background', color);
+        } else {
+            $(row).find('.box.on').css('background', color);
+            $(row).find('.box.off').css('background', nullColor);
+        }
+    }
+
+    function colorColumn(columnIndex, color, type) {
+        var rows = $('#container').children();
+        for (var i = 1; i < rows.length; i++) {
+            var element = $(rows[i]).children()[columnIndex];
+            // color the whole column on error, only the .on boxes otherwise
+            if (type === 'error') {
+                $(element).css('background', color);
+            } else {
+                if ($(element).hasClass('on'))
+                    $(element).css('background', color);
+                if ($(element).hasClass('off'))
+                    $(element).css('background', nullColor);
+            }
+        }
+    }
+
+    function colorCell(i, j, color) {
+        var container = $('#container');
+        var row = container.children()[i + 1];
+        $($(row).children()[j + 1]).css('background', color);
+    }
+
+</script>
