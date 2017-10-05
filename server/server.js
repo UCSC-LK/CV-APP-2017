@@ -96,7 +96,6 @@ require('./app/api/auth.js')(app, passport);
 //   next();
 // });
 
-// app.use('/api2', api);
 app.use('/student', student);
 app.use('/cv', cv);
 app.use('/company', company);
@@ -118,7 +117,7 @@ app.use(function (err, req, res, next) {
             msg:err.message,
             error: err
         });
-        console.log("Log - UnauthorizedError");
+        console.log("Log - Unauthorized Error");
     } else {
         console.log("Log - Unhandled");
         console.log("message" + err.name + ": " + err.message);
