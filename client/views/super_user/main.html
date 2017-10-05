@@ -188,7 +188,7 @@
         });
 
         // Defines what happens on the button click on student table row
-        studentTable.on('click', 'tr', function () {
+        studentTable.on('click', 'tbody tr', function () {
             if ($(this).hasClass('selected')) {
                 $(this).removeClass('selected');
             }
