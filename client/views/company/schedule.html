@@ -1,0 +1,113 @@
+<script type="text/javascript">
+    if (typeof userID == 'undefined') {
+        window.location.replace('./');
+    }
+</script>
+
+<div class="row clearfix" id="card-container">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>
+                    Your interview schedules
+                </h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    if (typeof userID == 'undefined') {
+        window.location.replace('./');
+    } else {
+        $(document).ready(function () {
+
+            // Loading schedule data
+            var url = domain + 'schedule/company_schedule/' + companyObject._id;
+            ajaxSend("GET", "", "", null, url);
+
+            function ajaxSend(type, params, action, clickRow, url) {
+                $.ajax({
+                    type: type,
+                    url: url,
+                    data: params,
+                    dataType: "json",
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("Authorization", getToken());
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            generateScheduleTables(response.result);
+                        } else {
+                            showErrorMessage("Unexpected error #1, Please try again");
+                            console.log(response);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.log(xhr);
+                        showErrorMessage("Unexpected error");
+                        console.log(status, error);
+                    }
+                });
+            }
+
+            function generateScheduleTables(data) {
+
+                var times = ['10.30am - 10.45am', '10.45am - 11.00am', '11.00am - 11.15am', '11.15am - 11.30am',
+                    '11.30am - 11.45am', '11.45am - 12.00pm', '12.00pm - 12.15pm', '12.15pm - 12.30pm'];
+                var slotsPerPanel = times.length;
+
+                // divide into panels
+                var panelWiseSchedules = []
+                data.forEach(function (schedule) {
+                    var index = Math.floor(schedule.slot/slotsPerPanel);
+                    (panelWiseSchedules[index] = panelWiseSchedules[index] || []).push(schedule);
+                });
+
+                // set time slot values
+                for (var i=0; i<panelWiseSchedules.length; i++) {
+                    var panel = panelWiseSchedules[i];
+                    for (var j=0; j<panel.length; j++) {
+                        panel[j].slot = times[(panel[j].slot % slotsPerPanel) - 1];
+                    }
+                }
+
+                // add panel tables
+                var panelCount = 1;
+                panelWiseSchedules.forEach(function (panel) {
+                    var panelID = "panel-" + panelCount;
+                    var html = '<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">\n' +
+                        '        <div class="card">\n' +
+                        '            <div class="header">\n' +
+                        '                <h2>Panel ' +  panelCount + '</h2>\n' +
+                        '            </div>\n' +
+                        '            <div class="body">\n' +
+                        '               <table id="' + panelID + '" class="table table-bordered table-striped table-hover"></table>\n' +
+                        '            </div>\n' +
+                        '        </div>\n' +
+                        '    </div>';
+
+                    $('#card-container').append(html);
+
+                    $('#'+panelID).DataTable( {
+                        dom: 'Bfrtip',
+                        responsive: true,
+                        "order": [[0, "asc"]],
+                        data: panel,
+                        buttons: [],
+                        columns: [
+                            { title: "Time Slot", data: "slot" },
+                            { title: "Name", data: "studentName" },
+                            { title: "Position", data: "position" },
+                            { title: "Contact", data: "studentPhone" },
+                            { title: "Stream", data: "stream" }
+                        ]
+                    });
+
+                    panelCount ++;
+                })
+            }
+        });
+    }
+
+</script>
