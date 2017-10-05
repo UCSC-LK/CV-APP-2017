@@ -24,7 +24,9 @@ module.exports.getCompaniesBySelectedStudent = function (req, res, next) {
             'student': req.params.query
         }, function (err, result1) {
             if (err) return next(err);
-            var scheduledComapnies = _.map(result1, 'company');
+            var scheduledComapnies = _.map(result1, function (data) {
+                return data.company + "/" + data.position;
+            });
 
             //Getting company data
             var companies = _.map(result, 'company');
@@ -47,7 +49,8 @@ module.exports.getCompaniesBySelectedStudent = function (req, res, next) {
                             temp.student = selectedCompObj.student;
                             temp.position = selectedCompObj.position;
                             temp.companyName = compObj.name;
-                            temp.scheduled = (scheduledComapnies.indexOf(selectedCompObj.company) !== -1);
+                            var check = selectedCompObj.company + "/" + selectedCompObj.position;
+                            temp.scheduled = (scheduledComapnies.indexOf(check) !== -1);
                             final.push(temp);
                         }
                     });

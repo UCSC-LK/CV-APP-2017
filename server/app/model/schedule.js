@@ -10,6 +10,10 @@ var scheduleSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    position: {
+        type: String,
+        required: true
+    },
     slot: {
         type: Number,
         required: true

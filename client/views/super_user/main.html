@@ -64,8 +64,9 @@
                 <table id = "scheduleTable" class="table table-bordered table-striped table-hover" cellspacing="0" width="100%">
                     <thead>
                     <tr>
-                        <th width="20%">Time Slot</th>
+                        <th>Slot</th>
                         <th>Company</th>
+                        <th>Position</th>
                         <th>Action</th>
                     </tr>
                     </thead>
@@ -87,9 +88,9 @@ $(document).ready(function() {
     var studentID;
 
 
-    var selectButton =  '<a class="btn btn-warning waves-effect btn-sm ajaxSelect"> </span> Select</a>';
-    var updateButton =  '<a class="btn btn-warning waves-effect btn-sm ajaxSelect"> </span> Update</a>';
-    var removeButton = '<a class="btn btn-danger btn-sm waves-effect  ajaxRemove"> Remove</a>';
+    var selectButton =  '<a class="btn btn-warning waves-effect btn-sm ajaxSelect">Select</a>';
+    var updateButton =  '<a class="btn btn-warning waves-effect btn-sm ajaxSelect">Update</a>';
+    var removeButton = '<a class="btn btn-danger btn-sm waves-effect  ajaxRemove">Remove</a>';
 
     var ajaxRemove = 'ajaxRemove';
     var ajaxSelect = 'ajaxSelect';
@@ -133,7 +134,10 @@ $(document).ready(function() {
         "columns": [
             { "data": "companyName" },
             { "data": "position" },
-            { "data": null }
+            {
+                "data": null,
+                "width": "10%"
+            }
         ],
         createdRow: function (row, data, dataIndex) {
             if (data.scheduled) {
@@ -166,10 +170,15 @@ $(document).ready(function() {
             }
         },
         "columns": [
-            { "data": "slot" },
+            {
+                "data": "slot",
+                "width": "5%"
+            },
             { "data": "company" },
+            { "data": "position" },
             {
                 "data": null,
+                "width": "10%",
                 "defaultContent": removeButton
             }
         ]
@@ -200,7 +209,7 @@ $(document).ready(function() {
         var rowData = companyTable.row($(this).parents('tr')).data();
         var slot = document.getElementById("timeslot").value;
         var url = domain + 'schedule';
-        var para = '&company=' + rowData['company'] + '&student=' + rowData['student'] + '&slot=' + slot;
+        var para = '&company=' + rowData['company'] + '&student=' + rowData['student'] + '&position=' + rowData['position'] + '&slot=' + slot;
         ajaxSend("POST", para, "ajaxSelect", null, url);
     });
 

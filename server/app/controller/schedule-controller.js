@@ -14,7 +14,8 @@ module.exports.updateSchedule = function (req, res, next) {
     // Check if schedule exists
     Schedule.findOne({
         'student': record['student'],
-        'company': record['company']
+        'company': record['company'],
+        'position': record['position']
     }, function (err, result) {
         if (err) return next(err);
         if (result) {
