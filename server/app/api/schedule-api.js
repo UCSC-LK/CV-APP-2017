@@ -12,7 +12,7 @@ var auth = jwt({
 router.get('/student_schedule/:query', auth, scheduleController.getScheduleByStudent);
 router.get('/company_schedule/:query', auth, scheduleController.getScheduleByCompany);
 router.post('/', auth, scheduleController.updateSchedule);
-router.post('/:query', auth, scheduleController.deleteScheduleItem);
+router.delete('/:query', auth, scheduleController.deleteScheduleItem);
 router.get('/all', scheduleController.getShortlisted);
 
 module.exports = router;

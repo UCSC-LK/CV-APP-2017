@@ -25,7 +25,6 @@ module.exports.getCompaniesBySelectedStudent = function (req, res, next) {
         }, function (err, result1) {
             if (err) return next(err);
             var scheduledComapnies = _.map(result1, 'company');
-            console.log(scheduledComapnies);
 
             //Getting company data
             var companies = _.map(result, 'company');

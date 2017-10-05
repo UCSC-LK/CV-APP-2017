@@ -70,7 +70,7 @@ module.exports.getScheduleByStudent = function (req, res, next) {
     });
 };
 
-// Return schedule by company
+// Return schedule by company todo
 module.exports.getScheduleByCompany = function (req, res, next) {
     StudentSchedule.find({
         'comapny': req.params.query
@@ -90,26 +90,15 @@ module.exports.getScheduleByCompany = function (req, res, next) {
 };
 
 
-module.exports.deleteScheduleItem = function (req, res) {
-    console.log(req.body);
-    StudentSchedule.findOne({
-        'student': req.params.query
+module.exports.deleteScheduleItem = function (req, res, next) {
+    console.log(req.params.query);
+    Schedule.findByIdAndRemove({
+        '_id': req.params.query
     }, function (err, result) {
-        console.log("Updating schedule info"); // update info
-        // Updating the schedule slot
-        result.schedule[req.body.slot - 1].company = "-";
-        result.save(function (err) {
-            if (err) {
-                return res.json({
-                    success: false,
-                    msg: 'Something went wrong.Try again',
-                    error: err
-                });
-            }
-            res.json({
-                success: true,
-                msg: 'Your schedule updated successfully'
-            });
+        if (err) return next(err);
+        res.json({
+            success: true,
+            msg: 'Your schedule updated successfully'
         });
     });
 };
