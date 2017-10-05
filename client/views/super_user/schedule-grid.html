@@ -57,28 +57,21 @@
 
 <script type="text/javascript">
 
-    var companies = ['C0', 'C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8', 'C9', 'C0', 'C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8', 'C9'];
-    var students = ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7'];
-    var data = [
-        [0, -1, 0, -1, -1, 0, 0, -1, 0, -1, -1, 0, -1, 0, 0, -1, 0, -1, -1, 0],
-        [-1, -1, 0, -1, 0, 0, -1, -1, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
-        [0, -1, -1, -1, 0, -1, 0, -1, -1, -1, 0, -1, 0, -1, 0, -1, -1, -1, 0, -1],
-        [0, -1, 0, -1, 0, 0, -1, 0, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0],
-        [-1, -1, 0, -1, -1, 0, -1, 0, -1, -1, 0, -1, -1, 0, -1, 0, -1, -1, 0, 0],
-        [0, -1, 0, -1, -1, 0, 0, -1, 0, -1, -1, 0, -1, 0, 0, -1, 0, -1, -1, 0],
-        [-1, -1, 0, -1, 0, 0, -1, -1, -1, 0, 0, 0, -1, 0, 0, -1, 0, -1, 0, 0]
-
-    ];
+    var companies = [];
+    var students = [];
+    var data = [];
     var conflictMatrix = []; //0 - no conflict at this i,j , 1 - conflict
     var errorColor = '#ff7070';
     var specialErrorColor = 'red';
     var nonErrorColor = 'white';
     var nullColor = '#dcdcdc';
+    var slotsPerPanel = 8;
 
     // Confirm on page reload
-    //   $(window).bind('beforeunload', function(){
-    //        return 'Are you sure you want to leave?';
-    //    });
+
+    $(window).bind('beforeunload', function(){
+        return 'Are you sure you want to leave?';
+    });
 
     $(document).ready(function () {
 
@@ -108,7 +101,6 @@
                 console.log(status, error);
             }
         });
-
 
     });
 
@@ -179,13 +171,18 @@
 
     //return duplicates of an array omitting 0 and -1
     Array.prototype.getDuplicates = function () {
+        var res = [];
+        this.forEach(function (num) {
+            res.push(num % slotsPerPanel);
+        });
+
         var duplicates = {};
-        for (var i = 0; i < this.length; i++) {
-            if (this[i] !== 0 && this[i] !== -1)
-                if (duplicates.hasOwnProperty(this[i])) {
-                    duplicates[this[i]].push(i);
-                } else if (this.lastIndexOf(this[i]) !== i) {
-                    duplicates[this[i]] = [i];
+        for (var i = 0; i < res.length; i++) {
+            if (res[i] !== 0 && res[i] !== -1)
+                if (duplicates.hasOwnProperty(res[i])) {
+                    duplicates[res[i]].push(i);
+                } else if (res.lastIndexOf(res[i]) !== i) {
+                    duplicates[res[i]] = [i];
                 }
         }
         var duplicateIndexes = [];
@@ -315,10 +312,6 @@
         gridData.data = data;
         gridData.companies = companies;
         gridData.students = students;
-        var encodedgridData =  encodeURIComponent(gridData);
-        console.log(gridData);
-        console.log(encodedgridData);
-        alert("hello");
 
         $.ajax({
             type: "POST",
@@ -346,7 +339,6 @@
 
 
     $( "#load-grid" ).click(function() {
-        alert("Hello world");
         $.ajax({
             type: "GET",
             url: domain + "schedule/getSavedGrid",
@@ -362,6 +354,7 @@
                     companies = response.companies;
                     // Initializing the grid
                     initGrid();
+                    showSuccessMessage("Complete!");
 
                 } else {
                     showErrorMessage("Something went wrong");

@@ -39,14 +39,14 @@
                     'pdf'
                 ],
                 ajax: {
-                    url: domain + 'student_schedule/schedule/' + userID,
+                    url: domain + 'schedule/student_schedule/' + userID,
                     dataSrc: 'result',
                     beforeSend: function (xhr) {
                         xhr.setRequestHeader("Authorization", getToken());
                     }
                 },
                 "columns": [
-                    { "data": "slot" },
+                    { "data": "slotTime" },
                     { "data": "company" }
                 ],
                 "language": {

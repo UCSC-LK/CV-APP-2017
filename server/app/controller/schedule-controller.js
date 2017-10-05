@@ -58,36 +58,66 @@ module.exports.getScheduleByStudent = function (req, res, next) {
         }, function (err, result1) {
             if (err) return next(err);
 
+            var times = ['10.30am - 10.45am', '10.45am - 11.00am', '11.00am - 11.15am', '11.15am - 11.30am',
+                '11.30am - 11.45am', '11.45am - 12.00pm', '12.00pm - 12.15pm', '12.15pm - 12.30pm'];
+            var slotsPerPanel = times.length;
+
+            var final = [];
             // Loop through the two array results
             _.forEach(result1, function (compObj) {
                 _.forEach(result, function (scheduleCompObj) {
                     // Check company ids and update company name in the returned object
                     if(scheduleCompObj.company == compObj._id){
-                        scheduleCompObj.company = compObj.name;
+                        var temp = {};
+                        temp._id = scheduleCompObj._id;
+                        temp.position = scheduleCompObj.position;
+                        temp.company = compObj.name;
+                        temp.student = scheduleCompObj.student;
+                        temp.slot = scheduleCompObj.slot;
+                        temp.slotTime = times[(scheduleCompObj.slot % slotsPerPanel) - 1];
+                        final.push(temp);
                     }
                 });
             });
-            res.json({result: result});
+
+            res.json({result: final});
         });
     });
 };
 
-// Return schedule by company todo
+// Return schedule by company
 module.exports.getScheduleByCompany = function (req, res, next) {
-    StudentSchedule.find({
-        'comapny': req.params.query
-    }, {schedule: 1}, function (err, result) {
+    Schedule.find({
+        'company': req.params.query
+    }, function (err, result) {
         if (err) return next(err);
-        var res1;
-        // if result is null make it empty array.to avoid DataTable error.
-        if (result.length === 0) {
-            res1 = [];
-        }
-        else {
-            res1 = result[0]['schedule'];
-        }
+        var students = _.map(result, 'student');
+        Student.find({
+            'userID': {
+                $in: students
+            }
+        }, function (err, result1) {
+            if (err) return next(err);
 
-        res.json({result: res1});
+            var final = [];
+            // Loop through the two array results
+            _.forEach(result1, function (student) {
+                _.forEach(result, function (scheduleCompObj) {
+                    // Check company ids and update company name in the returned object
+                    if(scheduleCompObj.student == student.userID){
+                        var temp = {};
+                        temp.studentName = student.name;
+                        temp.position = scheduleCompObj.position;
+                        temp.slot = scheduleCompObj.slot;
+                        temp.studentPhone = student.phone;
+                        temp.stream = student.stream;
+                        final.push(temp);
+                    }
+                });
+            });
+
+            res.json({success: true, result: final});
+        });
     });
 };
 
