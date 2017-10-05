@@ -57,22 +57,34 @@ module.exports.getScheduleByStudent = function (req, res, next) {
         }, function (err, result1) {
             if (err) return next(err);
 
+            var times = ['10.30am - 10.45am', '10.45am - 11.00am', '11.00am - 11.15am', '11.15am - 11.30am',
+                '11.30am - 11.45am', '11.45am - 12.00pm', '12.00pm - 12.15pm', '12.15pm - 12.30pm'];
+            var slotsPerPanel = times.length;
+
+            var final = [];
             // Loop through the two array results
             _.forEach(result1, function (compObj) {
                 _.forEach(result, function (scheduleCompObj) {
                     // Check company ids and update company name in the returned object
                     if(scheduleCompObj.company == compObj._id){
-                        scheduleCompObj.company = compObj.name;
+                        var temp = {};
+                        temp._id = scheduleCompObj._id;
+                        temp.position = scheduleCompObj.position;
+                        temp.company = compObj.name;
+                        temp.student = scheduleCompObj.student;
+                        temp.slot = scheduleCompObj.slot;
+                        temp.slotTime = times[(scheduleCompObj.slot % slotsPerPanel) - 1];
+                        final.push(temp);
                     }
                 });
             });
 
-            res.json({result: result});
+            res.json({result: final});
         });
     });
 };
 
-// Return schedule by company todo
+// Return schedule by company
 module.exports.getScheduleByCompany = function (req, res, next) {
     Schedule.find({
         'company': req.params.query
