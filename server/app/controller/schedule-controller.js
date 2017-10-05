@@ -42,23 +42,31 @@ module.exports.updateSchedule = function (req, res, next) {
 
 };
 
-
 // Return schedule by student id
 module.exports.getScheduleByStudent = function (req, res, next) {
-    StudentSchedule.find({
+    Schedule.find({
         'student': req.params.query
-    }, {schedule: 1}, function (err, result) {
+    }, function (err, result) {
         if (err) return next(err);
-        var res1;
-        // if result is null make it empty array.to avoid DataTable error.
-        if (result.length === 0) {
-            res1 = [];
-        }
-        else {
-            res1 = result[0]['schedule'];
-        }
+        var companies = _.map(result, 'company');
+        Company.find({
+            '_id': {
+                $in: companies
+            }
+        }, function (err, result1) {
+            if (err) return next(err);
 
-        res.json({result: res1});
+            // Loop through the two array results
+            _.forEach(result1, function (compObj) {
+                _.forEach(result, function (scheduleCompObj) {
+                    // Check company ids and update company name in the returned object
+                    if(scheduleCompObj.company == compObj._id){
+                        scheduleCompObj.company = compObj.name;
+                    }
+                });
+            });
+            res.json({result: result});
+        });
     });
 };
 

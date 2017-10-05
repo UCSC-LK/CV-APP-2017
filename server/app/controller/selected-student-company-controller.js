@@ -1,7 +1,7 @@
 var SelectedStudentCompany = require('../model/selected-student-company'),
     Student = require('../model/student'),
     Company = require('../model/company'),
-    StudentSchedule = require('../model/student-schedule'),
+    Schedule = require('../model/schedule'),
     jsend = require('jsend'),
     Cv = require('../model/cv'),
     mongoose = require('mongoose'),
@@ -18,45 +18,47 @@ module.exports.getCompaniesBySelectedStudent = function (req, res, next) {
         'student': req.params.query
     }, function (err, result) {
         if (err) return next(err);
-        //Getting company data
-        var temp = [];
-        var companies = _.map(result, 'company');
-        Company.find({
-            '_id': {
-                $in: companies
-            }
+
+        // find out already scheduled companies
+        Schedule.find({
+            'student': req.params.query
         }, function (err, result1) {
             if (err) return next(err);
+            var scheduledComapnies = _.map(result1, 'company');
+            console.log(scheduledComapnies);
 
-            var final = [];
-            // Loop through the two array results
-            _.forEach(result1, function (compObj) {
-                _.forEach(result, function (selectedCompObj) {
-                    // Check company ids and update company name in the returned object
-                    if(selectedCompObj.company == compObj._id){
-                        var temp = {};
-                        temp.timeStamp = selectedCompObj.timeStamp;
-                        temp.company = selectedCompObj.company;
-                        temp.student = selectedCompObj.student;
-                        temp.position = selectedCompObj.position;
-                        temp.companyName = compObj.name;
-                        final.push(temp);
-                    }
+            //Getting company data
+            var companies = _.map(result, 'company');
+            Company.find({
+                '_id': {
+                    $in: companies
+                }
+            }, function (err, result2) {
+                if (err) return next(err);
+
+                var final = [];
+                // Loop through the two array results
+                _.forEach(result2, function (compObj) {
+                    _.forEach(result, function (selectedCompObj) {
+                        // Check company ids and update company name in the returned object
+                        if(selectedCompObj.company == compObj._id){
+                            var temp = {};
+                            temp.timeStamp = selectedCompObj.timeStamp;
+                            temp.company = selectedCompObj.company;
+                            temp.student = selectedCompObj.student;
+                            temp.position = selectedCompObj.position;
+                            temp.companyName = compObj.name;
+                            temp.scheduled = (scheduledComapnies.indexOf(selectedCompObj.company) !== -1);
+                            final.push(temp);
+                        }
+                    });
                 });
-
+                final.sort({timeStamp: -1});
+                res.json({"result": final});
             });
-
-            final.sort({timeStamp: -1});
-            res.json({"result": final});
-
-            // StudentSchedule.findOne({
-            //     'student': req.params.query
-            // }, function (err, result2) {
-            //     if (err) return next(err);
-            //     // Implement the code to delete the entry in result arrays
-            // });
-
         });
+
+
     });
 };
 
