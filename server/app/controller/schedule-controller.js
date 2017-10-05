@@ -66,6 +66,7 @@ module.exports.getScheduleByStudent = function (req, res, next) {
                     }
                 });
             });
+
             res.json({result: result});
         });
     });
@@ -73,20 +74,37 @@ module.exports.getScheduleByStudent = function (req, res, next) {
 
 // Return schedule by company todo
 module.exports.getScheduleByCompany = function (req, res, next) {
-    StudentSchedule.find({
-        'comapny': req.params.query
-    }, {schedule: 1}, function (err, result) {
+    Schedule.find({
+        'company': req.params.query
+    }, function (err, result) {
         if (err) return next(err);
-        var res1;
-        // if result is null make it empty array.to avoid DataTable error.
-        if (result.length === 0) {
-            res1 = [];
-        }
-        else {
-            res1 = result[0]['schedule'];
-        }
+        var students = _.map(result, 'student');
+        Student.find({
+            'userID': {
+                $in: students
+            }
+        }, function (err, result1) {
+            if (err) return next(err);
 
-        res.json({result: res1});
+            var final = [];
+            // Loop through the two array results
+            _.forEach(result1, function (student) {
+                _.forEach(result, function (scheduleCompObj) {
+                    // Check company ids and update company name in the returned object
+                    if(scheduleCompObj.student == student.userID){
+                        var temp = {};
+                        temp.studentName = student.name;
+                        temp.position = scheduleCompObj.position;
+                        temp.slot = scheduleCompObj.slot;
+                        temp.studentPhone = student.phone;
+                        temp.stream = student.stream;
+                        final.push(temp);
+                    }
+                });
+            });
+
+            res.json({success: true, result: final});
+        });
     });
 };
 
