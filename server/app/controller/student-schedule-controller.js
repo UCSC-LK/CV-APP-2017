@@ -126,6 +126,18 @@ module.exports.deleteScheduleItem = function (req, res) {
 
 module.exports.getShortlisted = function (req, res, next) {
     var finalResult = [];
+    var finalStudentsOrderd = [];
+
+    function totalSum(arr){
+        var numbers = _.cloneDeep(arr);
+        numbers.shift();
+        var total = 0;
+        _.forEach(numbers,function(num){
+            total += num;
+        });
+        return total;
+    }
+
     var allStudents = new Promise(function (resolve, reject) {
         Student.find({isAvailable: {$in: [null, true]}}, function (err, result) {
             if (result) {
@@ -161,7 +173,7 @@ module.exports.getShortlisted = function (req, res, next) {
                 var subPromise = new Promise(function (resolve, reject) {
                     Selectedstudentcompany.find({'student': item.userID}, function (err, result) {
                         if (err) reject(err);
-                        var temp = [];
+                        var temp = [item];
                         var shortlistedCompany = {};
                         _.forEach(result, function (items) {
                             shortlistedCompany[items.company] = items;
@@ -183,17 +195,22 @@ module.exports.getShortlisted = function (req, res, next) {
             });
 
             Promise.all(allSubqueries).then(function functionName() {
-                // console.log("###########_____________#############");
-                // _.forEach(finalResult,function(test) {
-                //   console.log(test.toString());
-                // });
-                // console.log("###########_____________#############");
+                var sortedResult = _.sortBy(finalResult, [totalSum]);
+                _.forEach(sortedResult,function(rows) {
+                    finalStudentsOrderd.push(rows.shift());
+                    //console.log(name.name);
+                    //console.log(rows.toString());
+                });
+
                 return res.json({
                     success: true,
-                    dataMatrix: finalResult,
-                    students: allStudents,
+                    dataMatrix: sortedResult,
+                    students: finalStudentsOrderd,
                     companies: allCompanies
                 });
+            }).catch(function (err) {
+                console.log("Failed:", err);
+                return next(err);
             });
         })
         .catch(function (err) {
