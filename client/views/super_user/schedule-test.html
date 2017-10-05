@@ -1,9 +1,21 @@
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="body">
+                <button class="btn btn-primary waves-effect" id="save-grid">Save Grid</button>
+                <button class="btn btn-primary waves-effect" id="load-grid">Load Grid</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="row clearfix">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 30px;">
         <div id="container"></div>
     </div>
 </div>
+
+
 
 <style type="text/css">
     table, th, td {
@@ -64,7 +76,7 @@
     var nullColor = '#dcdcdc';
 
     // Confirm on page reload
-    //    $(window).bind('beforeunload', function(){
+    //   $(window).bind('beforeunload', function(){
     //        return 'Are you sure you want to leave?';
     //    });
 
@@ -83,7 +95,6 @@
                     students = response.students;
                     data = response.dataMatrix;
                     companies = response.companies;
-
                     // Initializing the grid
                     initGrid();
 
@@ -103,6 +114,7 @@
 
     function initGrid() {
         var container = $('#container');
+        container.empty();
         var html = "<div class='col-xs-12'><div class='box header company student'></div>";
         // Adding company names
         companies.forEach(function (company) {
@@ -298,4 +310,70 @@
         $($(row).children()[j + 1]).css('background', color);
     }
 
+    $( "#save-grid" ).click(function() {
+        var gridData = {};
+        gridData.data = data;
+        gridData.companies = companies;
+        gridData.students = students;
+        var encodedgridData =  encodeURIComponent(gridData);
+        console.log(gridData);
+        console.log(encodedgridData);
+        alert("hello");
+
+        $.ajax({
+            type: "POST",
+            url: domain + "schedule/saveGrid",
+            data: gridData,
+            dataType: "json",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", getToken());
+            },
+            success: function (response) {
+                if (response.success == true) {
+                    showSuccessMessage(response.msg);
+                } else {
+                    showErrorMessage("Something went wrong");
+                    // console.log(response);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.log(xhr);
+                console.log(status, error);
+            }
+        });
+    });
+
+
+
+    $( "#load-grid" ).click(function() {
+        alert("Hello world");
+        $.ajax({
+            type: "GET",
+            url: domain + "schedule/getSavedGrid",
+            data: '',
+            dataType: "json",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", getToken());
+            },
+            success: function (response) {
+                if (response.success == true) {
+                    students = response.students;
+                    data = response.dataMatrix;
+                    companies = response.companies;
+                    // Initializing the grid
+                    initGrid();
+
+                } else {
+                    showErrorMessage("Something went wrong");
+                    console.log(response);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.log(xhr);
+                console.log(status, error);
+            }
+        });
+    });
+
+//
 </script>
