@@ -7,6 +7,7 @@ var express = require('express'),
     studentCompany = require('./app/api/student-company-api'),
     selectedStudentCompany = require('./app/api/selected-student-company-api'),
     studentSchedule = require('./app/api/student-schedule-api'),
+    schedule = require('./app/api/schedule-api'),
     user = require('./app/api/user-api'),
     remoteValidation = require('./app/api/validation'),
     app = express(),
@@ -18,7 +19,6 @@ var jwt = require('express-jwt');
 var config = require('./app/config/conf');
 var morgan = require('morgan');
 var fs = require('fs');
-var path = require('path');
 
 mongoose.connect(
     config.database,
@@ -107,6 +107,7 @@ app.use('/selected_student_company', selectedStudentCompany);
 app.use('/student_company', studentCompany);
 app.use('/validation', remoteValidation);
 app.use('/student_schedule', studentSchedule);
+app.use('/schedule', schedule);
 app.use('/user', user);
 
 // error handlers

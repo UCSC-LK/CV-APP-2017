@@ -1,8 +1,46 @@
 var StudentSchedule = require('../model/student-schedule'),
+    Schedule = require('../model/schedule'),
     Student = require('../model/student'),
     Company = require('../model/company'),
     Selectedstudentcompany = require('../model/selected-student-company'),
     _ = require('lodash');
+
+
+// Update student-company schedule
+module.exports.updateSchedule = function (req, res, next) {
+
+    var record = new Schedule(req.body);
+
+    // Check if schedule exists
+    Schedule.findOne({
+        'student': record['student'],
+        'company': record['company']
+    }, function (err, result) {
+        if (err) return next(err);
+        if (result) {
+            console.log("Updating schedule..."); // update info
+            // Updating the schedule slot
+            result.slot = record['slot'];
+            result.save(function (err) {
+                if (err) return next(err);
+                res.json({
+                    success: true,
+                    msg: 'Schedule updated successfully'
+                });
+            });
+        } else {
+            console.log("Adding new schedule..."); // update info
+            record.save(function (err) {
+                if (err) return next(err);
+                return res.json({
+                    success: true,
+                    msg: 'Schedule added successfully'
+                });
+            });
+        }
+    });
+
+};
 
 
 // Return schedule by student id
@@ -43,61 +81,6 @@ module.exports.getScheduleByCompany = function (req, res, next) {
     });
 };
 
-// Update student schedule
-module.exports.updateSchedule = function (req, res, next) {
-
-    var record = new StudentSchedule(req.body);
-
-    // Check if schedule exists
-    StudentSchedule.findOne({
-        'student': record['student']
-    }, function (err, result) {
-        if (result) {
-            console.log("Updating schedule info"); // update info
-            // Updating the schedule slot
-            result.schedule[req.body.slot - 1].company = req.body.company;
-            result.save(function (err) {
-                if (err) {
-                    return res.json({
-                        success: false,
-                        msg: 'Something went wrong.Try again',
-                        error: err
-                    });
-                }
-                res.json({
-                    success: true,
-                    msg: 'Your schedule updated successfully'
-                });
-            });
-        } else {
-            var i = 0;
-            var defaultSlots = 8;
-            while (record.schedule.length < defaultSlots) {
-                record.schedule.push({
-                    "slot": ++i,
-                    "company": "-"
-                })
-            }
-            console.log("Updating schedule info"); // update info
-            record.schedule[req.body.slot - 1].company = req.body.company;
-            record.save(function (err) {
-                if (err) {
-                    return res.json({
-                        success: false,
-                        msg: 'Something went wrong.Try again',
-                        error: err
-                    });
-                }
-                return res.json({
-                    success: true,
-                    msg: 'Your details added successfully'
-                });
-            });
-
-        }
-    });
-
-};
 
 module.exports.deleteScheduleItem = function (req, res) {
     console.log(req.body);

@@ -26,51 +26,37 @@ module.exports.getCompaniesBySelectedStudent = function (req, res, next) {
                 $in: companies
             }
         }, function (err, result1) {
-            if (err) {
-                return res.json({
-                    success: false,
-                    error: err
-                });
-            }
+            if (err) return next(err);
 
+            var final = [];
             // Loop through the two array results
             _.forEach(result1, function (compObj) {
                 _.forEach(result, function (selectedCompObj) {
                     // Check company ids and update company name in the returned object
                     if(selectedCompObj.company == compObj._id){
-                        selectedCompObj.company = compObj.name;
+                        var temp = {};
+                        temp.timeStamp = selectedCompObj.timeStamp;
+                        temp.company = selectedCompObj.company;
+                        temp.student = selectedCompObj.student;
+                        temp.position = selectedCompObj.position;
+                        temp.companyName = compObj.name;
+                        final.push(temp);
                     }
                 });
+
             });
 
-            StudentSchedule.findOne({
-                'student': req.params.query
-            }, function (err, result2) {
-                if (err) {
-                    return res.json({
-                        success: false,
-                        error: err
-                    });
-                }
+            final.sort({timeStamp: -1});
+            res.json({"result": final});
 
-                // Implement the code to delete the entry in result arrays
-
-                // if result is null make it empty array.to avoid DataTable error.
-                if (result.length === 0){
-                    result = [];
-                }
-
-                result.sort({timeStamp: -1});
-                temp = {
-                    "result": result
-                };
-                res.json(temp);
-            });
+            // StudentSchedule.findOne({
+            //     'student': req.params.query
+            // }, function (err, result2) {
+            //     if (err) return next(err);
+            //     // Implement the code to delete the entry in result arrays
+            // });
 
         });
-            // console.log(result);
-            result.sort({timeStamp: -1});
-
     });
 };
 
