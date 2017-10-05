@@ -3,6 +3,7 @@ var StudentSchedule = require('../model/student-schedule'),
     Student = require('../model/student'),
     Company = require('../model/company'),
     Selectedstudentcompany = require('../model/selected-student-company'),
+    Grid = require('../model/grid'),
     _ = require('lodash');
 
 
@@ -228,4 +229,59 @@ module.exports.getShortlisted = function (req, res, next) {
             console.log("Failed:", err);
             return next(err);
         });
+};
+
+
+module.exports.saveGrid = function(req, res, next) {
+    var grid = new Grid(req.body);
+    console.log(grid);
+    Grid.findOne({
+    }, function (err, result) {
+        if (result) {
+            console.log("Updating grid info"); // update info
+            result.data = grid.data;
+            result.companies = grid.companies;
+            result.students = grid.students;
+
+            result.save(function (err) {
+                if (err) return next(err);
+                res.json({
+                    success: true,
+                    msg: 'Your details updated successfully'
+                });
+            });
+        } else {
+            grid.save(function (err) {
+                if (err) return next(err);
+                return res.json({
+                    success: true,
+                    msg: 'Grid added successfully'
+                });
+            });
+        }
+    });
+};
+
+
+module.exports.getSavedGrid = function(req, res, next) {
+    Grid.findOne({}, function (err, result) {
+        if(err) return next(err);
+        //console.log(result);
+
+        var parsedData = [];
+        _.forEach(result.data,function(rows) {
+            var temp2 = [];
+            _.forEach(rows,function(i) {
+                temp2.push(parseInt(i));
+            });
+            parsedData.push(temp2);
+        });
+
+        return res.json({
+            success: true,
+            dataMatrix: parsedData,
+            students: result.students,
+            companies: result.companies
+        });
+    });
 };

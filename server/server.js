@@ -57,7 +57,7 @@ app.use(morgan('dev'));
 // app.use(myLogger);
 
 // check if the request is https
-//////////////////////////////////////////////////////////////
+////////////////////////////////////////////////df////////
 //
 //Set Static Folder
 app.use(express.static(path.join(__dirname, '../client')));
@@ -80,10 +80,18 @@ app.use(cookieParser());
 app.use(passport.initialize());
 app.use(passport.session());
 
+
 //Body-parser
-app.use(bodyParser.json()); //for parsing application/json
+app.use(bodyParser.json({
+    extended: true,
+    parameterLimit: 10000,
+    limit: 1024 * 1024 * 10
+}));
+//for parsing application/json
 app.use(bodyParser.urlencoded({
-    extended: true
+    extended: true,
+    parameterLimit: 10000,
+    limit: 1024 * 1024 * 10
 }));
 
 // routes ======================================================================
