@@ -1,30 +1,77 @@
 var StudentSchedule = require('../model/student-schedule'),
+    Schedule = require('../model/schedule'),
     Student = require('../model/student'),
     Company = require('../model/company'),
     Selectedstudentcompany = require('../model/selected-student-company'),
     _ = require('lodash');
 
 
+// Update student-company schedule
+module.exports.updateSchedule = function (req, res, next) {
+
+    var record = new Schedule(req.body);
+
+    // Check if schedule exists
+    Schedule.findOne({
+        'student': record['student'],
+        'company': record['company'],
+        'position': record['position']
+    }, function (err, result) {
+        if (err) return next(err);
+        if (result) {
+            console.log("Updating schedule..."); // update info
+            // Updating the schedule slot
+            result.slot = record['slot'];
+            result.save(function (err) {
+                if (err) return next(err);
+                res.json({
+                    success: true,
+                    msg: 'Schedule updated successfully'
+                });
+            });
+        } else {
+            console.log("Adding new schedule..."); // update info
+            record.save(function (err) {
+                if (err) return next(err);
+                return res.json({
+                    success: true,
+                    msg: 'Schedule added successfully'
+                });
+            });
+        }
+    });
+
+};
+
 // Return schedule by student id
 module.exports.getScheduleByStudent = function (req, res, next) {
-    StudentSchedule.find({
+    Schedule.find({
         'student': req.params.query
-    }, {schedule: 1}, function (err, result) {
+    }, function (err, result) {
         if (err) return next(err);
-        var res1;
-        // if result is null make it empty array.to avoid DataTable error.
-        if (result.length === 0) {
-            res1 = [];
-        }
-        else {
-            res1 = result[0]['schedule'];
-        }
+        var companies = _.map(result, 'company');
+        Company.find({
+            '_id': {
+                $in: companies
+            }
+        }, function (err, result1) {
+            if (err) return next(err);
 
-        res.json({result: res1});
+            // Loop through the two array results
+            _.forEach(result1, function (compObj) {
+                _.forEach(result, function (scheduleCompObj) {
+                    // Check company ids and update company name in the returned object
+                    if(scheduleCompObj.company == compObj._id){
+                        scheduleCompObj.company = compObj.name;
+                    }
+                });
+            });
+            res.json({result: result});
+        });
     });
 };
 
-// Return schedule by company
+// Return schedule by company todo
 module.exports.getScheduleByCompany = function (req, res, next) {
     StudentSchedule.find({
         'comapny': req.params.query
@@ -43,82 +90,16 @@ module.exports.getScheduleByCompany = function (req, res, next) {
     });
 };
 
-// Update student schedule
-module.exports.updateSchedule = function (req, res, next) {
 
-    var record = new StudentSchedule(req.body);
-
-    // Check if schedule exists
-    StudentSchedule.findOne({
-        'student': record['student']
+module.exports.deleteScheduleItem = function (req, res, next) {
+    console.log(req.params.query);
+    Schedule.findByIdAndRemove({
+        '_id': req.params.query
     }, function (err, result) {
-        if (result) {
-            console.log("Updating schedule info"); // update info
-            // Updating the schedule slot
-            result.schedule[req.body.slot - 1].company = req.body.company;
-            result.save(function (err) {
-                if (err) {
-                    return res.json({
-                        success: false,
-                        msg: 'Something went wrong.Try again',
-                        error: err
-                    });
-                }
-                res.json({
-                    success: true,
-                    msg: 'Your schedule updated successfully'
-                });
-            });
-        } else {
-            var i = 0;
-            var defaultSlots = 8;
-            while (record.schedule.length < defaultSlots) {
-                record.schedule.push({
-                    "slot": ++i,
-                    "company": "-"
-                })
-            }
-            console.log("Updating schedule info"); // update info
-            record.schedule[req.body.slot - 1].company = req.body.company;
-            record.save(function (err) {
-                if (err) {
-                    return res.json({
-                        success: false,
-                        msg: 'Something went wrong.Try again',
-                        error: err
-                    });
-                }
-                return res.json({
-                    success: true,
-                    msg: 'Your details added successfully'
-                });
-            });
-
-        }
-    });
-
-};
-
-module.exports.deleteScheduleItem = function (req, res) {
-    console.log(req.body);
-    StudentSchedule.findOne({
-        'student': req.params.query
-    }, function (err, result) {
-        console.log("Updating schedule info"); // update info
-        // Updating the schedule slot
-        result.schedule[req.body.slot - 1].company = "-";
-        result.save(function (err) {
-            if (err) {
-                return res.json({
-                    success: false,
-                    msg: 'Something went wrong.Try again',
-                    error: err
-                });
-            }
-            res.json({
-                success: true,
-                msg: 'Your schedule updated successfully'
-            });
+        if (err) return next(err);
+        res.json({
+            success: true,
+            msg: 'Your schedule updated successfully'
         });
     });
 };

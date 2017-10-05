@@ -64,8 +64,9 @@
                 <table id = "scheduleTable" class="table table-bordered table-striped table-hover" cellspacing="0" width="100%">
                     <thead>
                     <tr>
-                        <th width="20%">Time Slot</th>
+                        <th>Slot</th>
                         <th>Company</th>
+                        <th>Position</th>
                         <th>Action</th>
                     </tr>
                     </thead>
@@ -87,10 +88,11 @@ $(document).ready(function() {
     var studentID;
 
 
-    var selectButton =  '<a class="btn btn-warning waves-effect btn-sm ajaxSelect"> </span> Select</a>';
-    var removeButton = '<a class="btn btn-danger btn-sm waves-effect  ajaxRemove"> Remove</a>';
+    var selectButton =  '<a class="btn btn-warning waves-effect btn-sm ajaxSelect">Select</a>';
+    var updateButton =  '<a class="btn btn-warning waves-effect btn-sm ajaxSelect">Update</a>';
+    var removeButton = '<a class="btn btn-danger btn-sm waves-effect  ajaxRemove">Remove</a>';
 
-    var ajaxRemove = "ajaxRemove";
+    var ajaxRemove = 'ajaxRemove';
     var ajaxSelect = 'ajaxSelect';
 
     var studentTable = $('#studentTable').DataTable({
@@ -130,12 +132,28 @@ $(document).ready(function() {
             }
         },
         "columns": [
-            { "data": "company" },
+            { "data": "companyName" },
             { "data": "position" },
-            {   "data": null,
-                "defaultContent": selectButton
+            {
+                "data": null,
+                "width": "10%"
             }
-        ]
+        ],
+        createdRow: function (row, data, dataIndex) {
+            if (data.scheduled) {
+                $(row).css("background-color", "#9E9E9E");
+            }
+        },
+        "columnDefs": [{
+            // put true or false button for student availability
+            targets: [-1], render: function (a, b, data, d) {
+                if (data.scheduled) {
+                    return updateButton;
+                } else {
+                    return selectButton;
+                }
+            }
+        }]
     });
 
     var scheduleTable = $('#scheduleTable').DataTable({
@@ -145,16 +163,22 @@ $(document).ready(function() {
             'pdf'
         ],
         ajax: {
-            url: domain + 'student_schedule/schedule/' + studentID,
+            url: domain + 'schedule/student_schedule/' + studentID,
             dataSrc: 'result',
             beforeSend: function (xhr) {
                 xhr.setRequestHeader("Authorization", getToken());
             }
         },
         "columns": [
-            { "data": "slot" },
+            {
+                "data": "slot",
+                "width": "5%"
+            },
             { "data": "company" },
-            {   "data": null,
+            { "data": "position" },
+            {
+                "data": null,
+                "width": "10%",
                 "defaultContent": removeButton
             }
         ]
@@ -177,25 +201,23 @@ $(document).ready(function() {
 
         // Reload datatables with the new user id
         companyTable.ajax.url(domain + 'selected_student_company/companies/' + studentID).load();
-        scheduleTable.ajax.url(domain + 'student_schedule/schedule/' + studentID).load();
+        scheduleTable.ajax.url(domain + 'schedule/student_schedule/' + studentID).load();
 
     });
 
     companyTable.on("click", "." + ajaxSelect, function () {
-
         var rowData = companyTable.row($(this).parents('tr')).data();
         var slot = document.getElementById("timeslot").value;
-
-        var url = domain + 'student_schedule';
-        var para = '&company=' + rowData['company'] + '&student=' + rowData['student'] + '&slot=' + slot;
+        var url = domain + 'schedule';
+        var para = '&company=' + rowData['company'] + '&student=' + rowData['student'] + '&position=' + rowData['position'] + '&slot=' + slot;
         ajaxSend("POST", para, "ajaxSelect", null, url);
     });
 
     scheduleTable.on("click", "." + ajaxRemove, function () {
         var rowData = scheduleTable.row($(this).parents('tr')).data();
-        var para = '&company=' + rowData['company'] + '&slot=' + rowData['slot'];
-        var url = domain + 'student_schedule/' + studentID;
-        ajaxSend("POST", para, "ajaxRemove", null, url);
+        var para = '';
+        var url = domain + 'schedule/' + rowData['_id'];
+        ajaxSend("DELETE", para, "ajaxRemove", null, url);
     });
 
     function ajaxSend(type, params, action, clickRow, url) {
@@ -212,8 +234,8 @@ $(document).ready(function() {
                     case "ajaxSelect":
                         if (response.success) {
                             showSuccessNotification("Student schedule updated successfully!");
-                            //applicantTable.row(clickRow).remove().draw();
-                            scheduleTable.ajax.url(domain + 'student_schedule/schedule/' + studentID).load();
+                            scheduleTable.ajax.url(domain + 'schedule/student_schedule/' + studentID).load();
+                            companyTable.ajax.reload(null, false);
                         } else {
                             showErrorMessage("Unexpected error #1, Please try again");
                             console.log(response);
@@ -224,6 +246,7 @@ $(document).ready(function() {
                         if (response.success) {
                             showSuccessNotification("Schedule removed successfully!");
                             scheduleTable.ajax.reload(null, false);
+                            companyTable.ajax.reload(null, false);
                         } else {
                             showErrorMessage("Unexpected error #2, Please try again");
                             console.log(response);

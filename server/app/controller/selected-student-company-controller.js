@@ -1,7 +1,7 @@
 var SelectedStudentCompany = require('../model/selected-student-company'),
     Student = require('../model/student'),
     Company = require('../model/company'),
-    StudentSchedule = require('../model/student-schedule'),
+    Schedule = require('../model/schedule'),
     jsend = require('jsend'),
     Cv = require('../model/cv'),
     mongoose = require('mongoose'),
@@ -18,58 +18,48 @@ module.exports.getCompaniesBySelectedStudent = function (req, res, next) {
         'student': req.params.query
     }, function (err, result) {
         if (err) return next(err);
-        //Getting company data
-        var temp = [];
-        var companies = _.map(result, 'company');
-        Company.find({
-            '_id': {
-                $in: companies
-            }
+
+        // find out already scheduled companies
+        Schedule.find({
+            'student': req.params.query
         }, function (err, result1) {
-            if (err) {
-                return res.json({
-                    success: false,
-                    error: err
-                });
-            }
-
-            // Loop through the two array results
-            _.forEach(result1, function (compObj) {
-                _.forEach(result, function (selectedCompObj) {
-                    // Check company ids and update company name in the returned object
-                    if(selectedCompObj.company == compObj._id){
-                        selectedCompObj.company = compObj.name;
-                    }
-                });
+            if (err) return next(err);
+            var scheduledComapnies = _.map(result1, function (data) {
+                return data.company + "/" + data.position;
             });
 
-            StudentSchedule.findOne({
-                'student': req.params.query
+            //Getting company data
+            var companies = _.map(result, 'company');
+            Company.find({
+                '_id': {
+                    $in: companies
+                }
             }, function (err, result2) {
-                if (err) {
-                    return res.json({
-                        success: false,
-                        error: err
+                if (err) return next(err);
+
+                var final = [];
+                // Loop through the two array results
+                _.forEach(result2, function (compObj) {
+                    _.forEach(result, function (selectedCompObj) {
+                        // Check company ids and update company name in the returned object
+                        if(selectedCompObj.company == compObj._id){
+                            var temp = {};
+                            temp.timeStamp = selectedCompObj.timeStamp;
+                            temp.company = selectedCompObj.company;
+                            temp.student = selectedCompObj.student;
+                            temp.position = selectedCompObj.position;
+                            temp.companyName = compObj.name;
+                            var check = selectedCompObj.company + "/" + selectedCompObj.position;
+                            temp.scheduled = (scheduledComapnies.indexOf(check) !== -1);
+                            final.push(temp);
+                        }
                     });
-                }
-
-                // Implement the code to delete the entry in result arrays
-
-                // if result is null make it empty array.to avoid DataTable error.
-                if (result.length === 0){
-                    result = [];
-                }
-
-                result.sort({timeStamp: -1});
-                temp = {
-                    "result": result
-                };
-                res.json(temp);
+                });
+                final.sort({timeStamp: -1});
+                res.json({"result": final});
             });
-
         });
-            // console.log(result);
-            result.sort({timeStamp: -1});
+
 
     });
 };

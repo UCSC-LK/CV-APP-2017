@@ -7,6 +7,7 @@ var express = require('express'),
     studentCompany = require('./app/api/student-company-api'),
     selectedStudentCompany = require('./app/api/selected-student-company-api'),
     studentSchedule = require('./app/api/student-schedule-api'),
+    schedule = require('./app/api/schedule-api'),
     user = require('./app/api/user-api'),
     remoteValidation = require('./app/api/validation'),
     app = express(),
@@ -18,7 +19,6 @@ var jwt = require('express-jwt');
 var config = require('./app/config/conf');
 var morgan = require('morgan');
 var fs = require('fs');
-var path = require('path');
 
 mongoose.connect(
     config.database,
@@ -57,9 +57,7 @@ app.use(morgan('dev'));
 // app.use(myLogger);
 
 // check if the request is https
-
-
-////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
 //
 //Set Static Folder
 app.use(express.static(path.join(__dirname, '../client')));
@@ -98,7 +96,6 @@ require('./app/api/auth.js')(app, passport);
 //   next();
 // });
 
-// app.use('/api2', api);
 app.use('/student', student);
 app.use('/cv', cv);
 app.use('/company', company);
@@ -107,6 +104,7 @@ app.use('/selected_student_company', selectedStudentCompany);
 app.use('/student_company', studentCompany);
 app.use('/validation', remoteValidation);
 app.use('/student_schedule', studentSchedule);
+app.use('/schedule', schedule);
 app.use('/user', user);
 
 // error handlers
@@ -119,9 +117,9 @@ app.use(function (err, req, res, next) {
             msg:err.message,
             error: err
         });
-        console.log("Log - UnauthorizedError");
+        console.log("Log - Unauthorized Error");
     } else {
-        console.log("Log - Unhandlied");
+        console.log("Log - Unhandled");
         console.log("message" + err.name + ": " + err.message);
         res.json({
             success: false,
