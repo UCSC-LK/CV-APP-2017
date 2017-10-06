@@ -74,11 +74,18 @@ module.exports.getScheduleByStudent = function (req, res, next) {
                         temp.company = compObj.name;
                         temp.student = scheduleCompObj.student;
                         temp.slot = scheduleCompObj.slot;
-                        temp.slotTime = times[(scheduleCompObj.slot % slotsPerPanel) - 1];
+                        temp.slotTime = times[(scheduleCompObj.slot - 1) % slotsPerPanel];
                         final.push(temp);
                     }
                 });
             });
+
+            //sort schedules according to time slot
+            console.log(final);
+            final.sort(function (a, b) {
+                return a.slot - b.slot;
+            });
+            console.log(final);
 
             res.json({result: final});
         });
@@ -111,6 +118,7 @@ module.exports.getScheduleByCompany = function (req, res, next) {
                         temp.slot = scheduleCompObj.slot;
                         temp.studentPhone = student.phone;
                         temp.stream = student.stream;
+                        temp.year = student.year;
                         final.push(temp);
                     }
                 });

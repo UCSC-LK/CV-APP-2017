@@ -173,16 +173,38 @@
     Array.prototype.getRowDuplicates = function () {
         var res = [];
         this.forEach(function (num) {
-            res.push(num % slotsPerPanel);
+            if (num === 0 || num === -1) {
+                res.push(null);
+            } else {
+                res.push(num % slotsPerPanel);
+            }
         });
 
         var duplicates = {};
         for (var i = 0; i < res.length; i++) {
-            if (res[i] !== 0 && res[i] !== -1)
+            if (res[i] !== null)
                 if (duplicates.hasOwnProperty(res[i])) {
                     duplicates[res[i]].push(i);
                 } else if (res.lastIndexOf(res[i]) !== i) {
                     duplicates[res[i]] = [i];
+                }
+        }
+        var duplicateIndexes = [];
+        for (key in duplicates) {
+            duplicateIndexes = duplicateIndexes.concat(duplicates[key]);
+        }
+        return duplicateIndexes;
+    };
+
+    //return duplicates of a column omitting 0 and -1
+    Array.prototype.getColumnDuplicates = function () {
+        var duplicates = {};
+        for (var i = 0; i < this.length; i++) {
+            if (this[i] !== 0 && this[i] !== -1)
+                if (duplicates.hasOwnProperty(this[i])) {
+                    duplicates[this[i]].push(i);
+                } else if (this.lastIndexOf(this[i]) !== i) {
+                    duplicates[this[i]] = [i];
                 }
         }
         var duplicateIndexes = [];
@@ -231,24 +253,6 @@
             }
         });
     });
-
-    //return duplicates of a column omitting 0 and -1
-    Array.prototype.getColumnDuplicates = function () {
-        var duplicates = {};
-        for (var i = 0; i < this.length; i++) {
-            if (this[i] !== 0 && this[i] !== -1)
-                if (duplicates.hasOwnProperty(this[i])) {
-                    duplicates[this[i]].push(i);
-                } else if (this.lastIndexOf(this[i]) !== i) {
-                    duplicates[this[i]] = [i];
-                }
-        }
-        var duplicateIndexes = [];
-        for (key in duplicates) {
-            duplicateIndexes = duplicateIndexes.concat(duplicates[key]);
-        }
-        return duplicateIndexes;
-    };
 
     function initConflictMatrix() {
         conflictMatrix = [];

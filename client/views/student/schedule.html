@@ -17,8 +17,9 @@
                        width="100%">
                     <thead>
                     <tr>
-                        <th>Slot</th>
+                        <th>Time Slot</th>
                         <th>Company</th>
+                        <th>Position</th>
                     </tr>
                     </thead>
                 </table>
@@ -38,6 +39,7 @@
                 buttons: [
                     'pdf'
                 ],
+                "aaSorting": [],
                 ajax: {
                     url: domain + 'schedule/student_schedule/' + userID,
                     dataSrc: 'result',
@@ -47,7 +49,8 @@
                 },
                 "columns": [
                     { "data": "slotTime" },
-                    { "data": "company" }
+                    { "data": "company" },
+                    { "data": "position" }
                 ],
                 "language": {
                     "emptyTable": "Sorry! Your interviews have not been scheduled yet."
