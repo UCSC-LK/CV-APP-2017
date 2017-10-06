@@ -169,8 +169,8 @@
         });
     });
 
-    //return duplicates of an array omitting 0 and -1
-    Array.prototype.getDuplicates = function () {
+    //return duplicates of a row omitting 0 and -1
+    Array.prototype.getRowDuplicates = function () {
         var res = [];
         this.forEach(function (num) {
             res.push(num % slotsPerPanel);
@@ -183,6 +183,63 @@
                     duplicates[res[i]].push(i);
                 } else if (res.lastIndexOf(res[i]) !== i) {
                     duplicates[res[i]] = [i];
+                }
+        }
+        var duplicateIndexes = [];
+        for (key in duplicates) {
+            duplicateIndexes = duplicateIndexes.concat(duplicates[key]);
+        }
+        return duplicateIndexes;
+    };
+    $( document ).ajaxStop(function() {
+        // event to trigger when numbers changed
+        $('.box.on').on('input propertychange paste', function () {
+            var num = $(this).text();
+            if (num !== "") {
+                if (!$.isNumeric(num)) {
+                    $(this).css('background', specialErrorColor);
+                } else {
+
+                    // finding row index -> i
+                    var columns = $(this).parent().parent().children();
+                    var rowIndex;
+                    for (var i = 0; i < columns.length; i++) {
+                        if (columns[i] === $(this).parent()[0]) {
+                            rowIndex = i;
+                            break;
+                        }
+                    }
+
+                    // finding column index -> j
+                    var row = $(this).parent().children();
+                    var columnIndex;
+                    for (var i = 0; i < row.length; i++) {
+                        if (row[i] === this) {
+                            columnIndex = i;
+                            break;
+                        }
+                    }
+
+                    //update data matrix
+                    data[rowIndex - 1][columnIndex - 1] = parseInt(num);
+
+                    updateConflictMatrix();
+
+                    changeGridColors();
+                }
+            }
+        });
+    });
+
+    //return duplicates of a column omitting 0 and -1
+    Array.prototype.getColumnDuplicates = function () {
+        var duplicates = {};
+        for (var i = 0; i < this.length; i++) {
+            if (this[i] !== 0 && this[i] !== -1)
+                if (duplicates.hasOwnProperty(this[i])) {
+                    duplicates[this[i]].push(i);
+                } else if (this.lastIndexOf(this[i]) !== i) {
+                    duplicates[this[i]] = [i];
                 }
         }
         var duplicateIndexes = [];
@@ -245,7 +302,7 @@
 
         for (var i = 0; i < students.length; i++) {
             var rowData = getRow(i + 1);
-            var rowDuplicates = rowData.getDuplicates();
+            var rowDuplicates = rowData.getRowDuplicates();
             rowDuplicates.forEach(function (index) {
                 conflictMatrix[i][index] = 1;
             });
@@ -253,7 +310,7 @@
 
         for (var j = 0; j < companies.length; j++) {
             var columnData = getColumn(j + 1);
-            var columnDuplicates = columnData.getDuplicates();
+            var columnDuplicates = columnData.getColumnDuplicates();
             columnDuplicates.forEach(function (index) {
                 conflictMatrix[index][j] = 1;
             });
