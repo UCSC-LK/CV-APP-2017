@@ -98,11 +98,11 @@
         <div class="menu" id="main-menu">
             <ul class="list">
                 <li class="header">Company Section</li>
-                <!--<li class="active">-->
-                    <!--<a href="schedule.html" class="ajax-pg toggled"><i-->
-                            <!--class="material-icons">assignment</i><span>Schedule</span></a>-->
-                <!--</li>-->
                 <li class="active">
+                    <a href="schedule.html" class="ajax-pg toggled"><i
+                            class="material-icons">assignment</i><span>Schedule</span></a>
+                </li>
+                <li>
                     <a href="applicants.html" class="ajax-pg toggled"><i
                             class="material-icons">face</i><span>Applicants</span></a>
                 </li>
@@ -215,7 +215,7 @@
             $('#main-menu li.active').removeClass('active');
             $(this).parent().addClass('active');
         });
-        window.onload = pageWrapper.load('applicants.html');
+        window.onload = pageWrapper.load('schedule.html');
     });
 
     // Logout btn action
