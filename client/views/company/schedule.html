@@ -11,6 +11,7 @@
                 <h2>
                     Your interview schedules
                 </h2>
+                <small id="schedule-header-msg">These are only pre-scheduled interviews. You can interview walk-in candidates at any free slot.</small>
             </div>
         </div>
     </div>
@@ -58,23 +59,35 @@
                 var slotsPerPanel = times.length;
 
                 // divide into panels
-                var panelWiseSchedules = []
+                var panelWiseSchedules = [];
                 data.forEach(function (schedule) {
                     var index = Math.floor(schedule.slot/slotsPerPanel);
                     (panelWiseSchedules[index] = panelWiseSchedules[index] || []).push(schedule);
+                });
+
+                //sort panel according to time slot
+                panelWiseSchedules.forEach(function (panel) {
+                    panel.sort(function (a, b) {
+                        return a.slot - b.slot;
+                    })
                 });
 
                 // set time slot values
                 for (var i=0; i<panelWiseSchedules.length; i++) {
                     var panel = panelWiseSchedules[i];
                     for (var j=0; j<panel.length; j++) {
-                        panel[j].slot = times[(panel[j].slot % slotsPerPanel) - 1];
+                        panel[j].slot = times[(panel[j].slot - 1) % slotsPerPanel];
                     }
                 }
+
+                //add message for empty schedules
+                if (panelWiseSchedules.length === 0)
+                    $('#schedule-header-msg').text("Sorry! No pre-scheduled interviews found for your company. You can interview walk-in candidates at any time.");
 
                 // add panel tables
                 var panelCount = 1;
                 panelWiseSchedules.forEach(function (panel) {
+
                     var panelID = "panel-" + panelCount;
                     var html = '<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">\n' +
                         '        <div class="card">\n' +
@@ -92,14 +105,15 @@
                     $('#'+panelID).DataTable( {
                         dom: 'Bfrtip',
                         responsive: true,
-                        "order": [[0, "asc"]],
                         data: panel,
+                        "aaSorting": [],
                         buttons: [],
                         columns: [
                             { title: "Time Slot", data: "slot" },
                             { title: "Name", data: "studentName" },
                             { title: "Position", data: "position" },
                             { title: "Contact", data: "studentPhone" },
+                            { title: "Year", data: "year" },
                             { title: "Stream", data: "stream" }
                         ]
                     });
