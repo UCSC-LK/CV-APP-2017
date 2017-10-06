@@ -23,6 +23,10 @@
     } else {
         $(document).ready(function () {
 
+            var viewButton = '<a class="btn btn-info btn-sm  waves-effect ajaxView" style = "margin-right:10px;" title="View CV"> <i class="material-icons">description</i> </a>';
+
+            var ajaxView = "ajaxView";
+
             // Loading schedule data
             var url = domain + 'schedule/company_schedule/' + companyObject._id;
             ajaxSend("GET", "", "", null, url);
@@ -102,7 +106,7 @@
 
                     $('#card-container').append(html);
 
-                    $('#'+panelID).DataTable( {
+                    var table = $('#'+panelID).DataTable( {
                         dom: 'Bfrtip',
                         responsive: true,
                         data: panel,
@@ -114,8 +118,16 @@
                             { title: "Position", data: "position" },
                             { title: "Contact", data: "studentPhone" },
                             { title: "Year", data: "year" },
-                            { title: "Stream", data: "stream" }
+                            { title: "Stream", width: "5%", data: "stream" },
+                            { title: "CV", width: "5%", data: null, defaultContent: viewButton}
                         ]
+                    });
+
+                    // Open CV pdf in new tab
+                    table.on("click", "." + ajaxView, function () {
+                        var rowData = table.row($(this).parents('tr')).data();
+                        var cv = rowData.studentName.split(' ').join('-') + '.pdf';
+                        window.open(domain + 'uploads/' + cv);
                     });
 
                     panelCount ++;
