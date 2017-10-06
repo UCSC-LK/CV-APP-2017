@@ -13,6 +13,10 @@ router.get('/student_schedule/:query', auth, scheduleController.getScheduleByStu
 router.get('/company_schedule/:query', auth, scheduleController.getScheduleByCompany);
 router.post('/', auth, scheduleController.updateSchedule);
 router.delete('/:query', auth, scheduleController.deleteScheduleItem);
+
+
 router.get('/all', scheduleController.getShortlisted);
+router.post('/saveGrid', scheduleController.saveGrid);
+router.get('/getSavedGrid', scheduleController.getSavedGrid);
 
 module.exports = router;
